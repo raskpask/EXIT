@@ -31,7 +31,8 @@
     "start": "node server.js",
     "heroku-postbuild": "npm install && npm run build",
     "build": "react-scripts build",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "stop": "killall node"
   },
   "eslintConfig": {
     "extends": "react-app"
