@@ -116,16 +116,15 @@ class Register extends Component {
             }
           }
         };
-        //we have to redo the validation to that the DUPLICATE_USER_ERROR will be shown
         this.checkValidation(null,state);
 
       }else{
         toast(this.props.info.general.error)
         console.log(error)
+        this.setState({
+          isLoading: false,
+        });
       }
-      this.setState({
-        isLoading: false,
-      });
     }
   }
   renderRegisterForm = () => {

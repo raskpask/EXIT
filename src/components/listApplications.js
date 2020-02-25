@@ -82,7 +82,7 @@ class ListApplications extends Component {
                 if (err.response.data === NO_APPLICATION) {
                     this.setState({ show: false })
                     toast(this.props.info.listApplications.noApplications)
-                } else{
+                } else {
                     toast(this.props.info.general.error)
                 }
             })
@@ -133,6 +133,9 @@ class ListApplications extends Component {
                     this.setState({ timestamp: new Date() })
                     toast(this.props.info.listApplications.editedMessage)
                     this.getApplicationsAndCompetences();
+                } else{
+                    toast(this.props.info.general.error)
+                    console.error(err)
                 }
             })
     }

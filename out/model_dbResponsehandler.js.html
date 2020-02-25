@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: model/dbResponsehandler.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: model/dbResponsehandler.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Extracts the applications from the DB request into a list of instances of the Applciation object.
+ *
+ * @param {String} rows - Response from the DB.
+ * @returns List of Applications
+ */
+function extractApplication(rows) {
+    let applicationID = rows[0].application_id;
+    let applicationList = [];
+    let indexCompetence = 0;
+    let indexAvailability = 0;
+    let tempApplication = {
+        lastEdited: (rows[0].last_edited === null) ? "-" : rows[0].last_edited,
+        dateOfSubmission: (JSON.stringify(rows[0].time_of_submission)).split('T')[0].split('"')[1],
+        status: rows[0].status,
+        firstName: rows[0].firstname,
+        lastName: rows[0].surname,
+        dateOfBirth: rows[0].ssn,
+        id: rows[0].application_id,
+        competence: [
+            {
+                name: rows[0].name,
+                yearsOfExperience: rows[0].years_of_experience
+            }
+        ],
+        availability: [
+            {
+                startDate: rows[0].startdate,
+                endDate: rows[0].enddate
+            }
+        ]
+
+    };
+    rows.forEach(element => {
+        if (checkIfNotExistsInCompetence(element.name, tempApplication.competence)) {
+            indexCompetence++;
+            tempApplication.competence[indexCompetence] = { name: element.name, yearsOfExperience: element.years_of_experience };
+        }
+        if (checkIfNotExistsInAvailability(element.startdate, element.enddate, tempApplication.availability)) {
+            indexAvailability++;
+            tempApplication.availability[indexAvailability] = { startDate: element.startdate, endDate: element.enddate };
+        }
+        if (!(element.application_id === applicationID)) {
+            applicationList.push(JSON.stringify(tempApplication));
+            tempApplication.dateOfSubmission = (JSON.stringify(element.time_of_submission)).split('T')[0].split('"')[1]
+            tempApplication.firstName = element.firstname;
+            tempApplication.lastName = element.surname;
+            tempApplication.dateOfBirth = element.ssn;
+            tempApplication.status = element.status;
+            tempApplication.id = element.application_id;
+            tempApplication.lastEdited = (element.last_edited === null) ? "-" : element.last_edited;
+            applicationID = element.application_id;
+            indexAvailability = 0;
+            indexCompetence = 0;
+            tempApplication.competence = [
+                {
+                    name: element.name,
+                    yearsOfExperience: element.years_of_experience
+                }
+            ];
+            tempApplication.availability = [
+                {
+                    startDate: element.startdate,
+                    endDate: element.enddate
+                }
+            ];
+        }
+
+    });
+    applicationList.push(JSON.stringify(tempApplication));
+    return applicationList;
+}
+function checkIfNotExistsInCompetence(name, list) {
+    for (let element of list) {
+        if (name === element.name) {
+            return false
+        }
+    }
+    return true;
+}
+function checkIfNotExistsInAvailability(startDate, endDate, list) {
+    for (let element of list) {
+        if (JSON.stringify(startDate).split("GMT")[0].split('T')[0] === JSON.stringify(element.startDate).split("GMT")[0].split('T')[0] || endDate == element.endDate) {
+            return false;
+        }
+    }
+    return true;
+}
+module.exports = {
+    extractApplication,
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module.exports_module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#applyInput">applyInput</a></li><li><a href="global.html#authenticateUser">authenticateUser</a></li><li><a href="global.html#changeAuthToken">changeAuthToken</a></li><li><a href="global.html#checkIfUsernameIsAvailable">checkIfUsernameIsAvailable</a></li><li><a href="global.html#createApplication">createApplication</a></li><li><a href="global.html#deAuthenticateUser">deAuthenticateUser</a></li><li><a href="global.html#extractApplication">extractApplication</a></li><li><a href="global.html#extractCreateApplication">extractCreateApplication</a></li><li><a href="global.html#extractCredentials">extractCredentials</a></li><li><a href="global.html#extractLang">extractLang</a></li><li><a href="global.html#extractLangCookie">extractLangCookie</a></li><li><a href="global.html#extractToken">extractToken</a></li><li><a href="global.html#extractUser">extractUser</a></li><li><a href="global.html#extractUsername">extractUsername</a></li><li><a href="global.html#generate">generate</a></li><li><a href="global.html#getApplication">getApplication</a></li><li><a href="global.html#getCompetence">getCompetence</a></li><li><a href="global.html#getPrivilegeLevel">getPrivilegeLevel</a></li><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#getUser">getUser</a></li><li><a href="global.html#registerInput">registerInput</a></li><li><a href="global.html#registerUser">registerUser</a></li><li><a href="global.html#respondError">respondError</a></li><li><a href="global.html#router">router</a></li><li><a href="global.html#updateApplicationStatus">updateApplicationStatus</a></li><li><a href="global.html#updateUser">updateUser</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Feb 17 2020 15:15:49 GMT+0100 (GMT+01:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
