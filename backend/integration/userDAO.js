@@ -5,6 +5,7 @@ const pool = mariadb.createPool({
      password: 'EXITEXIT',
      connectionLimit: 5
 });
+asyncFunction();
 async function asyncFunction() {
   let conn;
   try {
