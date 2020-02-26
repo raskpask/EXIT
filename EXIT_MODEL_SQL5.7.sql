@@ -8,19 +8,19 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema exit_db
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema exit_db
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `exit_db` DEFAULT CHARACTER SET utf8 ;
+USE `exit_db` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`Area_of_expertise`
+-- Table `exit_db`.`Area_of_expertise`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Area_of_expertise` (
+CREATE TABLE IF NOT EXISTS `exit_db`.`Area_of_expertise` (
   `expertise_id` INT NOT NULL AUTO_INCREMENT,
   `expertise_name` VARCHAR(45) NULL,
   PRIMARY KEY (`expertise_id`))
@@ -28,9 +28,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`User`
+-- Table `exit_db`.`User`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`User` (
+CREATE TABLE IF NOT EXISTS `exit_db`.`User` (
   `user_type_id` INT NOT NULL,
   `kth_email` VARCHAR(45) NULL,
   `alt_email` VARCHAR(45) NULL,
@@ -42,30 +42,30 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Expertise`
+-- Table `exit_db`.`Expertise`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Expertise` (
+CREATE TABLE IF NOT EXISTS `exit_db`.`Expertise` (
   `user_id` INT NOT NULL,
   `expertise_id` INT NULL,
   PRIMARY KEY (`user_id`),
   INDEX `expertise_id_idx` (`expertise_id` ASC),
   CONSTRAINT `user_id`
     FOREIGN KEY (`user_id`)
-    REFERENCES `mydb`.`User` (`user_id`)
+    REFERENCES `exit_db`.`User` (`user_id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
   CONSTRAINT `expertise_id`
     FOREIGN KEY (`expertise_id`)
-    REFERENCES `mydb`.`Area_of_expertise` (`expertise_id`)
+    REFERENCES `exit_db`.`Area_of_expertise` (`expertise_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Company`
+-- Table `exit_db`.`Company`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Company` (
+CREATE TABLE IF NOT EXISTS `exit_db`.`Company` (
   `name` VARCHAR(100) NULL,
   `address` VARCHAR(200) NULL,
   `phone_number` VARCHAR(20) NULL,
@@ -75,9 +75,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Degree_project`
+-- Table `exit_db`.`Degree_project`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Degree_project` (
+CREATE TABLE IF NOT EXISTS `exit_db`.`Degree_project` (
   `project_id` INT NOT NULL AUTO_INCREMENT,
   `number_of_students` INT NULL,
   `credits` INT NULL,
@@ -92,27 +92,27 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Degree_project` (
   INDEX `company_idx` (`company` ASC),
   CONSTRAINT `company`
     FOREIGN KEY (`company`)
-    REFERENCES `mydb`.`Company` (`company_id`)
+    REFERENCES `exit_db`.`Company` (`company_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Student_project`
+-- Table `exit_db`.`Student_project`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Student_project` (
+CREATE TABLE IF NOT EXISTS `exit_db`.`Student_project` (
   `degree_project_id` INT NULL,
   `user_id` INT NULL,
   INDEX `user_id_idx` (`user_id` ASC),
   CONSTRAINT `degree_project_id_fk`
     FOREIGN KEY (`degree_project_id`)
-    REFERENCES `mydb`.`Degree_project` (`project_id`)
+    REFERENCES `exit_db`.`Degree_project` (`project_id`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
   CONSTRAINT `user_id_fk`
     FOREIGN KEY (`user_id`)
-    REFERENCES `mydb`.`User` (`user_id`)
+    REFERENCES `exit_db`.`User` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -120,9 +120,9 @@ COMMENT = '				';
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Work_year`
+-- Table `exit_db`.`Work_year`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Work_year` (
+CREATE TABLE IF NOT EXISTS `exit_db`.`Work_year` (
   `person_id` INT NULL,
   `work_hours` INT NULL,
   `available_hours` INT NULL,
@@ -131,16 +131,16 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Work_year` (
   INDEX `person_id_idx` (`person_id` ASC),
   CONSTRAINT `person_id`
     FOREIGN KEY (`person_id`)
-    REFERENCES `mydb`.`User` (`user_id`)
+    REFERENCES `exit_db`.`User` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Budget_year`
+-- Table `exit_db`.`Budget_year`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Budget_year` (
+CREATE TABLE IF NOT EXISTS `exit_db`.`Budget_year` (
   `budget_year_id` INT NOT NULL AUTO_INCREMENT,
   `master_hours` INT NULL,
   `bachelor_hours` INT NULL,
@@ -155,21 +155,21 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Budget_work`
+-- Table `exit_db`.`Budget_work`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Budget_work` (
+CREATE TABLE IF NOT EXISTS `exit_db`.`Budget_work` (
   `work_year_id` INT NOT NULL,
   `budget_year_id` INT NULL,
   PRIMARY KEY (`work_year_id`),
   INDEX `budget_year_id_idx` (`budget_year_id` ASC),
   CONSTRAINT `work_year_id`
     FOREIGN KEY (`work_year_id`)
-    REFERENCES `mydb`.`Work_year` (`work_year_id`)
+    REFERENCES `exit_db`.`Work_year` (`work_year_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `budget_year_id`
     FOREIGN KEY (`budget_year_id`)
-    REFERENCES `mydb`.`Budget_year` (`budget_year_id`)
+    REFERENCES `exit_db`.`Budget_year` (`budget_year_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
