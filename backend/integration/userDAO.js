@@ -1,6 +1,28 @@
-const mysql = require('mysql');
-let con;
-createdb();
+const mariadb = require('mariadb');
+const pool = mariadb.createPool({
+    host: 'localhost',
+    user: 'root',
+    connectionLimit: 5
+});
+
+async function asyncFunction() {
+    let conn;
+    try {
+
+        conn = await pool.getConnection();
+        const rows = await conn.query("CREATE DATABASE exitdb");
+        // rows: [ {val: 1}, meta: ... ]
+
+        // const res = await conn.query("INSERT INTO myTable value (?, ?)", [1, "mariadb"]);
+        // res: { affectedRows: 1, insertId: 1, warningStatus: 0 }
+
+    } catch (err) {
+        throw err;
+    } finally {
+        if (conn) conn.release(); //release to pool
+    }
+}
+
 function init() {
     con = mysql.createConnection({
         host: "localhost",
@@ -11,6 +33,7 @@ function init() {
 
 }
 function createdb() {
+
     con = mysql.createConnection({
         host: "localhost",
         user: "root",
