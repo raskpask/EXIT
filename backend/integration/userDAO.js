@@ -14,7 +14,8 @@ function createdb() {
     con = mysql.createConnection({
         host: "localhost",
         user: "root",
-        password: "EXITEXIT"
+        password: "EXITEXIT",
+        insecureAuth: true
     });
 
     con.connect(function (err) {
