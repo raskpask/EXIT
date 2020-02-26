@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { Table, Button, FormControl, Form, Nav, Modal, Col, Row } from 'react-bootstrap';
 import { DateRangePicker } from 'react-dates';
 
-import '../resources/css/register.css';
 import '../resources/css/listApplications.css';
 import Application from './fragments/application';
 import axios from 'axios';
@@ -82,7 +81,7 @@ class ListApplications extends Component {
                 if (err.response.data === NO_APPLICATION) {
                     this.setState({ show: false })
                     toast(this.props.info.listApplications.noApplications)
-                } else {
+                } else{
                     toast(this.props.info.general.error)
                 }
             })
@@ -133,9 +132,6 @@ class ListApplications extends Component {
                     this.setState({ timestamp: new Date() })
                     toast(this.props.info.listApplications.editedMessage)
                     this.getApplicationsAndCompetences();
-                } else{
-                    toast(this.props.info.general.error)
-                    console.error(err)
                 }
             })
     }

@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Col, Row, Table, Nav, Card, Container } from 'react-bootstrap';
 
-
 import '../../resources/css/application.css';
 
 class Application extends Component {

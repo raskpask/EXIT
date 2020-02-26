@@ -4,9 +4,13 @@ function getLanguage() {
             message: "You do not have the access rights for this page! Login or get higher privilege from admin"
         },
         home: {
-            message: "If you don't have username and password please contact the admin to obtain them.",
-            tel: "Tel: 0701238274",
-            mail: "Mail: admin@iv1201.se"
+            title: "Welcome to EXIT!",
+            paragraph0: "This is a system for directors of studies, examiners and students at KTH. It keeps track of how much of an examiners working hours are to be given to tutoring of degree projects, which examiners that are available to tutor degree projects, how much tutoring hours each examiner has left on the current budget year and each examiner's degree projects.",
+            paragraph1: "When you log out of the system you only log out from EXIT. If you want to log out from KTH CAS (Central Authentication Service) you need to close the browser.",
+            paragraph2: "If you have any problems with the system press the help button."
+        },
+        footer:{
+            title: "KTH Royal Institute of Technology 2020."
         },
         register: {
             register: "Register",
@@ -48,7 +52,9 @@ function getLanguage() {
             profile: "Your profile",
             swe: "SWE",
             eng: "ENG",
-            loginError: "Invaild password/username"
+            loginError: "Invaild password/username",
+            kth: "KTH EECS Electrum EXIT",
+            help: "Help"
 
         },
         validationError: {
