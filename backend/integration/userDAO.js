@@ -1,5 +1,5 @@
 const mariadb = require('mariadb');
-
+console.log("Hello!!")
 mariadb.createConnection({ host: 'localhost', user: 'root', password: 'EXITEXIT' })
     .then(conn => {
         conn.query("CREATE DATABASE exitdb")
