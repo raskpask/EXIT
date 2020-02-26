@@ -18,7 +18,7 @@ async function asyncFunction() {
     
 
   } catch (err) {
-	throw err;
+	console.error(err);
   } finally {
 	if (conn) return conn.end();
   }
