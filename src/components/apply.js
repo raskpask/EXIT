@@ -9,7 +9,6 @@ import { toast } from 'react-toastify';
 
 import axios from 'axios';
 
-import '../resources/css/register.css';
 import '../resources/css/user.css';
 import '../resources/css/apply.css';
 import '../resources/css/reactDatesOverrides.css';

@@ -8,15 +8,15 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import Header from './components/header';
+import Footer from './components/footer';
+import Help from './components/help';
 import Home from './components/home';
-import Register from './components/register';
 import User from './components/user';
 import Apply from './components/apply';
 import ListApplications from './components/listApplications';
 import Eng from './resources/content/eng';
 import Swe from './resources/content/swe';
 
-import './resources/css/register.css';
 
 class App extends Component {
     constructor(props) {
@@ -25,8 +25,8 @@ class App extends Component {
             lang: Eng.getLanguage()
         }
     }
-    componentDidMount(){
-        if(document.cookie.split('lang=').length > 1){
+    componentDidMount() {
+        if (document.cookie.split('lang=').length > 1) {
             const lang = document.cookie.split('lang=')[1].split(';')[0]
             this.updateLanguage(lang);
         }
@@ -47,19 +47,20 @@ class App extends Component {
                     <Route exact path="/"
                         render={(props) => <Home info={this.state.lang} />}
                     />
+                    <Route exact path="/help"
+                        render={(props) => <Help info={this.state.lang} />}
+                    />
                     <Route exact path="/listApplications"
                         render={(props) => <ListApplications info={this.state.lang} />}
                     />
                     <Route exact path="/apply"
                         render={(props) => <Apply info={this.state.lang} />}
                     />
-                    <Route exact path="/register"
-                        render={(props) => <Register info={this.state.lang} />}
-                    />
                     <Route exact path="/user"
                         render={(props) => <User info={this.state.lang} />}
                     />
                 </BrowserRouter>
+                <Footer info={this.state.lang} />
             </div>
         );
     };

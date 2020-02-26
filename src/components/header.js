@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, FormControl, Form, Button, Nav, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav } from 'react-bootstrap';
 import Cookies from 'universal-cookie';
 import { errorCodes } from '../model/dbErrors'
 import { toast } from 'react-toastify';
@@ -74,23 +74,9 @@ class Header extends Component {
                 window.location.href = "/";
                 this.forceUpdate()
             }
-        } catch(err){
+        } catch (err) {
             console.error(err)
             toast(this.props.info.general.error)
-        }
-    }
-    chooseUserLevel() {
-        let privilegeLevel = document.cookie.split('privilegeLevel=')[1];
-
-        if (Boolean(privilegeLevel)) {
-            privilegeLevel = privilegeLevel.split(';')[0];
-        }
-        if (privilegeLevel === '1') {
-            return this.renderBrandLoginRecruiter()
-        } else if (privilegeLevel === '2') {
-            return this.renderBrandLogin()
-        } else {
-            return this.renderBrand()
         }
     }
     isLoggedIn() {
@@ -99,12 +85,40 @@ class Header extends Component {
         }
         return true
     }
+    chooseUserLevel() {
+        let privilegeLevel = document.cookie.split('privilegeLevel=')[1];
+
+        if (Boolean(privilegeLevel)) {
+            privilegeLevel = privilegeLevel.split(';')[0];
+        }
+        if (privilegeLevel === '1') {
+            return this.renderAdmin()
+        } else if (privilegeLevel === '2') {
+            return this.renderDirector()
+        } else if (privilegeLevel === '3') {
+            return this.renderExaminer()
+        } else if (privilegeLevel === '4') {
+            return this.renderStudent()
+        } else {
+            return this.renderLogin()
+        }
+    }
     renderBrand() {
         return (
             <React.Fragment>
+                <Navbar.Brand className="fontColor" href="/">
+                    {this.props.info.header.kth}
+                </Navbar.Brand>
+            </React.Fragment>
+        )
+    }
+    renderLogin() {
+        return (
+            <React.Fragment>
                 <Nav className="mr-auto">
-                    <Nav.Link href="/">{this.props.info.header.home}</Nav.Link>
-                    <Nav.Link href="/register">{this.props.info.header.register}</Nav.Link>
+                    {this.renderBrand()}
+                    <Nav.Link className="fontColor" onClick={() => this.login()}>{this.props.info.header.login}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/help">{this.props.info.header.help}</Nav.Link>
                 </Nav>
             </React.Fragment>
         )
@@ -129,32 +143,7 @@ class Header extends Component {
             </React.Fragment>
         )
     }
-    renderLogin() {
-        return (
-            <Nav>
-                <Form inline className="ml-auto">
-                    <FormControl
-                        type="Username"
-                        isInvalid={this.state.form.invalidLogin}
-                        placeholder={this.props.info.header.username}
-                        onChange={event => this.setState({ username: event.target.value })}
-                        className=" mr-sm-2" />
 
-                    <FormControl
-                        type="Password"
-                        placeholder={this.props.info.header.password}
-                        isInvalid={this.state.form.invalidLogin}
-                        onChange={event => this.setState({ password: event.target.value })}
-                        className=" mr-sm-2" />
-                    <Button onClick={() => this.login()} variant="primary" disabled={this.state.form.isLoading}>
-                        {this.state.form.isLoading ? this.props.info.general.loading : this.props.info.header.login}
-                    </Button>
-
-                </Form>
-                {this.renderlanguage()}
-            </Nav>
-        )
-    }
     renderUser() {
         return (
             <Nav className="ml-auto">
@@ -166,18 +155,18 @@ class Header extends Component {
     }
     renderlanguage() {
         return (
-            <NavDropdown title={this.props.info.header.language} id="basic-nav-dropdown" >
-                <NavDropdown.Item onClick={() => this.setLanguage('sv-se')}>{this.props.info.header.swe}</NavDropdown.Item>
-                <NavDropdown.Item onClick={() => this.setLanguage('en-us')}>{this.props.info.header.eng}</NavDropdown.Item>
-            </NavDropdown>
+            <Nav className="ml-auto">
+                <Nav.Link className="fontColor" href="/" onClick={() => this.setLanguage('sv-se')}> {this.props.info.header.swe}</Nav.Link>
+                <Nav.Link className="fontColor" href="/" onClick={() => this.setLanguage('en-us')}> {this.props.info.header.eng}</Nav.Link>
+            </Nav>
         )
     }
     render() {
         return (
             <div>
-                <Navbar bg="dark" variant="dark">
+                <Navbar className="navbar">
                     {this.chooseUserLevel()}
-                    {this.isLoggedIn() ? this.renderUser() : this.renderLogin()}
+                    {this.renderlanguage()}
                 </Navbar>
             </div>
         );

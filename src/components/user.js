@@ -8,7 +8,6 @@ import Access from './fragments/access';
 import { errorCodes } from '../model/dbErrors'
 import { toast } from 'react-toastify';
 
-import '../resources/css/register.css';
 import '../resources/css/user.css';
 
 

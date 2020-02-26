@@ -4,7 +4,15 @@
     padding-left: 1vw;
     padding-right: 1vw;
 } */
-
+.navbar{
+    background-color: rgba(25, 84, 166);
+}
+.fontColor{
+    color: aqua !important;
+}
+.fontColor:hover{
+    color: rgb(192, 206, 226) !important;
+}
 .logo{
     padding: 0;
     max-height: 4vw;
