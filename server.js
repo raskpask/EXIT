@@ -12,8 +12,11 @@ app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'build')));
 
 const apiEndpoint = require('./backend/net/apiEndpoint');
+const CASLogin = require('./backend/net/CASLogin');
 
+CASLogin.router(app);
 apiEndpoint.router(app);
+
 // For React
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
