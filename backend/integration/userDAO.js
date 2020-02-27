@@ -96,12 +96,43 @@ function getUser(user_id) {
  * @param {int} user_id the database id of the user
  * @returns The username of the user
  */
-function get_username(user_id){
+function getUsername(user_id){
     return new Promise(function (resolve, reject) {
         client = connect();
         const getUserQuery = {
             text: "SELECT kth_username FROM User WHERE user_id=$1",
             values: [user_id]
+        }
+        client
+        .query(getUserQuery)
+        .then(res=>{//, (err, res) => {
+                if (notVaildResponse(res)) {
+                    client.end();
+                    reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
+                }
+                if (res.rows != undefined) {
+                    //const rawUser = res.rows[0].person.split('(')[1].split(',');
+                    client.end()
+                    resolve(res.rows[0]);
+                }
+        })
+        .catch(err=>{
+            client.end()
+            reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
+        });
+    });
+}
+/**
+ * Gets the database ID of the user using their userna,e.
+ * @param {int} username the KTH username of the user
+ * @returns The username of the user
+ */
+function getUserID(username){
+    return new Promise(function (resolve, reject) {
+        client = connect();
+        const getUserQuery = {
+            text: "SELECT user_id FROM User WHERE kth_username=$1",
+            values: [username]
         }
         client
         .query(getUserQuery)
@@ -160,6 +191,9 @@ function createdb() {
 
 module.exports = {
     init,
-    createdb
+    createdb,
+    getUser,
+    getUsername,
+    getUserID
 
 }
