@@ -8,9 +8,10 @@ module.exports = class User{
      * @param {String} last_name - Surname of the user
      * @param {int} user_id - ID of the user
      * @param {int} user_type_id - Privilege level of the user
+     * @param {string} phone_number - The user's phone number
      */
     //constructor(kth_username,kth_email,alt_email,first_name,last_name,user_id,user_type_id){
-    constructor(user_type_id,kth_email,alt_email,first_name,last_name,kth_username){
+    constructor(user_type_id,kth_email,alt_email,first_name,last_name,kth_username, phone_number, user_id){
         this.kth_username = kth_username;
         this.kth_email = kth_email;
         this.alt_email = alt_email;
@@ -18,6 +19,7 @@ module.exports = class User{
         this.last_name = last_name;
         this.user_id = user_id;
         this.user_type_id = user_type_id;
+        this.phone_number = phone_number;
     }
     display() {
         console.log(this.first_name + " " + this.last_name);

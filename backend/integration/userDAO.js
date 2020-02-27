@@ -6,23 +6,6 @@ const pool = mariadb.createPool({
      database: 'exit_db',
      connectionLimit: 5
 });
-asyncFunction();
-async function asyncFunction() {
-  let conn;
-  try {
-	conn = await pool.getConnection();
-	const rows = await conn.query("SELECT * FROM User");
-	console.log(rows[0]); //[ {val: 1}, meta: ... ]
-	// const res = await conn.query("INSERT INTO myTable value (?, ?)", [1, "mariadb"]);
-    // console.log(res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
-    
-
-  } catch (err) {
-	console.error(err);
-  } finally {
-	if (conn) return conn.end();
-  }
-}
 /**
  * Regisers a user to the DB.
  *
@@ -33,8 +16,8 @@ function registerUser(user) {
     return new Promise(function (resolve, reject) {
         const client = connect();
         const query = {
-            text: "INSERT INTO person (user_type_id,kth_email,alt_email,first_name,last_name,kth_username) VALUES($1,$2,$3,$4,$5,$6) RETURNING *",
-            values: [user.user_type_id,user.kth_email,user.alt_email,user.first_name,user.last_name,user.kth_username]
+            text: "INSERT INTO person (user_type_id,kth_email,alt_email,first_name,last_name,kth_username,phone_number) VALUES($1,$2,$3,$4,$5,$6) RETURNING *",
+            values: [user.user_type_id,user.kth_email,user.alt_email,user.first_name,user.last_name,user.kth_username,user.phone_number]
         }
         client
         .query(query)
@@ -81,7 +64,7 @@ function getUser(user_id) {
                 if (res.rows != undefined) {
                     const rawUser = res.rows[0].person.split('(')[1].split(',');
                     client.end()
-                    resolve(new User(rawUser[0], rawUser[1], rawUser[2], rawUser[3], rawUser[4], rawUser[5], user_id));
+                    resolve(new User(rawUser[0], rawUser[1], rawUser[2], rawUser[3], rawUser[4], rawUser[5],rawUser[6], user_id));
                 }
         })
         .catch(err=>{
@@ -136,7 +119,7 @@ function getUserID(username){
         }
         client
         .query(getUserQuery)
-        .then(res=>{//, (err, res) => {
+        .then(res=>{
                 if (notVaildResponse(res)) {
                     client.end();
                     reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
@@ -153,45 +136,39 @@ function getUserID(username){
         });
     });
 }
-
-function init() {
-    con = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "rootroot",
-        database: 'webshop'
-    });
-
-}
-function createdb() {
-
-    con = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "EXITEXIT",
-        insecureAuth: true
-    });
-
-    con.connect(function (err) {
-        if (err) throw err;
-        console.log('connected to db');
-    });
-
-    con.query("CREATE DATABASE exitdb", (err, result) => {
-        if (err) {
-            if (err.code === ERROR_DATABASE_EXISTS) {
-                console.log('Database exists.');
-
-            } else {
-                console.log('unknown error');
-            }
+/**
+ * 
+ * @param {int} project_id - The ID of the project
+ */
+function getProject(project_id){
+    return new Promise(function (resolve, reject) {
+        client = connect();
+        const getUserQuery = {
+            text: "SELECT * FROM Degree_project WHERE project_id=$1",
+            values: [project_id]
         }
+        client
+        .query(getUserQuery)
+        .then(res=>{//, (err, res) => {
+                if (notVaildResponse(res)) {
+                    client.end();
+                    reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
+                }
+                if (res.rows != undefined) {
+                    const rawProject = res.rows[0].person.split('(')[1].split(',');
+                    client.end()
+                    resolve(new ProjectDetails(rawProject[0], rawProject[1], rawProject[2], rawProject[3], rawProject[4], rawProject[5],rawProject[6],rawProject[7],rawProject[8],rawProject[9],rawProject[10]));
+                }
+        })
+        .catch(err=>{
+            client.end()
+            reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
+        });
     });
 }
 
 module.exports = {
-    init,
-    createdb,
+    registerUser,
     getUser,
     getUsername,
     getUserID
