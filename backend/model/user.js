@@ -1,28 +1,25 @@
 module.exports = class User{
     /**
      *Creates an instance of User.
-     * @param {String} username - Username of the user
-     * @param {String} password - Password of the user
-     * @param {String} email - Email of the user
-     * @param {String} date - Birthday of the user
-     * @param {String} firstName - Name of the user
-     * @param {String} lastName - Surname of the user
-     * @param {int} personID - Person ID of the user
-     * @param {int} privilegeLevel - Privilege level of the user
-     * @param {String} token - Authorization token of the user
+     * @param {String} kth_username- The  KTH username of the user
+     * @param {String} kth_email - KTH email of the user
+     * @param {String} alt_email - Alternate email of the user
+     * @param {String} first_name - Name of the user
+     * @param {String} last_name - Surname of the user
+     * @param {int} user_id - ID of the user
+     * @param {int} user_type_id - Privilege level of the user
      */
-    constructor(username,password,email,date,firstName,lastName,personID,privilegeLevel,token){
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.date = date;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.personID = personID;
-        this.privilegeLevel = privilegeLevel;
-        this.token = token;
+    //constructor(kth_username,kth_email,alt_email,first_name,last_name,user_id,user_type_id){
+    constructor(user_type_id,kth_email,alt_email,first_name,last_name,kth_username){
+        this.kth_username = kth_username;
+        this.kth_email = kth_email;
+        this.alt_email = alt_email;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.user_id = user_id;
+        this.user_type_id = user_type_id;
     }
     display() {
-        console.log(this.firstName + " " + this.lastName);
+        console.log(this.first_name + " " + this.last_name);
     }
 }
