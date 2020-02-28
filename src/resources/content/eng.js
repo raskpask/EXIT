@@ -22,8 +22,14 @@ function getLanguage() {
             totalTutoringHours: "Total amount of tutoring hours",
             hours: " hours.",
             edit: "Edit",
-            save: "Save"
+            save: "Save",
+            fail: "Something went wrong, could not load profile."
 
+        },
+        degreeProject: {
+            company: "Company",
+            info: "Info",
+            status: "Status"
         },
         addDegreeProject: {
             title: "Add degree project to my annual quota",
@@ -59,10 +65,7 @@ function getLanguage() {
             factor4: "Factor four",
             factor5: "Factor five",
             factor6: "Factor six",
-            factor7: "Factor seven",
-            factor8: "Factor eight",
-            factor9: "Factor nine",
-            factor10: "Factor ten",
+            fail: "Something went wrong and the budget years could not be fetched."
         },
         addBudgetYear: {
             title: "Add budget year",
@@ -77,13 +80,16 @@ function getLanguage() {
             factor4Placeholder: "Factor four students",
             factor5Placeholder: "Factor five students",
             factor6Placeholder: "Factor six students",
-
+            added: "The budget year was added to the database.",
+            fail: "Something went wrong, the budget year was not added to the database."
         },
         addExaminer: {
             title: "Add examiner",
             paragraph0: "Please insert the username of the name of the person you want to add as a examiner. Do not include \"@kth.se\".",
             kthUsername: "KTH username",
-            kthUsernamePlaceholder: "Enter the KTH username of the examiner you want to add"
+            kthUsernamePlaceholder: "Enter the KTH username of the examiner you want to add",
+            added: "The user was added as examiner.",
+            fail: "Something went wrong the user was not added as a examiner."
         },
         specifyTutoringHours: {
             title: "Specify tutoring hours",
@@ -93,8 +99,8 @@ function getLanguage() {
                 "to tutor degree projects during the selected budget year.",
             bugetYear: "Budget Year",
             budgetYearPlaceholder: "Enter the buget year you want to add the examiner to.",
-            email: "Email",
-            emailPlaceholder: "Enter the kth mail of the examiner you want to add.",
+            username: "Username",
+            usernamePlaceholder: "Enter the kth username of the user you want to add.",
             numberOfHours: "Amout of hours",
             numberOfHoursPlaceholder: "Enter the amout of hours the examiner should spend this budget year."
         },
@@ -134,7 +140,8 @@ function getLanguage() {
             firstName: "First name",
             lastName: "Last name",
             email: "Email",
-            competenceArea: "Competence area"
+            competenceArea: "Competence area",
+            fail: "Something went wrong, could not fatch the examiners."
         },
         myDegreeProjects: {
             title: "My degree projects",
@@ -144,21 +151,25 @@ function getLanguage() {
             numOfStudents: "Number of students",
             startDate: "Start date",
             endDate: "End date",
-            withinTimeLimit: "Within time limit"
+            withinTimeLimit: "Within time limit",
+            fail: "Something went wrong could not load your projects."
         },
         directorsOfStudies: {
             title: "Directors of studies",
             paragraph0: "This table shows all existing directors of studies in the system",
             lastName: "Last name",
             firstName: "First name",
-            email: "Email"
+            email: "Email",
+            fail: "Something went wrong and the directors could not be fetched."
         },
         addDirectorOfStudies: {
             title: "Add director of studies",
             paragraph0: "Please insert the username of the name of the person you want to add as a director of studies. Do not include \"@kth.se\".",
             usernamePlaceholder: "Enter the username of the user you want to make as director of studies.",
             username: "Username",
-            submit: "Submit"
+            submit: "Submit",
+            added: "The user was added as director of studies",
+            fail: "Something went wrong and the user was not add as director of studies"
         },
         validationError: {
             emptyField: {

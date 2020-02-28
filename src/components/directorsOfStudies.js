@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
-
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import '../resources/css/home.css';
+import Access from './fragments/access';
+
 
 class DirectorsOfStudies extends Component {
     constructor(props) {
@@ -16,8 +19,26 @@ class DirectorsOfStudies extends Component {
             ]
         }
     }
-    renderTable(){
-        return(
+    componentDidMount() {
+        this.getDirectors()
+    }
+    getDirectors = () => {
+
+        const response = axios
+            .get('/api/director')
+            .then(res => {
+                if (res.status === 200) {
+                    this.setState({ directors: response.data })
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                toast(this.props.info.directorsOfStudies.fail)
+            })
+
+    }
+    renderTable() {
+        return (
             <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -41,10 +62,11 @@ class DirectorsOfStudies extends Component {
     render() {
         return (
             <div className="container">
-            <h1>{this.props.info.directorsOfStudies.title}</h1>
-            <p>{this.props.info.directorsOfStudies.paragraph0}</p>
-            {this.renderTable()}
-        </div>
+                <Access access='3' info={this.props.info.access} />
+                <h1>{this.props.info.directorsOfStudies.title}</h1>
+                <p>{this.props.info.directorsOfStudies.paragraph0}</p>
+                {this.renderTable()}
+            </div>
         );
     };
 }

@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Col, Row, Form, Card,  Button } from 'react-bootstrap';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import Access from './fragments/access';
 
 import '../resources/css/profile.css';
 
@@ -8,10 +11,27 @@ class Profile extends Component {
         super(props);
         this.state = {
             edit: false,
-            competenceArea: "Telecom",
-            totalTutoringHours: "500",
-            remainingTutoringHours: "200",
+            competenceArea: "",
+            totalTutoringHours: "",
+            remainingTutoringHours: "",
         }
+    }
+    componentDidMount() {
+        this.getProfile()
+    }
+    getProfile = () => {
+        const response = axios
+            .get('/api/examiner')
+            .then(res => {
+                if (res.status === 200) {
+                    this.setState({ competenceArea: response.data })
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                toast(this.props.info.profile.fail)
+            })
+
     }
     editCompetence() {
         this.setState({ edit: true })
@@ -84,6 +104,7 @@ class Profile extends Component {
     render() {
         return (
             <div className="container">
+                <Access access='3' info={this.props.info.access} />
                 <h1>{this.props.info.profile.title}</h1>
                 <p>{this.props.info.profile.paragraph0}</p>
                 {this.renderProfile()}

@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import Access from './fragments/access';
 
 import '../resources/css/availableExaminers.css';
 
@@ -17,7 +20,24 @@ class AvailableExaminers extends Component {
             ]
         }
     }
+    componentDidMount() {
+        this.getExaminers()
+    }
+    getExaminers = () => {
 
+        const response = axios
+            .get('/api/examiner')
+            .then(res => {
+                if (res.status === 200) {
+                    this.setState({ examiners: response.data })
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                toast(this.props.info.availableExaminers.fail)
+            })
+
+    }
     renderTable() {
         return (
             <Table striped bordered hover>
@@ -46,6 +66,7 @@ class AvailableExaminers extends Component {
     render() {
         return (
             <div className="container">
+                <Access access='4' info={this.props.info.access} />
                 <h1>{this.props.info.availableExaminers.title}</h1>
                 <p>{this.props.info.availableExaminers.subtitle}</p>
                 <h3>{this.props.info.availableExaminers.budgetYear}</h3>

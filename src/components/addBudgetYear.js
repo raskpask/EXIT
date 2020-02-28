@@ -1,33 +1,71 @@
 import React, { Component } from 'react';
 import { Form, Button, Col, Row } from 'react-bootstrap';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import '../resources/css/form.css';
+import Access from './fragments/access';
 
 class AddBudgetYear extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            budgetYears: [
-                {
-                    budgetYear: "",
-                    masterHours: "",
-                    bachleorHours: "",
-                    factor2: "",
-                    factor3: "",
-                    factor4: "",
-                    factor5: "",
-                    factor6: "",
-                }
-            ]
+            budgetYear: "",
+            masterHours: "",
+            bachleorHours: "",
+            factor2: "",
+            factor3: "",
+            factor4: "",
+            factor5: "",
+            factor6: ""
         }
+    }
+    addBudgetYear = (e) => {
+        e.preventDefault();
+        axios
+            .post('/api/budgetYear', this.createBudgetYear())
+            .then(res => {
+                toast(this.props.info.addBudgetYear.added)
+                this.resetBudgetYear()
+            })
+            .catch(err => {
+                console.error(err)
+                toast(this.props.info.addBudgetYear.fail)
+            })
+    }
+    createBudgetYear() {
+        const budgetYear = {
+            budgetYear: this.state.budgetYear,
+            masterHours: this.state.masterHours,
+            bachleorHours: this.state.bachleorHours,
+            factor2: this.state.factor2,
+            factor3: this.state.factor3,
+            factor4: this.state.factor4,
+            factor5: this.state.factor5,
+            factor6: this.state.factor6
+        }
+        return budgetYear
+    }
+    resetBudgetYear() {
+        this.setState({
+            budgetYear: "",
+            masterHours: "",
+            bachleorHours: "",
+            factor2: "",
+            factor3: "",
+            factor4: "",
+            factor5: "",
+            factor6: ""
+        })
     }
     renderForm() {
         return (
-            <Form>
+            <Form onSubmit={(e) => this.addBudgetYear(e)} >
                 <Row>
                     <Col>
                         <Form.Group>
                             <Form.Label>{this.props.info.specifiedBudgetYears.budgetYear}</Form.Label>
                             <Form.Control
+                                required
                                 type="number"
                                 value={this.state.budgetYear}
                                 placeholder={this.props.info.addBudgetYear.budgetYearPlaceholder}
@@ -38,6 +76,7 @@ class AddBudgetYear extends Component {
                     <Col>
                         <Form.Label>{this.props.info.specifiedBudgetYears.masterHours}</Form.Label>
                         <Form.Control
+                            required
                             type="number"
                             value={this.state.masterHours}
                             placeholder={this.props.info.addBudgetYear.masterHoursPlaceholder}
@@ -47,6 +86,7 @@ class AddBudgetYear extends Component {
                     <Col>
                         <Form.Label>{this.props.info.specifiedBudgetYears.bachleorHours}</Form.Label>
                         <Form.Control
+                            required
                             type="number"
                             value={this.state.bachleorHours}
                             placeholder={this.props.info.addBudgetYear.bachleorHoursPlaceholder}
@@ -58,6 +98,7 @@ class AddBudgetYear extends Component {
                     <Col>
                         <Form.Label>{this.props.info.specifiedBudgetYears.factor2}</Form.Label>
                         <Form.Control
+                            required
                             type="number"
                             value={this.state.factor2}
                             placeholder={this.props.info.addBudgetYear.factor2Placeholder}
@@ -67,6 +108,7 @@ class AddBudgetYear extends Component {
                     <Col>
                         <Form.Label>{this.props.info.specifiedBudgetYears.factor3}</Form.Label>
                         <Form.Control
+                            required
                             type="number"
                             value={this.state.factor3}
                             placeholder={this.props.info.addBudgetYear.factor3Placeholder}
@@ -77,6 +119,7 @@ class AddBudgetYear extends Component {
                     <Col>
                         <Form.Label>{this.props.info.specifiedBudgetYears.factor4}</Form.Label>
                         <Form.Control
+                            required
                             type="number"
                             value={this.state.factor4}
                             placeholder={this.props.info.addBudgetYear.factor4Placeholder}
@@ -95,6 +138,7 @@ class AddBudgetYear extends Component {
                     <Col>
                         <Form.Label>{this.props.info.specifiedBudgetYears.factor6}</Form.Label>
                         <Form.Control
+                            required
                             type="number"
                             value={this.state.factor6Placeholder}
                             placeholder={this.props.info.addBudgetYear.factor6Placeholder}
@@ -104,7 +148,7 @@ class AddBudgetYear extends Component {
                 </Row>
                 <Row>
                     <Col className="alignCenter ">
-                        <Button className= "marginButton ">{this.props.info.addBudgetYear.submit}</Button>
+                        <Button className="marginButton" type="submit">{this.props.info.addBudgetYear.submit}</Button>
                     </Col>
                 </Row>
             </Form >
@@ -113,6 +157,7 @@ class AddBudgetYear extends Component {
     render() {
         return (
             <div className="container">
+                <Access access='2' info={this.props.info.access} />
                 <h1>{this.props.info.addBudgetYear.title}</h1>
                 <p>{this.props.info.addBudgetYear.paragraph0}</p>
                 {this.renderForm()}
