@@ -13,8 +13,11 @@ module.exports = class ProjectDetails{
  * @param {boolean} all_info_specified - If all the information of the project has been specified
  * @param {int} company The company the project is being done for. This is the ID, the other details have to be retrieved from the database
  * @param {int} company_contact - The user ID of the person at the company responsible for the project
+ * @param {String} company_name - The name of the company
+ * @param {String} company_address - The address of the company
+ * @param {String} company_phone_number - The phone number of the company
  */
-    constructor(project_id,number_of_students,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact){
+    constructor(project_id,number_of_students,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,company_name,company_address,company_phone_number){
         this.project_id = project_id;
         this.number_of_students = number_of_students;
         this.project_description = project_description;
@@ -26,5 +29,8 @@ module.exports = class ProjectDetails{
         this.all_info_specified = all_info_specified;
         this.company = company;
         this.company_contact = company_contact;
+        this.company_name = company_name;
+        this.company_address = company_address;
+        this.company_phone_number= company_phone_number;
     }
 }

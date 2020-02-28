@@ -1,4 +1,6 @@
 const mariadb = require('mariadb');
+const User = require('../model/user');
+const ProjectDetails = require('../model/projectDetails');
 const pool = mariadb.createPool({
      host: 'localhost', 
      user:'root', 
@@ -16,7 +18,7 @@ function registerUser(user) {
     return new Promise(function (resolve, reject) {
         const client = connect();
         const query = {
-            text: "INSERT INTO person (user_type_id,kth_email,alt_email,first_name,last_name,kth_username,phone_number) VALUES($1,$2,$3,$4,$5,$6) RETURNING *",
+            text: "INSERT INTO person (user_type_id,kth_email,alt_email,first_name,last_name,kth_username,phone_number) VALUES($1,$2,$3,$4,$5,$6) RETURNING *;",
             values: [user.user_type_id,user.kth_email,user.alt_email,user.first_name,user.last_name,user.kth_username,user.phone_number]
         }
         client
@@ -51,7 +53,7 @@ function getUser(user_id) {
     return new Promise(function (resolve, reject) {
         client = connect();
         const getUserQuery = {
-            text: "SELECT * FROM User WHERE user_id=$1",
+            text: "SELECT * FROM User WHERE user_id=$1;",
             values: [user_id]
         }
         client
@@ -83,7 +85,7 @@ function getUsername(user_id){
     return new Promise(function (resolve, reject) {
         client = connect();
         const getUserQuery = {
-            text: "SELECT kth_username FROM User WHERE user_id=$1",
+            text: "SELECT kth_username FROM User WHERE user_id=$1;",
             values: [user_id]
         }
         client
@@ -137,14 +139,16 @@ function getUserID(username){
     });
 }
 /**
- * 
+ * Gets a project with all details from the database
  * @param {int} project_id - The ID of the project
  */
 function getProject(project_id){
     return new Promise(function (resolve, reject) {
         client = connect();
         const getUserQuery = {
-            text: "SELECT * FROM Degree_project WHERE project_id=$1",
+            text: "SELECT (Degree_project.project_id, Degree_project.number_of_students, Degree_project.project_description,Degree_project.credits,Degree_project.start_date,Degree_project.end_date,Degree_project.in_progess,Degree_project.out_of_date,Degree_project.all_info_specified,Degree_project.company,Degree_project.company_contact,Company.name,Company.address,Company.phone_number)" 
+            + "FROM (Degree_project LEFT JOIN Company ON Degree_project.company = company.company_id)"
+            + "WHERE Degree_project.project_id=$1;",
             values: [project_id]
         }
         client
@@ -157,7 +161,7 @@ function getProject(project_id){
                 if (res.rows != undefined) {
                     const rawProject = res.rows[0].person.split('(')[1].split(',');
                     client.end()
-                    resolve(new ProjectDetails(rawProject[0], rawProject[1], rawProject[2], rawProject[3], rawProject[4], rawProject[5],rawProject[6],rawProject[7],rawProject[8],rawProject[9],rawProject[10]));
+                    resolve(new ProjectDetails(rawProject[0], rawProject[1], rawProject[2], rawProject[3], rawProject[4], rawProject[5],rawProject[6],rawProject[7],rawProject[8],rawProject[9],rawProject[10],rawProject[11],rawProject[12],rawProject[13]));
                 }
         })
         .catch(err=>{
@@ -166,11 +170,53 @@ function getProject(project_id){
         });
     });
 }
+/**
+ * Adds a new project to the database. 
+ * @param {projectDetails} project_details 
+ */
+function registerProject(project_details){
+    return new Promise(async function(resolve,reject){
+        const client = await pool.connect()
+        try {
+            await client.query("BEGIN");
+            if(projectDetails.company_name !== null){
+            let addCompanyQuery = {
+                text: "INSERT INTO Company (name,address,phone_number) "
+                + "VALUES($1,$2,$3); SELECT LAST_INSERT_ID();",
+                values:[projectDetails.company_name,projectDetails.company_address,projectDetails.company_phone_number]
+            }
+            await client.query(addCompanyQuery)
+            .then(res=> {
+                projectDetails.company = res.rows[0];
+            });
+        }
+            let addProjectDetailsQuery = {
+                text: "INSERT INTO Degree_project (number_of_students,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact)"
+                + "VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *;",
+                values: [project_details.number_of_students,project_details.project_description,project_details.credits,project_details.start_date,project_details.end_date,project_details.in_progress,project_details.out_of_date,project_details.all_info_specified,project_details.company,project_details.company_contact]
+            }
+            await client.query(addProjectDetailsQuery);
+            await client.query("COMMIT");
+            resolve(200);
+
+        }catch (e){
+            await client.query("ROLLBACK");
+            console.error(e);
+            reject(e);
+        }finally {
+            client.release();
+        }
+    });
+}
+
+
 
 module.exports = {
     registerUser,
     getUser,
     getUsername,
-    getUserID
+    getUserID,
+    registerProject
+
 
 }
