@@ -31,7 +31,7 @@ function registerUser(user) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const query = {
-            text: "INSERT INTO person (user_type_id,kth_email,alt_email,first_name,last_name,kth_username,phone_number) VALUES($1,$2,$3,$4,$5,$6) RETURNING *;",
+            text: "INSERT INTO person (user_type_id,kth_email,alt_email,first_name,last_name,kth_username,phone_number) VALUES(?,?,?,?,?,?) RETURNING *;",
             values: [user.user_type_id,user.kth_email,user.alt_email,user.first_name,user.last_name,user.kth_username,user.phone_number]
         }
         client
@@ -69,7 +69,6 @@ function getUser(user_id) {
             text: "SELECT * FROM User WHERE user_id=?",
             values: [user_id]
         }
-        //console.log(client);
         client
         .query(getUserQuery.text,getUserQuery.values)
         .then(res=>{
@@ -77,10 +76,9 @@ function getUser(user_id) {
                     client.end();
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
                 }
-                const rawUser = res[0];//JSON.parse(res[0]);//res[0].person.split('(')[1].split(',');
+                const rawUser = res[0];
                 client.end()
                 var foundUser = new User(rawUser.user_type_id, rawUser.kth_email, rawUser.alt_email, rawUser.first_name, rawUser.last_name, rawUser.kth_username,rawUser.phone_number, rawUser.user_id);
-                console.log(foundUser);
                 resolve(foundUser);
         })
         .catch(err=>{
@@ -98,22 +96,22 @@ function getUser(user_id) {
  */
 function getUsername(user_id){
     return new Promise(async function (resolve, reject) {
-        const client =await pool.getConnection();
+        const client = await pool.getConnection();
         const getUserQuery = {
-            text: "SELECT kth_username FROM User WHERE user_id=$1;",
+            text: "SELECT kth_username FROM User WHERE user_id=?;",
             values: [user_id]
         }
         client
-        .query(getUserQuery)
+        .query(getUserQuery.text,getUserQuery.values)
         .then(res=>{//, (err, res) => {
                 if (notVaildResponse(res)) {
                     client.end();
                     reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
                 }
-                if (res.rows != undefined) {
+                if (res !== undefined) {
                     //const rawUser = res.rows[0].person.split('(')[1].split(',');
                     client.end()
-                    resolve(res.rows[0]);
+                    resolve(res[0].kth_username);
                 }
         })
         .catch(err=>{
@@ -131,20 +129,20 @@ function getUserID(username){
     return new Promise(async function (resolve, reject) {
         const client =await pool.getConnection();
         const getUserQuery = {
-            text: "SELECT user_id FROM User WHERE kth_username=$1",
+            text: "SELECT user_id FROM User WHERE kth_username=?",
             values: [username]
         }
         client
-        .query(getUserQuery)
+        .query(getUserQuery.text,getUserQuery.values)
         .then(res=>{
                 if (notVaildResponse(res)) {
                     client.end();
                     reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
                 }
-                if (res.rows != undefined) {
+                if (res != undefined) {
                     //const rawUser = res.rows[0].person.split('(')[1].split(',');
                     client.end()
-                    resolve(res.rows[0]);
+                    resolve(res[0].user_id);
                 }
         })
         .catch(err=>{
@@ -161,22 +159,20 @@ function getProject(project_id){
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const getUserQuery = {
-            text: "SELECT (Degree_project.project_id, Degree_project.number_of_students, Degree_project.project_description,Degree_project.credits,Degree_project.start_date,Degree_project.end_date,Degree_project.in_progess,Degree_project.out_of_date,Degree_project.all_info_specified,Degree_project.company,Degree_project.company_contact,Company.name,Company.address,Company.phone_number)" 
-            + "FROM (Degree_project LEFT JOIN Company ON Degree_project.company = company.company_id)"
-            + "WHERE Degree_project.project_id=$1;",
+            text: "SELECT project_id, number_of_students, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number FROM (Degree_project LEFT JOIN Company ON Degree_project.company = Company.company_id) WHERE Degree_project.project_id=?",
             values: [project_id]
         }
         client
-        .query(getUserQuery)
+        .query(getUserQuery.text,getUserQuery.values)
         .then(res=>{//, (err, res) => {
-                if (notVaildResponse(res)) {
-                    client.end();
-                    reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
-                }
-                if (res.rows != undefined) {
-                    const rawProject = res.rows[0].person.split('(')[1].split(',');
+                // if (notVaildResponse(res)) {
+                //     client.end();
+                //     reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
+                // }
+                if (res !== undefined) {
+                    const rawProject = res[0]//.person.split('(')[1].split(',');
                     client.end()
-                    resolve(new ProjectDetails(rawProject[0], rawProject[1], rawProject[2], rawProject[3], rawProject[4], rawProject[5],rawProject[6],rawProject[7],rawProject[8],rawProject[9],rawProject[10],rawProject[11],rawProject[12],rawProject[13]));
+                    resolve(new ProjectDetails(rawProject.project_id, rawProject.number_of_students, rawProject.project_description, rawProject.credits, rawProject.start_date, rawProject.end_date,rawProject.in_progress,rawProject.out_of_date,rawProject.all_info_specified,rawProject.company,rawProject.company_contact,rawProject.name,rawProject.address,rawProject.phone_number));
                 }
         })
         .catch(err=>{
@@ -197,12 +193,13 @@ function registerProject(project_details){
             if(project_details.company_name !== null){
                 let addCompanyQuery = {
                     text: "INSERT INTO Company (name,address,phone_number) "
-                    + "VALUES($1,$2,$3); SELECT LAST_INSERT_ID();",
+                    + "VALUES(?,?,?); SELECT LAST_INSERT_ID();",
                     values:[project_details.company_name,project_details.company_address,project_details.company_phone_number]
                 }
-                await client.query(addCompanyQuery)
+                await client.query(addCompanyQuery.text,addCompanyQuery.values)
                 .then(res=> {
-                    project_details.company = res.rows[0];
+                    console.log(res[0]);
+                    project_details.company = res[0];
                 })
                 .catch(err=>{
                     client.query("ROLLBACK");
@@ -212,10 +209,10 @@ function registerProject(project_details){
         }
             let addProjectDetailsQuery = {
                 text: "INSERT INTO Degree_project (number_of_students,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact)"
-                + "VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *;",
+                + "VALUES (?,?,?,?,?,?,?,?,?,?) RETURNING *;",
                 values: [project_details.number_of_students,project_details.project_description,project_details.credits,project_details.start_date,project_details.end_date,project_details.in_progress,project_details.out_of_date,project_details.all_info_specified,project_details.company,project_details.company_contact]
             }
-            await client.query(addProjectDetailsQuery);
+            await client.query(addProjectDetailsQuery.text,addProjectDetailsQuery.values);
             await client.query("COMMIT");
             resolve(200);
 
@@ -229,7 +226,7 @@ function registerProject(project_details){
     });
 }
 getUser(1);
-//getProject(1);
+getProject(2);
 //registerProject(new ProjectDetails(null,1,"testprojekt",15,"2020-01-05","2020-06-01",1,0,1,null,1,"testföretaget","test","1234565"));
 
 
