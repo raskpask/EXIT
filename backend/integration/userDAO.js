@@ -202,7 +202,7 @@ function registerProject(project_details){
                 }
                 await client.query(addCompanyQuery.text,addCompanyQuery.values)
                 .then(res=> {
-                    console.log(res[0]);
+                    console.log(res);
                     project_details.company = res[0];
                 })
                 .catch(err=>{
