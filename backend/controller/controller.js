@@ -13,6 +13,14 @@ async function registerUser(req) {
     return await userDAO.registerUser(registerUser);
 }
 /**
+ * 
+ * @param {String} req 
+ */
+async function registerProject(req) {
+    const projectDetails = requestHandler.extractRegisterProjectDetails(req);
+    return await userDAO.registerProject(projectDetails);
+}
+/**
  * Authenticate a user. Checks if the client used the right credentials and generate a cookie to set it to the user.
  *
  * @param {String} req - The request of the client.
@@ -43,7 +51,21 @@ async function deAuthenticateUser(req) {
  */
 async function getUser(req) {
     try {
-        return await userDAO.getUser(requestHandler.extractToken(req));
+        return await userDAO.getUser(requestHandler.extractUserID(req));
+    }
+    catch (error) {
+        throw error
+    }
+}
+/**
+ * Fetches a project from the DB.
+ *
+ * @param {String} req - The request of the client.
+ * @returns Promise with user
+ */
+async function getProject(req) {
+    try {
+        return await userDAO.getProject(requestHandler.extractProjectID(req));
     }
     catch (error) {
         throw error
@@ -157,4 +179,5 @@ module.exports = {
     checkIfUsernameIsAvailable,
     getToken,
     extractLangCookie,
+    getProject
 }

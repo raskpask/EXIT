@@ -1,4 +1,5 @@
 const User = require('./user');
+const ProjectDetails = require('./projectDetails'); 
 const Application = require('./application');
 const userDAO = require('../integration/userDAO');
 const validation = require('./requestValidation');
@@ -40,7 +41,7 @@ function extractUser(req) {
     return new User(body.username, body.password, body.email, body.date, body.firstName, body.lastName);
 }
 /**
- * Extarct the language of the client from the cookie
+ * Extract the language of the client from the cookie
  *
  * @param {String} req - Request from client
  * @returns String of language
@@ -139,7 +140,31 @@ async function extractApplication(req) {
     }
     return new Application(availability, applicationDate, competenceList, name);
 }
+/**
+ * Creates new projectDetails from data provided by the user.
+ * @param {String} req - the request containting the data.
+ * @returns Instance of ProjectDetails 
+ */
+function extractRegisterProjectDetails(req) {
+    return new ProjectDetails(project_id,number_of_students,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,company_name,company_address,company_phone_number);
+}
+/**
+ * Gets the user ID from a request
+ * @param {String} req 
+ */
+function extractUserID(req) {
+    return req.body.userID;
+}
+/**
+ * Gets the project ID from a request
+ * @param {String} req 
+ */
+function extractProjectID(req) {
+    return req.body.projectID
+}
 module.exports = {
+    extractProjectID,
+    extractUserID,
     extractCredentials,
     extractUser,
     extractToken,
@@ -147,4 +172,5 @@ module.exports = {
     extractUsername,
     extractCreateApplication,
     extractLang,
+    extractRegisterProjectDetails,
 }
