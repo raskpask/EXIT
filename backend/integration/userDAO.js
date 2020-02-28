@@ -66,7 +66,7 @@ function getUser(user_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const getUserQuery = {
-            text: "SELECT * FROM User WHERE user_id=$1;",
+            text: "SELECT * FROM User WHERE user_id=?",
             values: [user_id]
         }
         //console.log(client);
