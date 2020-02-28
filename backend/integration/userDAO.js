@@ -180,7 +180,7 @@ function registerProject(project_details){
         const client = await pool.getConnection()
         try {
             await client.query("BEGIN");
-            if(projectDetails.company_name !== null){
+            if(project_Details.company_name !== null){
             let addCompanyQuery = {
                 text: "INSERT INTO Company (name,address,phone_number) "
                 + "VALUES($1,$2,$3); SELECT LAST_INSERT_ID();",
