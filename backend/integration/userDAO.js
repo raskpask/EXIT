@@ -84,7 +84,6 @@ function getUser(user_id) {
                     const rawUser = res.rows[0].person.split('(')[1].split(',');
                     client.end()
                     resolve(new User(rawUser[0], rawUser[1], rawUser[2], rawUser[3], rawUser[4], rawUser[5],rawUser[6], user_id));
-                }
         })
         .catch(err=>{
             client.end()
