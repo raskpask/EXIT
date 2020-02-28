@@ -77,7 +77,7 @@ function getUser(user_id) {
                 //     client.end();
                 //     reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
                 // }
-                if (res.rows == undefined) {
+                if (res== undefined) {
                     client.end();
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
                 }
