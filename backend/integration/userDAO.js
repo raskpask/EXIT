@@ -11,6 +11,8 @@ const pool = mariadb.createPool({
 
 const client = pool.getConnection();
 
+
+
 /**
  * Regisers a user to the DB.
  *
@@ -59,6 +61,7 @@ function getUser(user_id) {
             text: "SELECT * FROM User WHERE user_id=$1;",
             values: [user_id]
         }
+        console.log(client);
         client
         .query(getUserQuery)
         .then(res=>{//, (err, res) => {
