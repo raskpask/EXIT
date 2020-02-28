@@ -8,13 +8,13 @@ const pool = mariadb.createPool({
      database: 'exit_db',
      connectionLimit: 5
 });
-let client;
+// let client;
 
-function startConnection(){
-    client = pool.getConnection();
-}
+// function startConnection(){
+//     client = pool.getConnection();
+// }
 
-startConnection();
+// startConnection();
 
 
 
@@ -62,8 +62,8 @@ function registerUser(user) {
  * @returns Instance of user.
  */
 function getUser(user_id) {
-    return new Promise(function (resolve, reject) {
-        //const client =await pool.getConnection();
+    return new Promise(async function (resolve, reject) {
+        const client =await pool.getConnection();
         const getUserQuery = {
             text: "SELECT * FROM User WHERE user_id=$1;",
             values: [user_id]
