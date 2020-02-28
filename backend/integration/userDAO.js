@@ -202,8 +202,8 @@ function registerProject(project_details){
                 }
                 await client.query(addCompanyQuery.text,addCompanyQuery.values)
                 .then(res=> {
-                    console.log(res);
-                    project_details.company = res[0];
+                    console.log(res[1][0]);
+                    project_details.company = res[1][0];
                 })
                 .catch(err=>{
                     client.query("ROLLBACK");
