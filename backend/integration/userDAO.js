@@ -81,13 +81,11 @@ function getUser(user_id) {
                     client.end();
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
                 }
-                console.log(res);
-                console.log(res[0])
-                //console.log(res.rows[0]);
                 const rawUser = res[0];//JSON.parse(res[0]);//res[0].person.split('(')[1].split(',');
-                console.log(rawUser.kth_email);
                 client.end()
-                resolve(new User(rawUser.user_type_id, rawUser.kth_email, rawUser.alt_email, rawUser.first_name, rawUser.last_name, rawUser.kth_username,rawUser.phone_number, rawUser.user_id));
+                var foundUser = new User(rawUser.user_type_id, rawUser.kth_email, rawUser.alt_email, rawUser.first_name, rawUser.last_name, rawUser.kth_username,rawUser.phone_number, rawUser.user_id);
+                console.log(foundUser);
+                resolve(foundUser);
         })
         .catch(err=>{
             client.end()
