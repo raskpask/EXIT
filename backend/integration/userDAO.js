@@ -7,7 +7,8 @@ const pool = mariadb.createPool({
      user:'root', 
      password: 'EXITEXIT',
      database: 'exit_db',
-     connectionLimit: 5
+     connectionLimit: 5,
+     multipleStatements: true 
 });
 // let client;
 
@@ -31,7 +32,7 @@ function registerUser(user) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const query = {
-            text: "INSERT INTO person (user_type_id,kth_email,alt_email,first_name,last_name,kth_username,phone_number) VALUES(?,?,?,?,?,?) RETURNING *;",
+            text: "INSERT INTO person (user_type_id,kth_email,alt_email,first_name,last_name,kth_username,phone_number) VALUES(?,?,?,?,?,?)",
             values: [user.user_type_id,user.kth_email,user.alt_email,user.first_name,user.last_name,user.kth_username,user.phone_number]
         }
         client
@@ -99,7 +100,7 @@ function getUsername(user_id){
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const getUserQuery = {
-            text: "SELECT kth_username FROM User WHERE user_id=?;",
+            text: "SELECT kth_username FROM User WHERE user_id=?",
             values: [user_id]
         }
         client
@@ -196,7 +197,7 @@ function registerProject(project_details){
             if(project_details.company_name !== null){
                 let addCompanyQuery = {
                     text: "INSERT INTO Company (name,address,phone_number) "
-                    + "VALUES(?,?,?); SELECT LAST_INSERT_ID()",
+                    + "VALUES (?,?,?); SELECT LAST_INSERT_ID()",
                     values:[project_details.company_name,project_details.company_address,project_details.company_phone_number]
                 }
                 await client.query(addCompanyQuery.text,addCompanyQuery.values)
@@ -212,7 +213,7 @@ function registerProject(project_details){
         }
             let addProjectDetailsQuery = {
                 text: "INSERT INTO Degree_project (number_of_students,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact)"
-                + "VALUES (?,?,?,?,?,?,?,?,?,?) RETURNING *",
+                + "VALUES (?,?,?,?,?,?,?,?,?,?)",
                 values: [project_details.number_of_students,project_details.project_description,project_details.credits,project_details.start_date,project_details.end_date,project_details.in_progress,project_details.out_of_date,project_details.all_info_specified,project_details.company,project_details.company_contact]
             }
             await client.query(addProjectDetailsQuery.text,addProjectDetailsQuery.values);
