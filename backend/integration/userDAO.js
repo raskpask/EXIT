@@ -226,9 +226,9 @@ function registerProject(project_details){
         }
     });
 }
-console.log( await getUser(1));
-console.log( await getProject(2));
-registerProject(new ProjectDetails(null,1,"testprojekt",15,"2020-01-05","2020-06-01",1,0,1,null,1,"testförefdataget","tesasdt","1sdf234565"));
+// console.log( await getUser(1));
+// console.log( await getProject(2));
+// registerProject(new ProjectDetails(null,1,"testprojekt",15,"2020-01-05","2020-06-01",1,0,1,null,1,"testförefdataget","tesasdt","1sdf234565"));
 
 
 module.exports = {
