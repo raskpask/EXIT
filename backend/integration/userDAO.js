@@ -184,11 +184,11 @@ function registerProject(project_details){
                 let addCompanyQuery = {
                     text: "INSERT INTO Company (name,address,phone_number) "
                     + "VALUES($1,$2,$3); SELECT LAST_INSERT_ID();",
-                    values:[projectDetails.company_name,projectDetails.company_address,projectDetails.company_phone_number]
+                    values:[project_details.company_name,project_details.company_address,project_details.company_phone_number]
                 }
                 await client.query(addCompanyQuery)
                 .then(res=> {
-                    projectDetails.company = res.rows[0];
+                    project_details.company = res.rows[0];
                 })
                 .catch(err=>{
                     client.query("ROLLBACK");
