@@ -80,7 +80,6 @@ function getUser(user_id) {
                 const rawUser = res[0];
                 client.end()
                 var foundUser = new User(rawUser.user_type_id, rawUser.kth_email, rawUser.alt_email, rawUser.first_name, rawUser.last_name, rawUser.kth_username,rawUser.phone_number, rawUser.user_id);
-                console.log(foundUser);
                 resolve(foundUser);
         })
         .catch(err=>{
@@ -175,7 +174,6 @@ function getProject(project_id){
                     const rawProject = res[0]//.person.split('(')[1].split(',');
                     client.end()
                     let foundProject = new ProjectDetails(rawProject.project_id, rawProject.number_of_students, rawProject.project_description, rawProject.credits, rawProject.start_date, rawProject.end_date,rawProject.in_progress,rawProject.out_of_date,rawProject.all_info_specified,rawProject.company,rawProject.company_contact,rawProject.name,rawProject.address,rawProject.phone_number);
-                    console.log(foundProject);
                     resolve(foundProject);
                 }
         })
@@ -202,9 +200,6 @@ function registerProject(project_details){
                 }
                 await client.query(addCompanyQuery.text,addCompanyQuery.values)
                 .then(res=> {
-
-                    console.log(res[1][0]);
-                    console.log(Object.values(res[1][0])[0]);
                     project_details.company = Object.values(res[1][0])[0];
                 })
                 .catch(err=>{
@@ -231,9 +226,9 @@ function registerProject(project_details){
         }
     });
 }
-getUser(1);
-getProject(2);
-registerProject(new ProjectDetails(null,1,"testprojekt",15,"2020-01-05","2020-06-01",1,0,1,null,1,"testföretaget","test","1234565"));
+console.log(getUser(1));
+console.log(getProject(2));
+registerProject(new ProjectDetails(null,1,"testprojekt",15,"2020-01-05","2020-06-01",1,0,1,null,1,"testförefdataget","tesasdt","1sdf234565"));
 
 
 module.exports = {
