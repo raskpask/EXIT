@@ -69,7 +69,7 @@ function getUser(user_id) {
             text: "SELECT * FROM User WHERE user_id=$1;",
             values: [user_id]
         }
-        console.log(client);
+        //console.log(client);
         client
         .query(getUserQuery)
         .then(res=>{//, (err, res) => {
@@ -86,6 +86,7 @@ function getUser(user_id) {
         })
         .catch(err=>{
             client.end()
+            console.error(err);
             reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
         });
     });
