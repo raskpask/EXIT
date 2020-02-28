@@ -86,6 +86,8 @@ class Header extends Component {
         return true
     }
     chooseUserLevel() {
+        return this.renderAdmin()
+
         let privilegeLevel = document.cookie.split('privilegeLevel=')[1];
 
         if (Boolean(privilegeLevel)) {
@@ -109,6 +111,7 @@ class Header extends Component {
                 <Navbar.Brand className="fontColor" href="/">
                     {this.props.info.header.kth}
                 </Navbar.Brand>
+                <Nav.Link className="fontColor" href="/">{this.props.info.header.home}</Nav.Link>
             </React.Fragment>
         )
     }
@@ -123,22 +126,58 @@ class Header extends Component {
             </React.Fragment>
         )
     }
-    renderBrandLogin() {
+    renderStudent() {
         return (
             <React.Fragment>
                 <Nav className="mr-auto">
-                    <Nav.Link href="/">{this.props.info.header.home}</Nav.Link>
-                    <Nav.Link href="/apply">{this.props.info.header.apply}</Nav.Link>
+                    {this.renderBrand()}
+                    <Nav.Link className="fontColor" onClick={() => this.logout()}>{this.props.info.header.logout}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/availableExaminers">{this.props.info.header.availableExaminsers}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/help">{this.props.info.header.help}</Nav.Link>
                 </Nav>
             </React.Fragment>
         )
     }
-    renderBrandLoginRecruiter() {
+    renderExaminer() {
         return (
             <React.Fragment>
                 <Nav className="mr-auto">
-                    <Nav.Link href="/">{this.props.info.header.home}</Nav.Link>
-                    <Nav.Link href="/listApplications">{this.props.info.header.applications}</Nav.Link>
+                    {this.renderBrand()}
+                    <Nav.Link className="fontColor" onClick={() => this.logout()}>{this.props.info.header.logout}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/profile">{this.props.info.header.profile}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/availableExaminers">{this.props.info.header.availableExaminsers}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/addDegreeProject">{this.props.info.header.addDegreeProject}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/myDegreeProjects">{this.props.info.header.myDegreeProjects}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/help">{this.props.info.header.help}</Nav.Link>
+                </Nav>
+            </React.Fragment>
+        )
+    }
+    renderDirector() {
+        return (
+            <React.Fragment>
+                <Nav className="mr-auto">
+                    {this.renderBrand()}
+                    <Nav.Link className="fontColor" onClick={() => this.logout()}>{this.props.info.header.logout}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/addBudgetYear">{this.props.info.header.addBudgetYear}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/specifiedBudgetYears">{this.props.info.header.specifiedBudgetYears}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/addExaminer">{this.props.info.header.addExaminer}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/specifyTutoringHours">{this.props.info.header.specifyTutoringHours}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/availableExaminers">{this.props.info.header.availableExaminsers}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/help">{this.props.info.header.help}</Nav.Link>
+                </Nav>
+            </React.Fragment>
+        )
+    }
+    renderAdmin() {
+        return (
+            <React.Fragment>
+                <Nav className="mr-auto">
+                    {this.renderBrand()}
+                    <Nav.Link className="fontColor" onClick={() => this.logout()}>{this.props.info.header.logout}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/addDirectorOfStudies">{this.props.info.header.addDirectorOfStudies}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/directorsOfStudies">{this.props.info.header.directorsOfStudies}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/help">{this.props.info.header.help}</Nav.Link>
                 </Nav>
             </React.Fragment>
         )

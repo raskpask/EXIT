@@ -9,53 +9,156 @@ function getLanguage() {
             paragraph1: "When you log out of the system you only log out from EXIT. If you want to log out from KTH CAS (Central Authentication Service) you need to close the browser.",
             paragraph2: "If you have any problems with the system press the help button."
         },
-        footer:{
+        footer: {
             title: "KTH Royal Institute of Technology 2020."
         },
-        register: {
-            register: "Register",
-            username: {
-                name: "Username",
-                placeholder: "Enter username"
-            },
-            password: {
-                name: "Password",
-                placeholder: "Enter Password",
-            },
-            email: {
-                name: "Email",
-                placeholder: "Enter Email"
-            },
-            date: {
-                name: "Date of birth",
-                placeholder: "Enter date of birth"
-            },
-            firstName: {
-                name: "First Name",
-                placeholder: "Enter first name"
-            },
-            lastName: {
-                name: "Last Name",
-                placeholder: "Enter last name"
-            }
+        profile: {
+            title: "Profile",
+            paragraph0: "This page shows how many tutoring hours you are supposed to use for tutoring of degree projects the current year and how many tutoring hours you have left. " +
+                "Please specify a work area so that students can see what your main work area is.",
+            competenceArea: "Area of competence",
+            competenceAreaPlaceholder: "Enter you area of competence. You may describe it with words or just write the area.",
+            remainingTutoringHours: "Remaining tutoring hours",
+            totalTutoringHours: "Total amount of tutoring hours",
+            hours: " hours.",
+            edit: "Edit",
+            save: "Save"
+
+        },
+        addDegreeProject: {
+            title: "Add degree project to my annual quota",
+            paragraph0: "This page is used for adding a project to your annual quota. The estimated time the degree projct will take will be removed from your remaining time. Be sure to specify if you are a tutor or examiner of the project.",
+            numOfStudents: "Number of students",
+            numOfStudentsPlaceholder: "Specify number of students for the project.",
+            projectDescription: "Project description",
+            projectDescriptionPlaceholder: "Please fill in general information about the project.",
+            credits: "Credits",
+            creditsPlaceholder: "Enter the amount of credits for the project.",
+            startDate: "Start date",
+            startDatePlaceholder: "Press to enter start date.",
+            endDate: "End date",
+            endDatePlaceholder: "Press to enter end date.",
+            companyName: "Company name",
+            companyNamePlaceholder: "Enter the name of the company",
+            companyAddress: "Company address",
+            companyAddressPlaceholder: "Enter the address of the company",
+            companyPhone: "Company telephone number",
+            companyPhonePlaceholder: "Enter the telephone numebr of the company",
+            sumbit: "Add project",
+            today: "Today"
+        },
+        specifiedBudgetYears: {
+            title: "Specified budget years",
+            paragraph0: "This table shows all parameters for all specified budget years.",
+            paragraph1: "Budget years",
+            budgetYear: "Budget year",
+            masterHours: "Master hours",
+            bachleorHours: "Bachleor hours",
+            factor2: "Factor two",
+            factor3: "Factor three",
+            factor4: "Factor four",
+            factor5: "Factor five",
+            factor6: "Factor six",
+            factor7: "Factor seven",
+            factor8: "Factor eight",
+            factor9: "Factor nine",
+            factor10: "Factor ten",
+        },
+        addBudgetYear: {
+            title: "Add budget year",
+            paragraph0: "Here you can add a budget year, specify how many tutoring hours an examiner should use for tutoring degree projects " +
+                "and specify factors that the hours are going to be multiplied with if the number of students exceeds one.",
+            submit: "Submit",
+            budgetYearPlaceholder: "Enter the year of the buget",
+            masterHoursPlaceholder: "Enter amount of hours for a master project",
+            bachleorHoursPlaceholder: "Enter amount of hours for a bachleor project",
+            factor2Placeholder: "Factor two students",
+            factor3Placeholder: "Factor three students",
+            factor4Placeholder: "Factor four students",
+            factor5Placeholder: "Factor five students",
+            factor6Placeholder: "Factor six students",
+
+        },
+        addExaminer: {
+            title: "Add examiner",
+            paragraph0: "Please insert the username of the name of the person you want to add as a examiner. Do not include \"@kth.se\".",
+            kthUsername: "KTH username",
+            kthUsernamePlaceholder: "Enter the KTH username of the examiner you want to add"
+        },
+        specifyTutoringHours: {
+            title: "Specify tutoring hours",
+            paragraph0: "This table shows all available examiners in the system. " +
+                "You can add an examiner to a specific budget year by choosing the budget year, " +
+                "examiner mail and define the number of hours the examiner is supposed to use " +
+                "to tutor degree projects during the selected budget year.",
+            bugetYear: "Budget Year",
+            budgetYearPlaceholder: "Enter the buget year you want to add the examiner to.",
+            email: "Email",
+            emailPlaceholder: "Enter the kth mail of the examiner you want to add.",
+            numberOfHours: "Amout of hours",
+            numberOfHoursPlaceholder: "Enter the amout of hours the examiner should spend this budget year."
         },
         header: {
             home: "Home",
-            applications: "Applications",
-            apply: "Apply",
             login: "Login",
             logout: "Logout",
-            language: "Language",
-            register: "Register",
-            username: "Username",
-            password: "Password",
-            profile: "Your profile",
+            profile: "Profile",
             swe: "SWE",
             eng: "ENG",
             loginError: "Invaild password/username",
             kth: "KTH EECS Electrum EXIT",
-            help: "Help"
+            help: "Help",
+            availableExaminsers: "Current available Examiners",
+            addDegreeProject: "Add degree project to my annual quota",
+            myDegreeProjects: "My degree projects",
+            addBudgetYear: "Add budget year",
+            specifiedBudgetYears: "Specified budget years",
+            addExaminer: "Add examiner",
+            specifyTutoringHours: "Specify tutoring hours",
+            addDirectorOfStudies: "Add director of studies",
+            directorsOfStudies: "Directors of studies"
 
+        },
+        help: {
+            title: "Help",
+            paragraph0: "At this page you can get help if you have problems with the system.",
+            paragraph1: "Logging into the system.",
+            paragraph2: "To be able to log into the system you need to have a valid KTH account. " +
+                "If you have an account and you still can not log in, the problem is not in the KTH-EXIT system. " +
+                "If that is the case, you need to contact KTH administration."
+        },
+        availableExaminers: {
+            title: "Current available examiners",
+            subtitle: "This table shows all available examiners for the current calendar year.",
+            budgetYear: "Bugdet year ",
+            firstName: "First name",
+            lastName: "Last name",
+            email: "Email",
+            competenceArea: "Competence area"
+        },
+        myDegreeProjects: {
+            title: "My degree projects",
+            paragraph0: "This table shows all of you existing degree projects. If you press a link you can view specific degree project information for a selected degree project or mark a degree project as finished/cancelled (this will remove the degree project from your view but not from the database).",
+            credits: "Credits",
+            degreeTitle: "Preliminary title/discription",
+            numOfStudents: "Number of students",
+            startDate: "Start date",
+            endDate: "End date",
+            withinTimeLimit: "Within time limit"
+        },
+        directorsOfStudies: {
+            title: "Directors of studies",
+            paragraph0: "This table shows all existing directors of studies in the system",
+            lastName: "Last name",
+            firstName: "First name",
+            email: "Email"
+        },
+        addDirectorOfStudies: {
+            title: "Add director of studies",
+            paragraph0: "Please insert the username of the name of the person you want to add as a director of studies. Do not include \"@kth.se\".",
+            usernamePlaceholder: "Enter the username of the user you want to make as director of studies.",
+            username: "Username",
+            submit: "Submit"
         },
         validationError: {
             emptyField: {
@@ -100,7 +203,7 @@ function getLanguage() {
             availMissing: {
                 message: "Please specify a availibility date"
             },
-            availEmpty:{
+            availEmpty: {
                 message: "Please give a valid availibility date"
             },
         },

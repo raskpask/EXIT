@@ -13,7 +13,7 @@ class Footer extends Component {
     render() {
         return (
             <div>
-                <Navbar className="footer" fixed="bottom">
+                <Navbar className="footer">
                     <Nav className="m-auto">
                         {this.props.info.footer.title}
                     </Nav>
