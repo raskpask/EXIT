@@ -208,9 +208,8 @@ function registerProject(project_details){
         }
     });
 }
-function init(){
-    registerProject(new ProjectDetails(null,1,"testprojekt",15,"2020-01-05","2020-06-01",1,0,1,null,1,"testföretaget","test","1234565"));
-}
+
+registerProject(new ProjectDetails(null,1,"testprojekt",15,"2020-01-05","2020-06-01",1,0,1,null,1,"testföretaget","test","1234565"));
 
 
 module.exports = {
