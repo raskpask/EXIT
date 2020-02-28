@@ -77,6 +77,7 @@ function getUser(user_id) {
                     reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
                 }
                 if (res.rows != undefined) {
+                    console.log(res.rows[0]);
                     const rawUser = res.rows[0].person.split('(')[1].split(',');
                     client.end()
                     resolve(new User(rawUser[0], rawUser[1], rawUser[2], rawUser[3], rawUser[4], rawUser[5],rawUser[6], user_id));
