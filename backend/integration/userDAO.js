@@ -82,9 +82,9 @@ function getUser(user_id) {
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
                 }
                 console.log(res);
-                console.log(res.rows);
-                console.log(res.rows[0]);
-                const rawUser = res.rows[0].person.split('(')[1].split(',');
+                console.log(res[0])
+                //console.log(res.rows[0]);
+                const rawUser = res[0].person.split('(')[1].split(',');
                 client.end()
                 resolve(new User(rawUser[0], rawUser[1], rawUser[2], rawUser[3], rawUser[4], rawUser[5],rawUser[6], user_id));
         })
