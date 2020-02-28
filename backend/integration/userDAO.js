@@ -71,7 +71,7 @@ function getUser(user_id) {
         }
         //console.log(client);
         client
-        .query(getUserQuery)
+        .query(getUserQuery.text,getUserQuery.values)
         .then(res=>{
                 if (res== undefined) {
                     client.end();
