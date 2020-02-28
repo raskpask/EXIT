@@ -79,6 +79,7 @@ function getUser(user_id) {
                 const rawUser = res[0];
                 client.end()
                 var foundUser = new User(rawUser.user_type_id, rawUser.kth_email, rawUser.alt_email, rawUser.first_name, rawUser.last_name, rawUser.kth_username,rawUser.phone_number, rawUser.user_id);
+                console.log(foundUser);
                 resolve(foundUser);
         })
         .catch(err=>{
@@ -172,7 +173,9 @@ function getProject(project_id){
                 if (res !== undefined) {
                     const rawProject = res[0]//.person.split('(')[1].split(',');
                     client.end()
-                    resolve(new ProjectDetails(rawProject.project_id, rawProject.number_of_students, rawProject.project_description, rawProject.credits, rawProject.start_date, rawProject.end_date,rawProject.in_progress,rawProject.out_of_date,rawProject.all_info_specified,rawProject.company,rawProject.company_contact,rawProject.name,rawProject.address,rawProject.phone_number));
+                    let foundProject = new ProjectDetails(rawProject.project_id, rawProject.number_of_students, rawProject.project_description, rawProject.credits, rawProject.start_date, rawProject.end_date,rawProject.in_progress,rawProject.out_of_date,rawProject.all_info_specified,rawProject.company,rawProject.company_contact,rawProject.name,rawProject.address,rawProject.phone_number);
+                    console.log(foundProject);
+                    resolve(foundProject);
                 }
         })
         .catch(err=>{
