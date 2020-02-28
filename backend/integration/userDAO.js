@@ -8,6 +8,7 @@ const pool = mariadb.createPool({
      database: 'exit_db',
      connectionLimit: 5
 });
+
 /**
  * Regisers a user to the DB.
  *
@@ -16,7 +17,7 @@ const pool = mariadb.createPool({
  */
 function registerUser(user) {
     return new Promise(function (resolve, reject) {
-        const client = connect();
+        const client = pool.getConnection();
         const query = {
             text: "INSERT INTO person (user_type_id,kth_email,alt_email,first_name,last_name,kth_username,phone_number) VALUES($1,$2,$3,$4,$5,$6) RETURNING *;",
             values: [user.user_type_id,user.kth_email,user.alt_email,user.first_name,user.last_name,user.kth_username,user.phone_number]
@@ -51,7 +52,7 @@ function registerUser(user) {
  */
 function getUser(user_id) {
     return new Promise(function (resolve, reject) {
-        client = connect();
+        client = pool.getConnection();
         const getUserQuery = {
             text: "SELECT * FROM User WHERE user_id=$1;",
             values: [user_id]
@@ -83,7 +84,7 @@ function getUser(user_id) {
  */
 function getUsername(user_id){
     return new Promise(function (resolve, reject) {
-        client = connect();
+        client = pool.getConnection();
         const getUserQuery = {
             text: "SELECT kth_username FROM User WHERE user_id=$1;",
             values: [user_id]
@@ -114,7 +115,7 @@ function getUsername(user_id){
  */
 function getUserID(username){
     return new Promise(function (resolve, reject) {
-        client = connect();
+        client = pool.getConnection();
         const getUserQuery = {
             text: "SELECT user_id FROM User WHERE kth_username=$1",
             values: [username]
@@ -144,7 +145,7 @@ function getUserID(username){
  */
 function getProject(project_id){
     return new Promise(function (resolve, reject) {
-        client = connect();
+        client = pool.getConnection();
         const getUserQuery = {
             text: "SELECT (Degree_project.project_id, Degree_project.number_of_students, Degree_project.project_description,Degree_project.credits,Degree_project.start_date,Degree_project.end_date,Degree_project.in_progess,Degree_project.out_of_date,Degree_project.all_info_specified,Degree_project.company,Degree_project.company_contact,Company.name,Company.address,Company.phone_number)" 
             + "FROM (Degree_project LEFT JOIN Company ON Degree_project.company = company.company_id)"
@@ -176,7 +177,7 @@ function getProject(project_id){
  */
 function registerProject(project_details){
     return new Promise(async function(resolve,reject){
-        const client = await pool.connect()
+        const client = await pool.getConnection()
         try {
             await client.query("BEGIN");
             if(projectDetails.company_name !== null){
