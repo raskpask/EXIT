@@ -84,8 +84,8 @@ function getUser(user_id) {
                 console.log(res);
                 console.log(res[0])
                 //console.log(res.rows[0]);
-                const rawUser = JSON.parse(res[0]);//res[0].person.split('(')[1].split(',');
-                console.log(rawUser);
+                const rawUser = res[0];//JSON.parse(res[0]);//res[0].person.split('(')[1].split(',');
+                console.log(rawUser.kth_email);
                 client.end()
                 resolve(new User(rawUser[0], rawUser[1], rawUser[2], rawUser[3], rawUser[4], rawUser[5],rawUser[6], user_id));
         })
