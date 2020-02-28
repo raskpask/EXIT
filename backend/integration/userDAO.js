@@ -1,5 +1,6 @@
 const mariadb = require('mariadb');
 const User = require('../model/user');
+const dbError = require('../error/dbErrors');
 const ProjectDetails = require('../model/projectDetails');
 const pool = mariadb.createPool({
      host: 'localhost', 
