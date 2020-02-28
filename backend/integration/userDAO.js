@@ -52,7 +52,7 @@ function registerUser(user) {
  */
 function getUser(user_id) {
     return new Promise(function (resolve, reject) {
-        client = pool.getConnection();
+        const client = pool.getConnection();
         const getUserQuery = {
             text: "SELECT * FROM User WHERE user_id=$1;",
             values: [user_id]
@@ -84,7 +84,7 @@ function getUser(user_id) {
  */
 function getUsername(user_id){
     return new Promise(function (resolve, reject) {
-        client = pool.getConnection();
+        const client = pool.getConnection();
         const getUserQuery = {
             text: "SELECT kth_username FROM User WHERE user_id=$1;",
             values: [user_id]
@@ -115,7 +115,7 @@ function getUsername(user_id){
  */
 function getUserID(username){
     return new Promise(function (resolve, reject) {
-        client = pool.getConnection();
+        const client = pool.getConnection();
         const getUserQuery = {
             text: "SELECT user_id FROM User WHERE kth_username=$1",
             values: [username]
@@ -145,7 +145,7 @@ function getUserID(username){
  */
 function getProject(project_id){
     return new Promise(function (resolve, reject) {
-        client = pool.getConnection();
+       const client = pool.getConnection();
         const getUserQuery = {
             text: "SELECT (Degree_project.project_id, Degree_project.number_of_students, Degree_project.project_description,Degree_project.credits,Degree_project.start_date,Degree_project.end_date,Degree_project.in_progess,Degree_project.out_of_date,Degree_project.all_info_specified,Degree_project.company,Degree_project.company_contact,Company.name,Company.address,Company.phone_number)" 
             + "FROM (Degree_project LEFT JOIN Company ON Degree_project.company = company.company_id)"
