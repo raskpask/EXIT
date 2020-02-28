@@ -181,20 +181,20 @@ function registerProject(project_details){
         try {
             await client.query("BEGIN");
             if(project_Details.company_name !== null){
-            let addCompanyQuery = {
-                text: "INSERT INTO Company (name,address,phone_number) "
-                + "VALUES($1,$2,$3); SELECT LAST_INSERT_ID();",
-                values:[projectDetails.company_name,projectDetails.company_address,projectDetails.company_phone_number]
-            }
-            await client.query(addCompanyQuery)
-            .then(res=> {
-                projectDetails.company = res.rows[0];
-            })
-            .catch(err=>{
-                await client.query("ROLLBACK");
-                console.error(err);
-                reject(err);
-            });
+                let addCompanyQuery = {
+                    text: "INSERT INTO Company (name,address,phone_number) "
+                    + "VALUES($1,$2,$3); SELECT LAST_INSERT_ID();",
+                    values:[projectDetails.company_name,projectDetails.company_address,projectDetails.company_phone_number]
+                }
+                await client.query(addCompanyQuery)
+                .then(res=> {
+                    projectDetails.company = res.rows[0];
+                })
+                .catch(err=>{
+                    client.query("ROLLBACK");
+                    console.error(err);
+                    reject(err);
+                });
         }
             let addProjectDetailsQuery = {
                 text: "INSERT INTO Degree_project (number_of_students,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact)"
@@ -206,7 +206,7 @@ function registerProject(project_details){
             resolve(200);
 
         }catch (e){
-            await client.query("ROLLBACK");
+            client.query("ROLLBACK");
             console.error(e);
             reject(e);
         }finally {
