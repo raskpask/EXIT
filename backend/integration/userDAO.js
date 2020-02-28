@@ -217,8 +217,5 @@ module.exports = {
     getUser,
     getUsername,
     getUserID,
-    registerProject,
-    init
-
-
+    registerProject
 }
