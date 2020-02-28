@@ -189,6 +189,11 @@ function registerProject(project_details){
             await client.query(addCompanyQuery)
             .then(res=> {
                 projectDetails.company = res.rows[0];
+            })
+            .catch(err=>{
+                await client.query("ROLLBACK");
+                console.error(err);
+                reject(err);
             });
         }
             let addProjectDetailsQuery = {
