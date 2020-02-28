@@ -71,7 +71,7 @@ function getUser(user_id) {
         }
         //console.log(client);
         client
-        .query(getUserQuery)
+        .query("SELECT * FROM User WHERE user_id=1;")
         .then(res=>{//, (err, res) => {
                 if (notVaildResponse(res)) {
                     client.end();
