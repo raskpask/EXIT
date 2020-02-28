@@ -8,11 +8,13 @@ const pool = mariadb.createPool({
      database: 'exit_db',
      connectionLimit: 5
 });
+let client;
 
-async function startConnection(){
-    return await pool.getConnection();
+function startConnection(){
+    client = pool.getConnection();
 }
-let client = startConnection();
+
+startConnection();
 
 
 
