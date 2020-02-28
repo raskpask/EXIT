@@ -63,7 +63,7 @@ function registerUser(user) {
  */
 function getUser(user_id) {
     return new Promise(async function (resolve, reject) {
-        const client =await pool.getConnection();
+        const client = await pool.getConnection();
         const getUserQuery = {
             text: "SELECT * FROM User WHERE user_id=$1;",
             values: [user_id]
@@ -156,8 +156,8 @@ function getUserID(username){
  * @param {int} project_id - The ID of the project
  */
 function getProject(project_id){
-    return new Promise(function (resolve, reject) {
-       //const client = await pool.getConnection();
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection();
         const getUserQuery = {
             text: "SELECT (Degree_project.project_id, Degree_project.number_of_students, Degree_project.project_description,Degree_project.credits,Degree_project.start_date,Degree_project.end_date,Degree_project.in_progess,Degree_project.out_of_date,Degree_project.all_info_specified,Degree_project.company,Degree_project.company_contact,Company.name,Company.address,Company.phone_number)" 
             + "FROM (Degree_project LEFT JOIN Company ON Degree_project.company = company.company_id)"
