@@ -73,10 +73,10 @@ function getUser(user_id) {
         client
         .query("SELECT * FROM User WHERE user_id=1;")
         .then(res=>{//, (err, res) => {
-                if (notVaildResponse(res)) {
-                    client.end();
-                    reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
-                }
+                // if (notVaildResponse(res)) {
+                //     client.end();
+                //     reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
+                // }
                 if (res.rows != undefined) {
                     console.log(res.rows[0]);
                     const rawUser = res.rows[0].person.split('(')[1].split(',');
