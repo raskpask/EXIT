@@ -77,7 +77,9 @@ function getUser(user_id) {
                 //     client.end();
                 //     reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
                 // }
-                if (res.rows != undefined) {
+                if (res.rows == undefined) {
+                    reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
+                }
                     console.log(res.rows[0]);
                     const rawUser = res.rows[0].person.split('(')[1].split(',');
                     client.end()
