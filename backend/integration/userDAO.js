@@ -71,12 +71,8 @@ function getUser(user_id) {
         }
         //console.log(client);
         client
-        .query("SELECT * FROM User WHERE user_id=1")
-        .then(res=>{//, (err, res) => {
-                // if (notVaildResponse(res)) {
-                //     client.end();
-                //     reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
-                // }
+        .query(getUserQuery)
+        .then(res=>{
                 if (res== undefined) {
                     client.end();
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
