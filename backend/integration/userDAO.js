@@ -196,7 +196,7 @@ function registerProject(project_details){
             if(project_details.company_name !== null){
                 let addCompanyQuery = {
                     text: "INSERT INTO Company (name,address,phone_number) "
-                    + "VALUES(?,?,?); SELECT LAST_INSERT_ID();",
+                    + "VALUES(?,?,?); SELECT LAST_INSERT_ID()",
                     values:[project_details.company_name,project_details.company_address,project_details.company_phone_number]
                 }
                 await client.query(addCompanyQuery.text,addCompanyQuery.values)
@@ -212,7 +212,7 @@ function registerProject(project_details){
         }
             let addProjectDetailsQuery = {
                 text: "INSERT INTO Degree_project (number_of_students,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact)"
-                + "VALUES (?,?,?,?,?,?,?,?,?,?) RETURNING *;",
+                + "VALUES (?,?,?,?,?,?,?,?,?,?) RETURNING *",
                 values: [project_details.number_of_students,project_details.project_description,project_details.credits,project_details.start_date,project_details.end_date,project_details.in_progress,project_details.out_of_date,project_details.all_info_specified,project_details.company,project_details.company_contact]
             }
             await client.query(addProjectDetailsQuery.text,addProjectDetailsQuery.values);
