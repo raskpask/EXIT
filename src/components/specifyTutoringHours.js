@@ -1,23 +1,54 @@
 import React, { Component } from 'react';
 import { Form, Button, Col, Row } from 'react-bootstrap';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import '../resources/css/form.css';
+import Access from './fragments/access';
 
 class SpecifyTutoringHours extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: "",
+            username: "",
             numberOfHours: "",
             budgetYear: ""
         }
     }
+    specifyTutoringHours = (e) => {
+        e.preventDefault();
+        axios
+            .post('/api/director', this.getTutoringHours())
+            .then(res => {
+                toast(this.props.info.addDirectorOfStudies.added)
+                this.resetFields()
+            })
+            .catch(err => {
+                console.log(err)
+                toast(this.props.info.addDirectorOfStudies.fail)
+            })
+    }
+    getTutoringHours() {
+        return {
+            email: this.state.username + "@kth.se",
+            numberOfHours: this.state.numberOfHours,
+            budgetYear: this.state.bugetYear
+        }
+    }
+    resetFields() {
+        this.setState({
+            username: "",
+            numberOfHours: "",
+            budgetYear: ""
+        })
+    }
     renderForm() {
         return (
-            <Form>
+            <Form onSubmit={(e) => this.specifyTutoringHours(e)}>
                 <Row>
                     <Col md={8}>
                         <Form.Label>{this.props.info.specifyTutoringHours.bugetYear}</Form.Label>
                         <Form.Control
+                            required
                             type="number"
                             value={this.state.bugetYear}
                             placeholder={this.props.info.specifyTutoringHours.budgetYearPlaceholder}
@@ -25,17 +56,19 @@ class SpecifyTutoringHours extends Component {
                         />
                     </Col>
                     <Col md={8}>
-                        <Form.Label>{this.props.info.specifyTutoringHours.email}</Form.Label>
+                        <Form.Label>{this.props.info.specifyTutoringHours.username}</Form.Label>
                         <Form.Control
+                            required
                             type="text"
-                            value={this.state.email}
-                            placeholder={this.props.info.specifyTutoringHours.emailPlaceholder}
-                            onChange={event => this.setState({ email: event.target.value })}
+                            value={this.state.username}
+                            placeholder={this.props.info.specifyTutoringHours.usernamePlaceholder}
+                            onChange={event => this.setState({ username: event.target.value })}
                         />
                     </Col>
                     <Col md={8}>
                         <Form.Label>{this.props.info.specifyTutoringHours.numberOfHours}</Form.Label>
                         <Form.Control
+                            required
                             type="number"
                             value={this.state.numberOfHours}
                             placeholder={this.props.info.specifyTutoringHours.numberOfHoursPlaceholder}
@@ -43,13 +76,14 @@ class SpecifyTutoringHours extends Component {
                         />
                     </Col>
                 </Row>
-                    <Button className="marginTop ">{this.props.info.addBudgetYear.submit}</Button>
+                <Button className="marginTop" type="submit">{this.props.info.addBudgetYear.submit}</Button>
             </Form>
         )
     }
     render() {
         return (
             <div className="container">
+                <Access access='2' info={this.props.info.access} />
                 <h1>{this.props.info.specifyTutoringHours.title}</h1>
                 <p>{this.props.info.specifyTutoringHours.paragraph0}</p>
                 {this.renderForm()}

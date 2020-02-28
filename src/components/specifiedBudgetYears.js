@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import '../resources/css/home.css';
+import Access from './fragments/access';
 
 class SpecifiedBudgetYears extends Component {
     constructor(props) {
@@ -15,14 +18,26 @@ class SpecifiedBudgetYears extends Component {
                     factor3: "",
                     factor4: "",
                     factor5: "",
-                    factor6: "",
-                    factor7: "",
-                    factor8: "",
-                    factor9: "",
-                    factor10: "",
+                    factor6: ""
                 }
             ]
         }
+    }
+    componentDidMount(){
+        this.getBudgetYears()
+    }
+    getBudgetYears= ()=>{
+        axios
+        .get('/api/budgetYear')
+        .then(res=>{
+            if(res.status === 200){
+                this.setState({budgetYears: res.data})
+            }
+        })
+        .catch(err=>{
+            console.error(err)
+            toast(this.props.info.specifiedBudgetYears.fail)
+        })
     }
     renderTable() {
         return (
@@ -37,11 +52,6 @@ class SpecifiedBudgetYears extends Component {
                         <th>{this.props.info.specifiedBudgetYears.factor4}</th>
                         <th>{this.props.info.specifiedBudgetYears.factor5}</th>
                         <th>{this.props.info.specifiedBudgetYears.factor6}</th>
-                        <th>{this.props.info.specifiedBudgetYears.factor7}</th>
-                        <th>{this.props.info.specifiedBudgetYears.factor8}</th>
-                        <th>{this.props.info.specifiedBudgetYears.factor9}</th>
-                        <th>{this.props.info.specifiedBudgetYears.factor10}</th>
-
                     </tr>
                 </thead>
                 <tbody>
@@ -55,10 +65,6 @@ class SpecifiedBudgetYears extends Component {
                             <td key={"factor4: " + key} > {budgetYear.factor4}</td>
                             <td key={"factor5: " + key} > {budgetYear.factor5}</td>
                             <td key={"factor6: " + key} > {budgetYear.factor6}</td>
-                            <td key={"factor7: " + key} > {budgetYear.factor7}</td>
-                            <td key={"factor8: " + key} > {budgetYear.factor8}</td>
-                            <td key={"factor9: " + key} > {budgetYear.factor9}</td>
-                            <td key={"factor10: " + key} > {budgetYear.factor10}</td>
                         </tr>
                     )}
                 </tbody>
@@ -68,6 +74,7 @@ class SpecifiedBudgetYears extends Component {
     render() {
         return (
             <div className="container">
+                <Access access='2' info={this.props.info.access} />
                 <h1>{this.props.info.specifiedBudgetYears.title}</h1>
                 <p>{this.props.info.specifiedBudgetYears.paragraph0}</p>
                 <h3>{this.props.info.specifiedBudgetYears.paragraph1}</h3>

@@ -86,7 +86,7 @@ class Header extends Component {
         return true
     }
     chooseUserLevel() {
-        return this.renderAdmin()
+        return this.renderExaminer()
 
         let privilegeLevel = document.cookie.split('privilegeLevel=')[1];
 

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
-
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import '../resources/css/home.css';
+import Access from './fragments/access';
+import DegreeProject from './fragments/degreeProject';
 
 class MyDegreeProjects extends Component {
     constructor(props) {
@@ -19,7 +22,23 @@ class MyDegreeProjects extends Component {
             ]
         }
     }
-    renderTable(){
+    componentDidMount() {
+        this.getDegreeProjects()
+    }
+    getDegreeProjects = () => {
+        axios
+            .get('/api/project')
+            .then(res => {
+                if (res.status === 200) {
+                    this.setState({ projects: res.data })
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                toast(this.props.info.myDegreeProjects.fail)
+            })
+    }
+    renderTable() {
         return (
             <Table striped bordered hover>
                 <thead>
@@ -50,10 +69,12 @@ class MyDegreeProjects extends Component {
     render() {
         return (
             <div className="container">
-            <h1>{this.props.info.myDegreeProjects.title}</h1>
-            <p>{this.props.info.myDegreeProjects.paragraph0}</p>
-            {this.renderTable()}
-        </div>
+                <Access access='3' info={this.props.info.access} />
+                <h1>{this.props.info.myDegreeProjects.title}</h1>
+                <p>{this.props.info.myDegreeProjects.paragraph0}</p>
+                {this.renderTable()}
+                <DegreeProject info={this.props.info}/>
+            </div>
         );
     };
 }
