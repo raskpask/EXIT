@@ -232,7 +232,7 @@ function getBudgetYear() {
 
             })
         client.end()
-    }
+    })
 }
 
 module.exports = {
@@ -241,5 +241,6 @@ module.exports = {
     getUsername,
     getUserID,
     getProject,
-    registerProject
+    registerProject,
+    getBudgetYear
 }
