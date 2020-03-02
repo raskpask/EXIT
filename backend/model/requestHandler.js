@@ -184,22 +184,14 @@ function extractRegisterProjectDetails(req) {
  * @param {String} req 
  */
 function extractUserID(req) {
-    ID = req.body.userID;
-    if(!Number.isInteger(ID)){
-        throw new Error(403);
-    }
-    return ID;
+    return req.body.userID;
 }
 /**
  * Gets the project ID from a request
  * @param {String} req 
  */
 function extractProjectID(req) {
-    ID = req.body.projectID;
-    if(!Number.isInteger(ID)){
-        throw new Error(403);
-    }
-    return ID;
+    return req.body.projectID
 }
 module.exports = {
     extractProjectID,
