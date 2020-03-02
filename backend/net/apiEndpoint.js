@@ -41,6 +41,16 @@ function router(router) {
         }
     });
 
+    router.post('/api/project', async (req, res) => {
+        try {
+            const statusCode = await controller.registerProject(req);
+            res.status(statusCode);
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+        res.send();
+    });
+
     router.get('/api/username', async (req, res) => {
         try {
             res.send(await controller.checkIfUsernameIsAvailable(req));
