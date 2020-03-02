@@ -213,14 +213,14 @@ function extractBudgetYear(req){
     console.log(req.body)
     const budgetYear = req.body;
     const year = budgetYear.budgetYear
-    const master_hours = budgetYear.master_hours
+    const master_hours = budgetYear.masterHours
     const bachleor_hours = budgetYear.bachleorHours
     const total_tutoring_hours = budgetYear.totalTutoringHours
-    const factor_1 = budgetYear.factor_1
-    const factor_2 = budgetYear.factor_2
-    const factor_3 = budgetYear.factor_3
-    const factor_4 = budgetYear.factor_4
-    const factor_5 = budgetYear.factor_5
+    const factor_1 = budgetYear.factor1
+    const factor_2 = budgetYear.factor2
+    const factor_3 = budgetYear.factor3
+    const factor_4 = budgetYear.factor4
+    const factor_5 = budgetYear.factor5
     const by =new BudgetYear(year,master_hours,bachleor_hours,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5);
     console.log(by)
     return by
