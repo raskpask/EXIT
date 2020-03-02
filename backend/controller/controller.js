@@ -65,7 +65,7 @@ async function getUser(req) {
  */
 async function getProject(req) {
     try {
-        return await userDAO.getProject(requestHandler.extractProjectID(req));
+        return await userDAO.getProject(1);//requestHandler.extractProjectID(req));
     }
     catch (error) {
         throw error
@@ -168,6 +168,7 @@ function extractLangCookie(req) {
 
 module.exports = {
     registerUser,
+    registerProject,
     authenticateUser,
     getUser,
     updateUser,

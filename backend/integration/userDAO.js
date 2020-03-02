@@ -144,12 +144,12 @@ function getUserID(username){
  * Gets a project with all details from the database
  * @param {int} project_id - The ID of the project
  */
-function getProject(project_id){
+function getProject(user_id){
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const getUserQuery = {
-            text: "SELECT project_id, number_of_students, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number FROM (Degree_project LEFT JOIN Company ON Degree_project.company = Company.company_id) WHERE Degree_project.project_id=?",
-            values: [project_id]
+            text: "SELECT project_id, number_of_students, project_title, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number FROM (Degree_project LEFT JOIN Company ON Degree_project.company = Company.company_id) WHERE Degree_project.project_id IN (SELECT degree_project_id FROM Student_project WHERE user_id = ?)",
+            values: [user_id]
         }
         client
         .query(getUserQuery.text,getUserQuery.values)
