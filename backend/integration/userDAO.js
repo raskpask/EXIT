@@ -223,7 +223,7 @@ function getBudgetYear() {
                 "FROM Budget_year"
         }
         client
-            .query(getBudgetYear)
+            .query(getBudgetYear.text)
             .then(res => {
                 resolve(res.data)
             })
