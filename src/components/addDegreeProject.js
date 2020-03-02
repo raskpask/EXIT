@@ -14,6 +14,7 @@ class AddDegreeProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            projectTitle: "",
             numberOfStudents: "",
             projectDescription: "",
             credits: "",
@@ -24,30 +25,48 @@ class AddDegreeProject extends Component {
             companyPhone: "",
         }
     }
-    componentDidUpdate(){
+    componentDidUpdate() {
         console.log(this.state.startDate)
     }
     addProject = (e) => {
         e.preventDefault();
+        const project = this.createProject()
+
         axios
-            .post('/api/director', this.createProject())
+            .post('/api/project', project)
             .then(res => {
                 toast(this.props.info.addDirectorOfStudies.added)
+                this.resetValues()
             })
             .catch(err => {
                 console.log(err)
                 toast(this.props.info.addDirectorOfStudies.fail)
             })
+
+    }
+    resetValues() {
+        this.setState({
+            projectTitle: "",
+            numberOfStudents: "",
+            projectDescription: "",
+            credits: "",
+            startDate: "",
+            endDate: "",
+            companyName: "",
+            companyAddress: "",
+            companyPhone: "",
+        })
     }
     createProject() {
         const startDates = this.state.startDate.toLocaleDateString().split('/')
         const endDates = this.state.endDate.toLocaleDateString().split('/')
         return {
+            title: this.state.projectTitle,
             numberOfStudents: this.state.numberOfStudents,
             projectDescription: this.state.projectDescription,
             credits: this.state.credits,
-            startDate: startDates[2]+'-'+startDates[0]+'-'+startDates[1],
-            endDate: endDates[2]+'-'+endDates[0]+'-'+endDates[1],
+            startDate: startDates[2] + '-' + startDates[0] + '-' + startDates[1],
+            endDate: endDates[2] + '-' + endDates[0] + '-' + endDates[1],
             companyName: this.state.companyName,
             companyAddress: this.state.companyAddress,
             companyPhone: this.state.companyPhone,
@@ -56,6 +75,21 @@ class AddDegreeProject extends Component {
     renderForm() {
         return (
             <Form onSubmit={(e) => this.addProject(e)}>
+                <Row>
+                    <Col>
+                        <Form.Group>
+                            <Form.Label>{this.props.info.addDegreeProject.projectTitle}</Form.Label>
+                            <Form.Control
+                                required
+                                as="input"
+                                type="text"
+                                value={this.state.projectTitle}
+                                placeholder={this.props.info.addDegreeProject.projectTitlePlaceholder}
+                                onChange={event => this.setState({ projectTitle: event.target.value })}
+                            />
+                        </Form.Group>
+                    </Col>
+                </Row>
                 <Row>
                     <Col>
                         <Form.Group>
@@ -90,7 +124,7 @@ class AddDegreeProject extends Component {
                                 <DatePicker
                                     className="dateBox"
                                     selected={this.state.startDate}
-                                    onChange={date => this.setState({ startDate: date})}
+                                    onChange={date => this.setState({ startDate: date })}
                                     dateFormat="yyyy/MM/dd"
                                     placeholderText={this.props.info.addDegreeProject.startDatePlaceholder}
                                     todayButton={this.props.info.addDegreeProject.today}
@@ -106,7 +140,7 @@ class AddDegreeProject extends Component {
                                     className="dateBox"
                                     selected={this.state.endDate}
                                     onChange={date => this.setState({ endDate: date })}
-                                    dateFormat="dd/MM/yyyy"
+                                    dateFormat="yyyy/MM/dd"
                                     placeholderText={this.props.info.addDegreeProject.endDatePlaceholder}
                                 />
                             </Form>
