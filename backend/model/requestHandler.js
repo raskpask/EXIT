@@ -179,7 +179,7 @@ function extractRegisterProjectDetails(req) {
             }
     }
 
-    return new ProjectDetails(project_id,number_of_students,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,company_name,company_address,company_phone_number);
+    return new ProjectDetails(project_id,number_of_students,project_title,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,company_name,company_address,company_phone_number);
 }
 /**
  * Gets the user ID from a request
@@ -187,8 +187,8 @@ function extractRegisterProjectDetails(req) {
  */
 function extractUserID(req) {
     ID = req.body.userID;
-    if(!Number.isInteger(ID)){
-        throw new Error(403);
+    if(isNaN(ID)){
+        throw new Error(d);
     }
     return ID;
 }
@@ -198,7 +198,7 @@ function extractUserID(req) {
  */
 function extractProjectID(req) {
     ID = req.body.projectID;
-    if(!Number.isInteger(ID)){
+    if(isNaN(ID)){
         throw new Error(403);
     }
     return ID;
