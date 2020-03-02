@@ -158,25 +158,25 @@ function extractRegisterProjectDetails(req) {
     let all_info_specified = null;
     let company = null;
     let company_contact = null;
-    let company_name = '';
-    let company_address = '';
-    let company_phone_number = '';
+    let company_name = null;
+    let company_address = null;
+    let company_phone_number = null;
 
     //if(Boolean(req.body)){
         let project = req.body;//JSON.parse(req.body);
         console.log(project);
 
-            project_id = project.project_id;
-            number_of_students = project.number_of_students;
-            project_title = project.project_title;
-            project_description = project.project_description;
+            //project_id = project.project_id;
+            number_of_students = project.numberOfStudents;
+            project_title = project.projectTitle;
+            project_description = project.projectDescription;
             credits = project.credits;
-            start_date = project.start_date;
-            end_date = project.end_date;
-            if(project.company_name !== null){
-                company_name = project.company_name;
-                company_address = project.company_address;
-                company_phone_number = project.company_phone_number;
+            start_date = project.startDate;
+            end_date = project.endDate;
+            if(project.companyName !== ''){
+                company_name = project.companyName;
+                company_address = project.companyAddress;
+                company_phone_number = project.companyPhoneNumber;
             }
     //}
 
