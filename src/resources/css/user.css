@@ -1,0 +1,13 @@
+.userInfo{
+    margin-top: 5vw;
+    /* margin-left: 5vw; */
+    /* margin-right: 50%; */
+    text-align: left; 
+}
+.marginTop{
+    margin-top: 2vw;
+}
+.noApplicationMessage{
+    color: #9F6000;
+    background-color: #FEEFB3;
+}

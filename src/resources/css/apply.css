@@ -1,0 +1,34 @@
+.addForm{
+    padding: 5vw;
+}
+.paddingRight{
+    padding-right: 1vw;
+}
+.paddingLeft{
+    padding-left: 1vw;
+}
+.marginTextBox{
+    margin: 0 1vw 0 1vw;
+}
+.marginLeft{
+    margin-left: 1vw;
+}
+.tableAvailability{
+    margin: 5vw 2vw 5vw 0vw;
+    /* padding-right: 5vw; */
+    /* width: 50%; */
+}
+.tableCompetence{
+    margin: 5vw 1vw 5vw 2vw;
+    /* padding-left: 5vw; */
+    /* width: 50%; */
+}
+.competenceTypeButton{
+    border: 5px solid red;
+    border-radius: 10px;
+}
+.errorMessage{
+    color: #D8000C;
+    background-color: #FFD2D2;
+    margin-top: 0.6vw;
+}
