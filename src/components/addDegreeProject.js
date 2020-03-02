@@ -30,7 +30,7 @@ class AddDegreeProject extends Component {
     addProject = (e) => {
         e.preventDefault();
         axios
-            .post('/api/director', this.createProject())
+            .post('/api/project', this.createProject())
             .then(res => {
                 toast(this.props.info.addDirectorOfStudies.added)
             })
