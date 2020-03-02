@@ -79,8 +79,15 @@ function checkUnicode(string) {
     }
     return true;
 }
+
+function validateProject(request){
+   // if(request)
+    
+    return true;
+}
 module.exports = {
     registerInput,
     applyInput,
+    validateProject
 
 }

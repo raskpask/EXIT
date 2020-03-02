@@ -146,6 +146,7 @@ async function extractApplication(req) {
  * @returns Instance of ProjectDetails 
  */
 function extractRegisterProjectDetails(req) {
+    validation.validateProject(req);
     let project_id = null;
     let number_of_students = 0;
     let project_title = '';
@@ -168,7 +169,7 @@ function extractRegisterProjectDetails(req) {
 
             //project_id = project.project_id;
             number_of_students = project.numberOfStudents;
-            project_title = project.projectTitle;
+            project_title = project.title;
             project_description = project.projectDescription;
             credits = project.credits;
             start_date = project.startDate;
