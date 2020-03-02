@@ -210,8 +210,8 @@ function extractProjectID(req) {
 }
 
 function extractBudgetYear(req){
-    console.log(req.data)
-    const budgetYear = req.data;
+    console.log(req.body)
+    const budgetYear = req.body;
     const year = budgetYear.budgetYear
     const master_hours = budgetYear.master_hours
     const bachleor_hours = budgetYear.bachleorHours
