@@ -11,9 +11,9 @@ module.exports = class BudgetYear{
      * @param {double} factor_4
      * @param {double} factor_5
      */
-    constructor(year,bachleor_hours,master_hours,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5){
+    constructor(year,bachelor_hours,master_hours,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5){
         this.year = year;
-        this.bachleor_hours = bachleor_hours;
+        this.bachelor_hours = bachelor_hours;
         this.master_hours = master_hours;
         this.total_tutoring_hours = total_tutoring_hours
         this.factor_1 = factor_1;

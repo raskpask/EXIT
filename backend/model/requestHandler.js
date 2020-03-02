@@ -210,20 +210,17 @@ function extractProjectID(req) {
 }
 
 function extractBudgetYear(req){
-    console.log(req.body)
     const budgetYear = req.body;
     const year = budgetYear.budgetYear
     const master_hours = budgetYear.masterHours
-    const bachleor_hours = budgetYear.bachleorHours
+    const bachelor_hours = budgetYear.bachleorHours
     const total_tutoring_hours = budgetYear.totalTutoringHours
     const factor_1 = budgetYear.factor1
     const factor_2 = budgetYear.factor2
     const factor_3 = budgetYear.factor3
     const factor_4 = budgetYear.factor4
     const factor_5 = budgetYear.factor5
-    const by =new BudgetYear(year,master_hours,bachleor_hours,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5);
-    console.log(by)
-    return by
+    return new BudgetYear(year,master_hours,bachelor_hours,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5);
 }
 module.exports = {
     extractProjectID,

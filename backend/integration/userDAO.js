@@ -239,9 +239,9 @@ function postBudgetYear(budget_year) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let postBudgetYear = {
-            text: "INSERT INTO Budget_year (master_hours,bachleor_hours,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5) " +
+            text: "INSERT INTO Budget_year (master_hours,bachelor_hours,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5) " +
             "VALUES (?,?,?,?,?,?,?,?)",
-            values: [budget_year.master_hours,budget_year.bachleor_hours,budget_year.total_tutoring_hours,
+            values: [budget_year.master_hours,budget_year.bachelor_hours,budget_year.total_tutoring_hours,
                 budget_year.factor_1,budget_year.factor_2,budget_year.factor_3,budget_year.factor_4,budget_year.factor_5]
         }
         client
