@@ -10,7 +10,7 @@ class MyDegreeProjects extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showUser: "",
+            showUser: [],
             projects: [
                 {
                     credits: "",
@@ -85,7 +85,7 @@ class MyDegreeProjects extends Component {
                     size='xl'
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>{this.props.info.listprojects.project}</Modal.Title>
+                        <Modal.Title>{this.props.info.myDegreeProjects.project}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <DegreeProject info={this.props.info} project={project} />

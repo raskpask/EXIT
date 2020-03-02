@@ -26,6 +26,14 @@ class DegreeProject extends Component {
             </ListGroup>
         )
     }
+    renderStatus() {
+        return (
+            <ListGroup>
+                <ListGroup.Item>{this.props.info.degreeProject.outDated}:{this.props.project.outDated}</ListGroup.Item>
+                <ListGroup.Item>{this.props.info.degreeProject.inProgess}:{this.props.project.inProgess}</ListGroup.Item>
+            </ListGroup>
+        )
+    }
     render() {
         return (
             <Fragment>
@@ -37,6 +45,9 @@ class DegreeProject extends Component {
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link onClick={() => this.setState({ bodyContent: this.renderCompany() })}>{this.props.info.degreeProject.company}</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link onClick={() => this.setState({ bodyContent: this.renderStatus() })}>{this.props.info.degreeProject.status}</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </Card.Header>
