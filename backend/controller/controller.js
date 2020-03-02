@@ -166,6 +166,10 @@ function extractLangCookie(req) {
     return requestHandler.extractLang(req);
 }
 
+function getBudgetYear(req){
+    return userDAO.getBudgetYear();
+}
+
 module.exports = {
     registerUser,
     registerProject,
@@ -180,5 +184,6 @@ module.exports = {
     checkIfUsernameIsAvailable,
     getToken,
     extractLangCookie,
-    getProject
+    getProject,
+    getBudgetYear
 }
