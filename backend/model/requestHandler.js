@@ -162,11 +162,8 @@ function extractRegisterProjectDetails(req) {
     let company_address = '';
     let company_phone_number = '';
 
-    console.log(req);
-    console.log(req.query);
-    console.log(req.body);
-    if(Boolean(JSON.query)){
-        let project = JSON.parse(req.query);
+    if(Boolean(req.body)){
+        let project = JSON.parse(req.body);
 
             project_id = project.project_id;
             number_of_students = project.number_of_students;
@@ -182,7 +179,9 @@ function extractRegisterProjectDetails(req) {
             }
     }
 
-    return new ProjectDetails(project_id,number_of_students,project_title,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,company_name,company_address,company_phone_number);
+    pd = new ProjectDetails(project_id,number_of_students,project_title,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,company_name,company_address,company_phone_number);
+    console.log(pd);
+    return pd;
 }
 /**
  * Gets the user ID from a request
