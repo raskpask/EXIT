@@ -79,7 +79,8 @@ errorCodes = {
     APPLICATION_EDITED_ERROR: {
         code: 'APPLICATION_EDITED_ERROR',
         message: 'The application was updated after the user checked the status'
-    },
+    }
+
 
 }
 /**
