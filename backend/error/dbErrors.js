@@ -79,6 +79,10 @@ errorCodes = {
     APPLICATION_EDITED_ERROR: {
         code: 'APPLICATION_EDITED_ERROR',
         message: 'The application was updated after the user checked the status'
+    },
+    BAD_REQUEST_ERROR:{
+        code: 'BAD_REQUEST_ERROR',
+        message: 'There are errors in the sent data'
     }
 
 
@@ -92,6 +96,10 @@ errorCodes = {
 function respondError(error, res) {
     console.error(error)
     switch (error) {
+        case errorCodes.BAD_REQUEST_ERROR.code:
+            res.status(403);
+            res.send(BAD_REQUEST_ERROR.code);
+            break;
         case errorCodes.CONNECTION_ERROR.code:
             res.status(503);
             res.send(CONNECTION_ERROR.code);

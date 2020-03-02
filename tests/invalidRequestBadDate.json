@@ -1,0 +1,11 @@
+{
+    "numberOfStudents": 3,
+    "credits": 15,
+    "projectDescription": "This is a project",
+    "title": "Project",
+    "startDate":"2020-02-30",
+    "endDate":"2020-01-15",
+    "companyName": "Testsons",
+    "companyAddress":"Testsvängen 12",
+    "companyPhoneNumber":"072-12 34 567"
+}

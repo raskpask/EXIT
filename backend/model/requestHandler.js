@@ -146,14 +146,14 @@ async function extractApplication(req) {
  * @returns Instance of ProjectDetails 
  */
 function extractRegisterProjectDetails(req) {
-    validation.validateProject(req);
+    if(validation.validateProject(req)){
     let project_id = null;
     let number_of_students = 0;
     let project_title = '';
     let project_description = '';
     let credits = 0;
-    let start_date = "2015-01-01";
-    let end_date = "2020-01-01";
+    let start_date = '';
+    let end_date = '';
     let in_progress = null;
     let out_of_date = null;
     let all_info_specified = null;
@@ -184,6 +184,9 @@ function extractRegisterProjectDetails(req) {
     pd = new ProjectDetails(project_id,number_of_students,project_title,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,company_name,company_address,company_phone_number);
     console.log(pd);
     return pd;
+    }else{
+        throw new Error(dbError.errorCodes.BAD_REQUEST_ERROR.code);
+    }
 }
 /**
  * Gets the user ID from a request

@@ -81,10 +81,69 @@ function checkUnicode(string) {
 }
 
 function validateProject(request){
-   // if(request)
-    
+    try {
+        // if (Object.keys(request.body).length === 0) {
+        //     return false;
+        // }
+        project = request;//.body;
+        if(isNaN(project.credits)||isNaN(project.numberOfStudents)){
+            console.log('NaN');
+            return false;
+        }else if((project.credits<0)||(project.numberOfStudents<0)){
+            console.log('invalid numbers');
+            return false;
+        }
+
+        if(!(isDate(project.startDate)&&isValidDate(project.startDate)&&isDate(project.endDate)&&isValidDate(project.endDate))){
+            console.log('Invalid dates');
+            return false;
+        }else if(new Date(project.startDate) > new Date(project.endDate)){
+            console.log("End date before start date");
+            return false;
+        }
+
+        if(project.title.length<1||project.projectDescription.length<1){
+            console.log("title or description missing");
+            return false;
+        }
+
+        if(project.companyName !== null){
+            if(!project.companyPhoneNumber.replace(/\s/g, '').match(/^[0-9()-]+$/)){
+                console.log("invalid phone number");
+                return false;
+            }
+            if(project.companyName.length<1||project.companyAddress.length<1){
+                console.log("title or description missing");
+                return false;
+            }
+        }
+        
+    } catch(error){
+        console.log(error);
+        return false;
+    }
     return true;
 }
+function isValidDate(date){
+    var separators = ['\\.', '\\-', '\\/'];
+    var bits = date.split(new RegExp(separators.join('|'), 'g'));
+    var d = new Date(bits[0], bits[1] - 1, bits[2]);
+    return d.getFullYear() == bits[0] && d.getMonth() + 1 == bits[1];
+}
+function isDate(isISO){
+    if (new Date(isISO) !== "Invalid Date" && !isNaN(new Date(isISO))) {
+            return true;
+    } else {
+        return false;
+    }
+}
+let validRequest = require("../../tests/validRequest.json")
+let invalidRequestBadDate = require("../../tests/invalidRequestBadDate.json");
+let badDateOrder = require("../../tests/invalidRequestBadDateOrder.json");
+console.log(validateProject(validRequest));
+console.log(validateProject(invalidRequestBadDate));
+console.log(validateProject(badDateOrder));
+
 module.exports = {
     registerInput,
     applyInput,
