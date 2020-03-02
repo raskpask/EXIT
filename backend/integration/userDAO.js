@@ -219,7 +219,7 @@ function getBudgetYear() {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let getBudgetYear = {
-            text: "SELECT master_hours,bachelor_hours,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5" +
+            text: "SELECT master_hours,bachelor_hours,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5 " +
                 "FROM Budget_year"
         }
         client
