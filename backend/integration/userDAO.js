@@ -226,7 +226,7 @@ function getBudgetYear() {
         client
             .query(getBudgetYear.text)
             .then(res => {
-                resolve(res.data)
+                resolve(res)
             })
             .catch(err => {
                 console.error(err)
@@ -247,7 +247,7 @@ function postBudgetYear(budget_year) {
         client
             .query(postBudgetYear.text,postBudgetYear.values)
             .then(res => {
-                console.log(res.rows[0])
+                console.log(res[0])
             })
             .catch(err => {
                 console.error(err)
