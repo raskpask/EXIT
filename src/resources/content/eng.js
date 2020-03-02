@@ -29,11 +29,7 @@ function getLanguage() {
         degreeProject: {
             company: "Company",
             info: "Info",
-            status: "Status",
-            outDated: "Outdated",
-            inProgess: "In progress",
-
-
+            status: "Status"
         },
         addDegreeProject: {
             title: "Add degree project to my annual quota",
@@ -151,11 +147,10 @@ function getLanguage() {
             title: "My degree projects",
             paragraph0: "This table shows all of you existing degree projects. If you press a link you can view specific degree project information for a selected degree project or mark a degree project as finished/cancelled (this will remove the degree project from your view but not from the database).",
             credits: "Credits",
-            degreeTitle: "Preliminary title/description",
+            degreeTitle: "Preliminary title/discription",
             numOfStudents: "Number of students",
             startDate: "Start date",
             endDate: "End date",
-            project: "Project information",
             withinTimeLimit: "Within time limit",
             fail: "Something went wrong could not load your projects."
         },
