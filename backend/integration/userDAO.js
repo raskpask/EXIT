@@ -247,11 +247,12 @@ function postBudgetYear(budget_year) {
         client
             .query(postBudgetYear.text,postBudgetYear.values)
             .then(res => {
-                console.log(res)
+                if(res.affectedRows == 1){
+                    resolve()
+                }
             })
             .catch(err => {
                 console.error(err)
-
             })
         client.end()
     })
