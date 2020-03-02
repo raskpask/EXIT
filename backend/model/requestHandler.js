@@ -146,6 +146,37 @@ async function extractApplication(req) {
  * @returns Instance of ProjectDetails 
  */
 function extractRegisterProjectDetails(req) {
+    let project_id = null;
+    let number_of_students = 0;
+    let project_description = '';
+    let credits = 0;
+    let start_date = "2015-01-01";
+    let end_date = "2020-01-01";
+    let in_progress = null;
+    let out_of_date = null;
+    let all_info_specified = null;
+    let company = null;
+    let company_contact = null;
+    let company_name = '';
+    let company_address = '';
+    let company_phone_number = '';
+
+    if(Boolean(JSON.body)){
+        let project = JSON.parse(req.query);
+
+            project_id = project.project_id;
+            number_of_students = project.number_of_students;
+            project_description = project.project_description;
+            credits = project.credits;
+            start_date = project.start_date;
+            end_date = project.end_date;
+            if(project.company_name !== null){
+                company_name = project.company_name;
+                company_address = project.company_address;
+                company_phone_number = project.company_phone_number;
+            }
+    }
+
     return new ProjectDetails(project_id,number_of_students,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,company_name,company_address,company_phone_number);
 }
 /**
