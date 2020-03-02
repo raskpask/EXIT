@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Table } from 'react-bootstrap';
+import React, { Component, Fragment } from 'react';
+import { Table,Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../resources/css/home.css';
@@ -10,6 +10,7 @@ class MyDegreeProjects extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            showUser: "",
             projects: [
                 {
                     credits: "",
@@ -60,11 +61,38 @@ class MyDegreeProjects extends Component {
                             <td key={"startDate: " + key} > {project.startDate}</td>
                             <td key={"endDate: " + key} > {project.endDate}</td>
                             <td key={"withinTimeLimit: " + key} > {project.withinTimeLimit}</td>
+                            <td key={"moreInfo: " + key} > {this.renderFullProject(project)}</td>
                         </tr>
                     )}
                 </tbody>
             </Table >
         )
+    }
+    showInfo(id, state) {
+        let list = this.state.showUser;
+        list[id] = state;
+        this.setState({ showUser: list })
+    }
+    renderFullProject(project) {
+        return (
+            <Fragment>
+                <Button variant="primary" className="ml-auto" id={project.id} onClick={() => this.showInfo(project.id, true)}>Info</Button>
+                <Modal
+                    centered
+                    show={this.state.showUser[project.id]}
+                    onHide={() => this.showInfo(project.id, false)}
+                    animation={true}
+                    size='xl'
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>{this.props.info.listprojects.project}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <DegreeProject info={this.props.info} project={project} />
+                    </Modal.Body>
+                </Modal>
+            </Fragment>
+        );
     }
     render() {
         return (
@@ -73,7 +101,6 @@ class MyDegreeProjects extends Component {
                 <h1>{this.props.info.myDegreeProjects.title}</h1>
                 <p>{this.props.info.myDegreeProjects.paragraph0}</p>
                 {this.renderTable()}
-                <DegreeProject info={this.props.info}/>
             </div>
         );
     };
