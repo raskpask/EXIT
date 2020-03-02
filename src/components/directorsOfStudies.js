@@ -25,7 +25,7 @@ class DirectorsOfStudies extends Component {
     getDirectors = () => {
 
         const response = axios
-            .get('/api/director')
+            .get('/api/user')
             .then(res => {
                 if (res.status === 200) {
                     this.setState({ directors: response.data })

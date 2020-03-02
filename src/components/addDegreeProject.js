@@ -14,6 +14,7 @@ class AddDegreeProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            projectTitle: "",
             numberOfStudents: "",
             projectDescription: "",
             credits: "",
@@ -29,19 +30,23 @@ class AddDegreeProject extends Component {
     }
     addProject = (e) => {
         e.preventDefault();
+        const project = this.createProject()
+
         axios
-            .post('/api/project', this.createProject())
+            .post('/api/project', project)
             .then(res => {
                 toast(this.props.info.addDirectorOfStudies.added)
-                this.resetValues();
+                this.resetValues()
             })
             .catch(err => {
                 console.log(err)
                 toast(this.props.info.addDirectorOfStudies.fail)
             })
+
     }
     resetValues() {
         this.setState({
+            projectTitle: "",
             numberOfStudents: "",
             projectDescription: "",
             credits: "",
@@ -56,6 +61,7 @@ class AddDegreeProject extends Component {
         const startDates = this.state.startDate.toLocaleDateString().split('/')
         const endDates = this.state.endDate.toLocaleDateString().split('/')
         return {
+            title: this.state.projectTitle,
             numberOfStudents: this.state.numberOfStudents,
             projectDescription: this.state.projectDescription,
             credits: this.state.credits,
@@ -70,17 +76,19 @@ class AddDegreeProject extends Component {
         return (
             <Form onSubmit={(e) => this.addProject(e)}>
                 <Row>
-                    <Form.Group>
-                        <Form.Label>{this.props.info.addDegreeProject.numOfStudents}</Form.Label>
-                        <Form.Control
-                            required
-                            as="input"
-                            type="number"
-                            value={this.state.numberOfStudents}
-                            placeholder={this.props.info.addDegreeProject.numOfStudentsPlaceholder}
-                            onChange={event => this.setState({ numberOfStudents: event.target.value })}
-                        />
-                    </Form.Group>
+                    <Col>
+                        <Form.Group>
+                            <Form.Label>{this.props.info.addDegreeProject.projectTitle}</Form.Label>
+                            <Form.Control
+                                required
+                                as="input"
+                                type="text"
+                                value={this.state.projectTitle}
+                                placeholder={this.props.info.addDegreeProject.projectTitlePlaceholder}
+                                onChange={event => this.setState({ projectTitle: event.target.value })}
+                            />
+                        </Form.Group>
+                    </Col>
                 </Row>
                 <Row>
                     <Col>
@@ -132,7 +140,7 @@ class AddDegreeProject extends Component {
                                     className="dateBox"
                                     selected={this.state.endDate}
                                     onChange={date => this.setState({ endDate: date })}
-                                    dateFormat="dd/MM/yyyy"
+                                    dateFormat="yyyy/MM/dd"
                                     placeholderText={this.props.info.addDegreeProject.endDatePlaceholder}
                                 />
                             </Form>
