@@ -167,6 +167,7 @@ function getProject(user_id){
         })
         .catch(err=>{
             client.end()
+            console.error(err);
             reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
         });
     });
