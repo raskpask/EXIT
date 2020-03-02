@@ -5,7 +5,10 @@ function checkAccess(accessLevel) {
     return true;
 }
 function extractPrivLevel() {
-    return 1;
+    if(document.cookie.split('privilegeLevel=')[1]){
+        return document.cookie.split('privilegeLevel=')[1].split(';')[0];
+    }
+    return 3;
 }
 module.exports = {
     checkAccess,

@@ -1,0 +1,951 @@
+{
+	"info": {
+		"_postman_id": "09fc1eeb-0763-477a-8c07-07836ee29fac",
+		"name": "IV1201_API_test",
+		"description": "Testing the API created for the application built in the course IV1201 at KTH",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "817dcda5-af9a-4a2d-8d1c-7a6867279196",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response contains authToken cookie\", function() {",
+							"    pm.expect(pm.cookies.has('authToken')).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Response contains privilegeLevel cookie\", function() {",
+							"    pm.expect(pm.cookies.has('privilegeLevel')).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"raskpask\",\n\t\"password\": \"abc123\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/authentication",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"authentication"
+					]
+				},
+				"description": "Tests a login"
+			},
+			"response": []
+		},
+		{
+			"name": "GetUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "96084cdf-18e6-4df9-a691-da8d267b08ad",
+						"exec": [
+							"pm.test(\"Body contains user string\", function () {",
+							"    pm.expect(pm.response.text()).to.include('{\"user\":{\"username\":\"raskpask\"');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/user",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LoginNoCredentials",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8340d044-f096-46f0-8cad-52b095aa14df",
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"pm.test(\"Body contains error string\", function () {",
+							"    pm.expect(pm.response.text()).to.include('LOGIN_ERROR');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"\",\n\t\"password\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/authentication",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"authentication"
+					]
+				},
+				"description": "A login request with no credentials in the body"
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "79843eb8-b6a0-437f-9650-2667e204d5f6",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/authentication",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"authentication"
+					]
+				},
+				"description": "Test logging out the user logged in in the successful test 1"
+			},
+			"response": []
+		},
+		{
+			"name": "LogoutNoCookie",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "79843eb8-b6a0-437f-9650-2667e204d5f6",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/authentication",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"authentication"
+					]
+				},
+				"description": "Test logging out the user logged in in the successful test 1"
+			},
+			"response": []
+		},
+		{
+			"name": "GetUserNoCookie",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "96084cdf-18e6-4df9-a691-da8d267b08ad",
+						"exec": [
+							"pm.test(\"Body contains error string\", function () {",
+							"    pm.expect(pm.response.text()).to.include('NO_TOKEN_ERROR');",
+							"});",
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/user",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CheckIfExistingUsernameIsAvailable",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "21c84215-b638-4e1b-9e42-0e0a8de8879d",
+						"exec": [
+							"",
+							"pm.test(\"Body matches string 'Username taken'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Username taken\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"raskpask\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/username",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"username"
+					]
+				},
+				"description": "Checks if a username already in the database exists"
+			},
+			"response": []
+		},
+		{
+			"name": "CheckCompetences",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "21c84215-b638-4e1b-9e42-0e0a8de8879d",
+						"exec": [
+							"",
+							"pm.test(\"Body contains competences'\", function () {",
+							"    pm.expect(pm.response.text()).to.include('{\"competence_id\":\"1\",\"name\":\"Korvgrillning\"},{\"competence_id\":\"2\",\"name\":\"Karuselldrift\"}');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Cookie",
+						"value": "lang=sv-se",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/api/competence",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"competence"
+					]
+				},
+				"description": "Checks if a username already in the database exists"
+			},
+			"response": []
+		},
+		{
+			"name": "CheckSQLInjection",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "21c84215-b638-4e1b-9e42-0e0a8de8879d",
+						"exec": [
+							"",
+							"pm.test(\"Body matches string 'Username not taken'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Username not taken\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"1 OR 1=1\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/username",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"username"
+					]
+				},
+				"description": "Checks if a username already in the database exists"
+			},
+			"response": []
+		},
+		{
+			"name": "CheckIfNonExistantUsernameExists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "02967c3e-c218-48c7-b7fe-68e6d56fcfae",
+						"exec": [
+							"pm.test(\"Body matches string 'Username not taken'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Username not taken\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"jhgfdghjkljhgfdrtgyuhjkiuhtygfrdtgyuhjihygtfrdftgyuh\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/username",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"username"
+					]
+				},
+				"description": "Checks if a username that does not exist in the database exists."
+			},
+			"response": []
+		},
+		{
+			"name": "LoginAdmin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "817dcda5-af9a-4a2d-8d1c-7a6867279196",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response contains authToken cookie\", function() {",
+							"    pm.expect(pm.cookies.has('authToken')).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Response contains privilegeLevel cookie\", function() {",
+							"    pm.expect(pm.cookies.has('privilegeLevel')).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"borg\",\n\t\"password\": \"wl9nk23a\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/authentication",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"authentication"
+					]
+				},
+				"description": "Tests a login"
+			},
+			"response": []
+		},
+		{
+			"name": "GetListOfALLApplications",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "11352a2f-5273-40b7-97c3-25b41ae01ca0",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Contains Pebo's application\", function () {",
+							"    pm.expect(pm.response.text()).to.include('Pebo'",
+							");",
+							"});",
+							"pm.test(\"Contains hejhejhej's application\", function () {",
+							"    pm.expect(pm.response.text()).to.include('\"hejhejhej');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/application",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"application"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update application",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8c7527d4-81f2-4413-a65a-ccb0b8c667fb",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"status\":0,\n\t\"id\":2,\n\t\"lastEdited\":\"2030-02-19T11:59:07.927Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/application",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"application"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update application Conflict",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8c7527d4-81f2-4413-a65a-ccb0b8c667fb",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"status\":0,\n\t\"id\":2,\n\t\"lastEdited\":\"2030-02-19T11:59:07.927Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/application",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"application"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LoginApplicantWithoutApplication",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "817dcda5-af9a-4a2d-8d1c-7a6867279196",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response contains authToken cookie\", function() {",
+							"    pm.expect(pm.cookies.has('authToken')).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Response contains privilegeLevel cookie\", function() {",
+							"    pm.expect(pm.cookies.has('privilegeLevel')).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"1234\",\n\t\"password\": \"1234\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/authentication",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"authentication"
+					]
+				},
+				"description": "Tests a login"
+			},
+			"response": []
+		},
+		{
+			"name": "No application in system",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "384b54d3-df38-4d02-8c87-e9f7b1470123",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"No application is system error\", function () {",
+							"    pm.response.to.have.body(\"NO_APPLICATION_ERROR\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/application",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"application"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Apllication no cookies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "384b54d3-df38-4d02-8c87-e9f7b1470123",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"No application\", function () {",
+							"    pm.response.to.have.body(\"NO_APPLICATION_ERROR\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/application",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"application"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LoginApplicantWithApplication",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "817dcda5-af9a-4a2d-8d1c-7a6867279196",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response contains authToken cookie\", function() {",
+							"    pm.expect(pm.cookies.has('authToken')).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Response contains privilegeLevel cookie\", function() {",
+							"    pm.expect(pm.cookies.has('privilegeLevel')).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"JakobMolin\",\n\t\"password\": \"jakob\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/authentication",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"authentication"
+					]
+				},
+				"description": "Tests a login"
+			},
+			"response": []
+		},
+		{
+			"name": "GetOwnApplicationOnly",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ae561e13-ec36-4a64-a210-9aed0bad87fd",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Contains user's application\", function () {",
+							"    pm.expect(pm.response.text()).to.include('asd');",
+							"});",
+							"",
+							"pm.test(\"Does not contain other user\", function () {",
+							"    pm.expect(pm.response.text()).to.not.include('Pebo');",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/application",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"application"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update application Unauthorized",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0de7e349-841c-46a5-8cdb-0d05af5eb9ff",
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body(\"NO_ACCESS_ERROR\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"status\":1,\n\t\"id\":10,\n\t\"lastEdited\":\"2030-02-19T11:59:07.927Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/application",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"application"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateApplicationUnauthorizedEditedCookie",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0de7e349-841c-46a5-8cdb-0d05af5eb9ff",
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body(\"NO_ACCESS_ERROR\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"status\":1,\n\t\"id\":10,\n\t\"lastEdited\":\"2030-02-19T11:59:07.927Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/application",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"application"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
