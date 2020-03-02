@@ -162,7 +162,10 @@ function extractRegisterProjectDetails(req) {
     let company_address = '';
     let company_phone_number = '';
 
-    if(Boolean(JSON.body)){
+    console.log(req);
+    console.log(req.query);
+    console.log(req.body);
+    if(Boolean(JSON.query)){
         let project = JSON.parse(req.query);
 
             project_id = project.project_id;
