@@ -2,7 +2,7 @@ const mariadb = require('mariadb');
 const User = require('../model/user');
 const dbError = require('../error/dbErrors');
 const ProjectDetails = require('../model/projectDetails');
-const BudgetYear = require('./budgetYear.js');
+const BudgetYear = require('../model/budgetYear.js');
 const pool = mariadb.createPool({
     host: 'localhost',
     user: 'root',
