@@ -247,7 +247,7 @@ function postBudgetYear(budget_year) {
         client
             .query(postBudgetYear.text,postBudgetYear.values)
             .then(res => {
-                console.log(res[0])
+                console.log(res)
             })
             .catch(err => {
                 console.error(err)
