@@ -44,7 +44,7 @@ function router(router) {
     router.post('/api/project', async (req, res) => {
         try {
             const statusCode = await controller.registerProject(req);
-            res.status(statusCode);
+            //res.status(statusCode);
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }
@@ -54,7 +54,7 @@ function router(router) {
     router.get('/api/project', async (req, res) => {
         try {
             const project = await controller.getProject(req);
-            res.status(statusCode);
+           // res.status(statusCode);
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }
