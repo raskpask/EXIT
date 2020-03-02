@@ -221,7 +221,9 @@ function extractBudgetYear(req){
     const factor_3 = budgetYear.factor_3
     const factor_4 = budgetYear.factor_4
     const factor_5 = budgetYear.factor_5
-    return new BudgetYear(year,master_hours,bachleor_hours,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5);
+    const by =new BudgetYear(year,master_hours,bachleor_hours,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5);
+    console.log(by)
+    return by
 }
 module.exports = {
     extractProjectID,
