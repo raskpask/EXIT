@@ -170,6 +170,10 @@ function getBudgetYear(req){
     return userDAO.getBudgetYear();
 }
 
+function postBudgetYear(req){
+    return userDAO.postBudgetYear(requestHandler.extractBudgetYear(req))
+}
+
 module.exports = {
     registerUser,
     registerProject,
@@ -185,5 +189,6 @@ module.exports = {
     getToken,
     extractLangCookie,
     getProject,
-    getBudgetYear
+    getBudgetYear,
+    postBudgetYear
 }

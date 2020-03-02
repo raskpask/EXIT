@@ -2,6 +2,7 @@ const mariadb = require('mariadb');
 const User = require('../model/user');
 const dbError = require('../error/dbErrors');
 const ProjectDetails = require('../model/projectDetails');
+const BudgetYear = require('./budgetYear.js');
 const pool = mariadb.createPool({
     host: 'localhost',
     user: 'root',
@@ -234,6 +235,27 @@ function getBudgetYear() {
         client.end()
     })
 }
+function postBudgetYear(budget_year) {
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection()
+        let postBudgetYear = {
+            text: "INSERT INTO Budget_year (master_hours,bachleor_hours,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5) " +
+            "VALUES (?,?,?,?,?,?,?,?)",
+            values: [budget_year.master_hours,budget_year.bachleor_hours,budget_year.total_tutoring_hours,
+                budget_year.factor_1,budget_year.factor_2,budget_year.factor_3,budget_year.factor_4,budget_year.factor_5]
+        }
+        client
+            .query(postBudgetYear.text,postBudgetYear.values)
+            .then(res => {
+                console.log(res.rows[0])
+            })
+            .catch(err => {
+                console.error(err)
+
+            })
+        client.end()
+    })
+}
 
 module.exports = {
     registerUser,
@@ -242,5 +264,6 @@ module.exports = {
     getUserID,
     getProject,
     registerProject,
-    getBudgetYear
+    getBudgetYear,
+    postBudgetYear
 }

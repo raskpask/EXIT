@@ -110,7 +110,7 @@ function router(router) {
     });
     router.post('/api/budgetYear', async (req, res) => {
         try {
-            // Add a budget year
+            await controller.postBudgetYear(req)
             res.send(500)
         } catch (error) {
             dbErrors.respondError(error.message, res)

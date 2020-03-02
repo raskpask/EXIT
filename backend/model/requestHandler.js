@@ -4,6 +4,7 @@ const Application = require('./application');
 const userDAO = require('../integration/userDAO');
 const validation = require('./requestValidation');
 const dbError = require('../error/dbErrors');
+const BudgetYear = require('./budgetYear.js');
 
 /**
  * Extracts the credentials of the client request
@@ -207,6 +208,21 @@ function extractProjectID(req) {
     }
     return ID;
 }
+
+function extractBudgetYear(req){
+    const budgetYear = req.data;
+    console.log(budgetYear)
+    const year = budgetYear.budgetYear
+    const master_hours = budgetYear.master_hours
+    const bachleor_hours = budgetYear.bachleorHours
+    const total_tutoring_hours = budgetYear.totalTutoringHours
+    const factor_1 = budgetYear.factor_1
+    const factor_2 = budgetYear.factor_2
+    const factor_3 = budgetYear.factor_3
+    const factor_4 = budgetYear.factor_4
+    const factor_5 = budgetYear.factor_5
+    return new BudgetYear(year,master_hours,bachleor_hours,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5);
+}
 module.exports = {
     extractProjectID,
     extractUserID,
@@ -218,4 +234,5 @@ module.exports = {
     extractCreateApplication,
     extractLang,
     extractRegisterProjectDetails,
+    extractBudgetYear
 }
