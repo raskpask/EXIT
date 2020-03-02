@@ -173,7 +173,7 @@ function getProject(project_id){
                 if (res !== undefined) {
                     const rawProject = res[0]//.person.split('(')[1].split(',');
                     client.end()
-                    let foundProject = new ProjectDetails(rawProject.project_id, rawProject.number_of_students, rawProject.project_description, rawProject.credits, rawProject.start_date, rawProject.end_date,rawProject.in_progress,rawProject.out_of_date,rawProject.all_info_specified,rawProject.company,rawProject.company_contact,rawProject.name,rawProject.address,rawProject.phone_number);
+                    let foundProject = new ProjectDetails(rawProject.project_id, rawProject.number_of_students, rawProject.project_title, rawProject.project_description, rawProject.credits, rawProject.start_date, rawProject.end_date,rawProject.in_progress,rawProject.out_of_date,rawProject.all_info_specified,rawProject.company,rawProject.company_contact,rawProject.name,rawProject.address,rawProject.phone_number);
                     resolve(foundProject);
                 }
         })
@@ -209,9 +209,9 @@ function registerProject(project_details){
                 });
         }
             let addProjectDetailsQuery = {
-                text: "INSERT INTO Degree_project (number_of_students,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact)"
-                + "VALUES (?,?,?,?,?,?,?,?,?,?)",
-                values: [project_details.number_of_students,project_details.project_description,project_details.credits,project_details.start_date,project_details.end_date,project_details.in_progress,project_details.out_of_date,project_details.all_info_specified,project_details.company,project_details.company_contact]
+                text: "INSERT INTO Degree_project (number_of_students,project_title,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact)"
+                + "VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                values: [project_details.number_of_students,project_details.project_title,project_details.project_description,project_details.credits,project_details.start_date,project_details.end_date,project_details.in_progress,project_details.out_of_date,project_details.all_info_specified,project_details.company,project_details.company_contact]
             }
             await client.query(addProjectDetailsQuery.text,addProjectDetailsQuery.values);
             await client.query("COMMIT");
@@ -236,5 +236,6 @@ module.exports = {
     getUser,
     getUsername,
     getUserID,
+    getProject,
     registerProject
 }

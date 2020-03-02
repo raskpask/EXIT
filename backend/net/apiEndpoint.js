@@ -51,6 +51,16 @@ function router(router) {
         res.send();
     });
 
+    router.get('/api/project', async (req, res) => {
+        try {
+            const project = await controller.getProject(req);
+            res.status(statusCode);
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+        res.send();
+    });
+
     router.get('/api/username', async (req, res) => {
         try {
             res.send(await controller.checkIfUsernameIsAvailable(req));
