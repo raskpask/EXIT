@@ -17,7 +17,7 @@ class SpecifyTutoringHours extends Component {
     specifyTutoringHours = (e) => {
         e.preventDefault();
         axios
-            .post('/api/director', this.getTutoringHours())
+            .post('/api/user', this.getTutoringHours())
             .then(res => {
                 toast(this.props.info.addDirectorOfStudies.added)
                 this.resetFields()

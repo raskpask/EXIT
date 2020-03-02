@@ -53,9 +53,11 @@ function getLanguage() {
             companyAddress: "Company address",
             companyAddressPlaceholder: "Enter the address of the company",
             companyPhone: "Company telephone number",
-            companyPhonePlaceholder: "Enter the telephone numebr of the company",
+            companyPhonePlaceholder: "Enter the telephone number of the company",
             sumbit: "Add project",
-            today: "Today"
+            today: "Today",
+            projectTitle: "Title",
+            projectTitlePlaceholder: "Enter the title of the project",
         },
         specifiedBudgetYears: {
             title: "Specified budget years",

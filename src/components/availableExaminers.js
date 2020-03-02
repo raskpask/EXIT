@@ -26,10 +26,10 @@ class AvailableExaminers extends Component {
     getExaminers = () => {
 
         const response = axios
-            .get('/api/examiner')
+            .get('/api/user')
             .then(res => {
                 if (res.status === 200) {
-                    this.setState({ examiners: response.data })
+                    this.setState({ users: response.data })
                 }
             })
             .catch(err => {
