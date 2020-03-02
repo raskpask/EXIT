@@ -10,18 +10,6 @@ const pool = mariadb.createPool({
      connectionLimit: 5,
      multipleStatements: true 
 });
-// let client;
-
-// function startConnection(){
-//     client = pool.getConnection();
-// }
-
-// startConnection();
-
-
-
-
-
 /**
  * Regisers a user to the DB.
  *
