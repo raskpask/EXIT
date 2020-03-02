@@ -14,14 +14,6 @@ class Header extends Component {
         super(props);
         this.state = {
             typeOfUser: this.renderBrand(),
-            user: {
-                username: "",
-                password: "",
-            },
-            form: {
-                invalidLogin: false,
-                isLoading: false,
-            }
         }
     }
     setLanguage(lang) {
