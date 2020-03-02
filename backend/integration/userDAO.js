@@ -198,7 +198,7 @@ function registerProject(project_details){
                 });
         }
             let addProjectDetailsQuery = {
-                text: "INSERT INTO Degree_project (number_of_students,project_title,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact)"
+                text: "INSERT INTO Degree_project (number_of_students,title,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact)"
                 + "VALUES (?,?,?,?,?,?,?,?,?,?,?)",
                 values: [project_details.number_of_students,project_details.project_title,project_details.project_description,project_details.credits,project_details.start_date,project_details.end_date,project_details.in_progress,project_details.out_of_date,project_details.all_info_specified,project_details.company,project_details.company_contact]
             }
