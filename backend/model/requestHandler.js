@@ -148,6 +148,7 @@ async function extractApplication(req) {
 function extractRegisterProjectDetails(req) {
     let project_id = null;
     let number_of_students = 0;
+    let project_title = '';
     let project_description = '';
     let credits = 0;
     let start_date = "2015-01-01";
@@ -166,6 +167,7 @@ function extractRegisterProjectDetails(req) {
 
             project_id = project.project_id;
             number_of_students = project.number_of_students;
+            project_title = project.project_title;
             project_description = project.project_description;
             credits = project.credits;
             start_date = project.start_date;
