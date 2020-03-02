@@ -55,10 +55,11 @@ function router(router) {
         try {
             const project = await controller.getProject(req);
            // res.status(statusCode);
+           res.send(JSON.stringify(project));
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }
-        res.send();
+        //res.send();
     });
 
     router.get('/api/username', async (req, res) => {
