@@ -47,17 +47,7 @@ function router(router) {
         }
         res.send();
     });
-
-    router.post('/api/project', async (req, res) => {
-        try {
-            const statusCode = await controller.registerProject(req);
-            //res.status(statusCode);
-        } catch (error) {
-            dbErrors.respondError(error.message, res)
-        }
-        res.send();
-    });
-
+    
     router.get('/api/project', async (req, res) => {
         try {
             const project = await controller.getProject(req);
@@ -68,6 +58,16 @@ function router(router) {
         }
         //res.send();
     });
+    router.post('/api/project', async (req, res) => {
+        try {
+            const statusCode = await controller.registerProject(req);
+            //res.status(statusCode);
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+        res.send();
+    });
+
     router.get('/api/expertise', async (req, res) => {
         try {
             // Fects the expertise of the user
