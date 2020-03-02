@@ -19,7 +19,7 @@ class AddExaminer extends Component {
         e.preventDefault();
         const email = this.state.username + "@kth.se"
         axios
-            .post('/api/director', { email: email })
+            .post('/api/user', { email: email })
             .then(res => {
                 toast(this.props.info.addDirectorOfStudies.added)
             })
