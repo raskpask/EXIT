@@ -163,7 +163,7 @@ function extractRegisterProjectDetails(req) {
     let company_phone_number = '';
 
     if(Boolean(req.body)){
-        let project = JSON.parse(req.body);
+        let project = req.body;//JSON.parse(req.body);
 
             project_id = project.project_id;
             number_of_students = project.number_of_students;
