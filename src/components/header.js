@@ -95,7 +95,7 @@ class Header extends Component {
         //     return this.renderStudent()
         // } else {
         //     return this.renderLogin()
-        }
+        //}
     }
     renderBrand() {
         return (
