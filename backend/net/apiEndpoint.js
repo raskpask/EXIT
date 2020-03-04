@@ -1,6 +1,7 @@
 const controller = require('../controller/controller');
 const dbErrors = require('../error/dbErrors');
 
+
 /**
  * Routes all api requests. 
  * All client requests will be send here and and the right functions here will send a request to the controller.
@@ -8,6 +9,16 @@ const dbErrors = require('../error/dbErrors');
  * @param {App} router - The express application.
  */
 function router(router) {
+
+    router.get('/api/login', async (req, res) => {
+        console.log("Login()")
+        sp.create_login_request_url(idp, {}, function(err, login_url, request_id) {
+            if (err != null){
+              return res.send(500);
+            }
+            res.redirect(login_url);
+          });
+    });
     router.post('/api/user', async (req, res) => {
         try {
             const statusCode = await controller.registerUser(req);
@@ -70,8 +81,8 @@ function router(router) {
 
     router.get('/api/expertise', async (req, res) => {
         try {
-            // Fects the expertise of the user
-            res.send(500)
+            await controller.getExpertise(req)
+            res.send()
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }

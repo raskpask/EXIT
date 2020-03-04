@@ -165,11 +165,21 @@ function getToken(req) {
 function extractLangCookie(req) {
     return requestHandler.extractLang(req);
 }
-
-function getBudgetYear(req){
-    return userDAO.getBudgetYear();
+function getExpertise(req){
+    return userDAO.getExpertise()
 }
-
+function postExpertise(req){
+    return userDAO.postExpertise()
+}
+function updateExpertise(req){
+    return userDAO.updateExpertise()
+}
+function deleteExpertise(req){
+    return userDAO.deleteExpertise()
+}
+function getBudgetYear(req){
+    return userDAO.getBudgetYear()
+}
 function postBudgetYear(req){
     return userDAO.postBudgetYear(requestHandler.extractBudgetYear(req))
 }
@@ -195,6 +205,10 @@ module.exports = {
     getToken,
     extractLangCookie,
     getProject,
+    getExpertise,
+    postExpertise,
+    updateExpertise,
+    deleteExpertise,
     getBudgetYear,
     postBudgetYear,
     updateBudgetYear,

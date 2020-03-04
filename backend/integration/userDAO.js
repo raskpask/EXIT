@@ -216,6 +216,26 @@ function registerProject(project_details) {
         }
     });
 }
+function getExpertise(){
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection()
+        let getExpertise = {
+            text: "SELECT expertise_name"+
+                "FROM Area_of_expertise INNER JOIN Expertise "+
+                "ON Area_of_expertise.expertise_id = Expertise.expertise_id"+
+                "WHERE Expertise.user_id "
+        }
+        client
+            .query(getBudgetYear.text)
+            .then(res => {
+                resolve(res)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        client.end()
+    })
+}
 function getBudgetYear() {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
@@ -280,16 +300,16 @@ function updateBudgetYear(budget_year){
         client.end()
     })
 }
-function updateBudgetYear(budget_year){
+function deleteBudgetYear(budget_year){
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
-        let updateBudgetYear = {
+        let deleteBudgetYear = {
             text: "DELETE FROM Budget_year"+
             "WHERE year = ?",
-            values: ['2020']
+            values: [budget_year.budget_year]
         }
         client
-            .query(updateBudgetYear.text,updateBudgetYear.values)
+            .query(deleteBudgetYear.text,deleteBudgetYear.values)
             .then(res => {
                 if(res.affectedRows == 1){
                     resolve()
@@ -309,8 +329,9 @@ module.exports = {
     getUserID,
     getProject,
     registerProject,
+    getExpertise,
     getBudgetYear,
     postBudgetYear,
-    updateBudgetYear
-
+    updateBudgetYear,
+    deleteBudgetYear
 }
