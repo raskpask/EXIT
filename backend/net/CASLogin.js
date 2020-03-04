@@ -10,7 +10,7 @@ const sp_options = {
 const idp_options = {
     sso_login_url: "https://login.kth.se/login",
     sso_logout_url: "https://login.kth.se/logout",
-    // certificates: [fs.readFileSync(cert).toString()] //, fs.readFileSync("cert-file2.crt").toString()]
+    certificates: ["https://mds.swamid.se/md/md-signer2.crt"] //, fs.readFileSync("cert-file2.crt").toString()]
 };
 const sp = new saml2.ServiceProvider(sp_options);
 const idp = new saml2.IdentityProvider(idp_options);
