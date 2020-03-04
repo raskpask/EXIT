@@ -1,6 +1,6 @@
 var saml2 = require('saml2-js');
 const fs = require('fs');
-const cert = require("/Users/molin/Desktop/EXIT/backend/net/md-signer2.crt")
+// const cert = require("/Users/molin/Desktop/EXIT/backend/net/md-signer2.crt")
 const sp_options = {
     entity_id: "https://saml.sys.kth.se/idp/shibboleth",
     // private_key: fs.readFileSync("key-file.pem").toString(),
