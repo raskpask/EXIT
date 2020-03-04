@@ -137,12 +137,12 @@ function isDate(isISO){
         return false;
     }
 }
-let validRequest = require("../../tests/validRequest.json")
-let invalidRequestBadDate = require("../../tests/invalidRequestBadDate.json");
-let badDateOrder = require("../../tests/invalidRequestBadDateOrder.json");
-console.log(validateProject(validRequest));
-console.log(validateProject(invalidRequestBadDate));
-console.log(validateProject(badDateOrder));
+// let validRequest = require("../../tests/validRequest.json")
+// let invalidRequestBadDate = require("../../tests/invalidRequestBadDate.json");
+// let badDateOrder = require("../../tests/invalidRequestBadDateOrder.json");
+// console.log(validateProject(validRequest));
+// console.log(validateProject(invalidRequestBadDate));
+// console.log(validateProject(badDateOrder));
 
 module.exports = {
     registerInput,
