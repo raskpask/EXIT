@@ -223,8 +223,7 @@ function getExpertise(user_id) {
         if (user_id === undefined || user_id === null) {
             getExpertise = {
                 text: "SELECT expertise_name " +
-                    "FROM Area_of_expertise INNER JOIN Expertise " +
-                    "ON Area_of_expertise.expertise_id = Expertise.expertise_id ",
+                    "FROM Area_of_expertise ",
                 values: " "
             }
         } else {
