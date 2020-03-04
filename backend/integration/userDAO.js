@@ -219,12 +219,22 @@ function registerProject(project_details) {
 function getExpertise(user_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
-        let getExpertise = {
-            text: "SELECT expertise_name " +
-                "FROM Area_of_expertise INNER JOIN Expertise " +
-                "ON Area_of_expertise.expertise_id = Expertise.expertise_id " +
-                "WHERE Expertise.user_id = ?",
-            values: [user_id]
+        let getExpertise = ' '
+        if (user_id === undefined || user_id === null) {
+            getExpertise = {
+                text: "SELECT expertise_name " +
+                    "FROM Area_of_expertise INNER JOIN Expertise " +
+                    "ON Area_of_expertise.expertise_id = Expertise.expertise_id ",
+                values: " "
+            }
+        } else {
+            getExpertise = {
+                text: "SELECT expertise_name " +
+                    "FROM Area_of_expertise INNER JOIN Expertise " +
+                    "ON Area_of_expertise.expertise_id = Expertise.expertise_id " +
+                    "WHERE Expertise.user_id = ?",
+                values: [user_id]
+            }
         }
         client
             .query(getExpertise.text, getExpertise.values)
@@ -258,14 +268,14 @@ function postExpertise(expertise_name) {
         client.end()
     })
 }
-function updateExpertise(expertise_name,expertise_id) {
+function updateExpertise(expertise_name, expertise_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let updateExpertise = {
             text: "UPDATE Area_of_expertise " +
                 "SET expertise_name = ? " +
                 "WHERE expertise_id = ? ",
-            values: [expertise_name,expertise_id]
+            values: [expertise_name, expertise_id]
         }
         client
             .query(updateExpertise.text, updateExpertise.values)
@@ -280,7 +290,7 @@ function updateExpertise(expertise_name,expertise_id) {
         client.end()
     })
 }
-function deleteExpertise(expertise_name,expertise_id) {
+function deleteExpertise(expertise_name, expertise_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let deleteExpertise = {
