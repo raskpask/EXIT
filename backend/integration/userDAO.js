@@ -220,7 +220,7 @@ function getExpertise(user_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let getExpertise = {
-            text: "SELECT expertise_name" +
+            text: "SELECT expertise_name " +
                 "FROM Area_of_expertise INNER JOIN Expertise " +
                 "ON Area_of_expertise.expertise_id = Expertise.expertise_id " +
                 "WHERE Expertise.user_id = ?",
