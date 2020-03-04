@@ -166,13 +166,13 @@ function extractLangCookie(req) {
     return requestHandler.extractLang(req);
 }
 function getExpertise(req){
-    return userDAO.getExpertise(requestHandler.extractUserID)
+    return userDAO.getExpertise(requestHandler.extractUserID(req))
 }
 function postExpertise(req){
-    return userDAO.postExpertise()
+    return userDAO.postExpertise(requestHandler.extractExpertiseName(req))
 }
 function updateExpertise(req){
-    return userDAO.updateExpertise()
+    return userDAO.updateExpertise(requestHandler.extractExpertiseName(req),requestHandler.extractUserID(req))
 }
 function deleteExpertise(req){
     return userDAO.deleteExpertise()

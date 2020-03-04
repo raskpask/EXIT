@@ -216,18 +216,18 @@ function registerProject(project_details) {
         }
     });
 }
-function getExpertise(user_id){
+function getExpertise(user_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let getExpertise = {
-            text: "SELECT expertise_name"+
-                "FROM Area_of_expertise INNER JOIN Expertise "+
-                "ON Area_of_expertise.expertise_id = Expertise.expertise_id"+
+            text: "SELECT expertise_name" +
+                "FROM Area_of_expertise INNER JOIN Expertise " +
+                "ON Area_of_expertise.expertise_id = Expertise.expertise_id" +
                 "WHERE Expertise.user_id = ?",
             values: [user_id]
         }
         client
-            .query(getExpertise.text,getExpertise.values)
+            .query(getExpertise.text, getExpertise.values)
             .then(res => {
                 resolve(res)
             })
@@ -237,18 +237,63 @@ function getExpertise(user_id){
         client.end()
     })
 }
-function postExpertise(expertise_name){
+function postExpertise(expertise_name) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let postExpertise = {
-            text: "INSERT INTO Area_of_expertise (expertise_name)"+
+            text: "INSERT INTO Area_of_expertise (expertise_name)" +
                 "VALUES (?)",
             values: [expertise_name]
         }
         client
-            .query(postExpertise.text,postExpertise.values)
+            .query(postExpertise.text, postExpertise.values)
             .then(res => {
-                resolve(res)
+                if (res.affectedRows == 1) {
+                    resolve()
+                }
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        client.end()
+    })
+}
+function updateExpertise(expertise_name,expertise_id) {
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection()
+        let updateExpertise = {
+            text: "UPDATE Area_of_expertise " +
+                "SET expertise_name = ? " +
+                "WHERE expertise_id = ? ",
+            values: [expertise_name,expertise_id]
+        }
+        client
+            .query(updateExpertise.text, updateExpertise.values)
+            .then(res => {
+                if (res.affectedRows == 1) {
+                    resolve()
+                }
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        client.end()
+    })
+}
+function deleteExpertise(expertise_name,expertise_id) {
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection()
+        let deleteExpertise = {
+            text: "DELETE FROM Area_of_expertise " +
+                "WHERE expertise_id = ? ",
+            values: [expertise_id]
+        }
+        client
+            .query(deleteExpertise.text, deleteExpertise.values)
+            .then(res => {
+                if (res.affectedRows == 1) {
+                    resolve()
+                }
             })
             .catch(err => {
                 console.error(err)
@@ -280,14 +325,14 @@ function postBudgetYear(budget_year) {
         const client = await pool.getConnection()
         let postBudgetYear = {
             text: "INSERT INTO Budget_year (year,master_hours,bachelor_hours,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5) " +
-            "VALUES (?,?,?,?,?,?,?,?,?)",
-            values: [budget_year.year,budget_year.master_hours,budget_year.bachelor_hours,budget_year.total_tutoring_hours,
-                budget_year.factor_1,budget_year.factor_2,budget_year.factor_3,budget_year.factor_4,budget_year.factor_5]
+                "VALUES (?,?,?,?,?,?,?,?,?)",
+            values: [budget_year.year, budget_year.master_hours, budget_year.bachelor_hours, budget_year.total_tutoring_hours,
+            budget_year.factor_1, budget_year.factor_2, budget_year.factor_3, budget_year.factor_4, budget_year.factor_5]
         }
         client
-            .query(postBudgetYear.text,postBudgetYear.values)
+            .query(postBudgetYear.text, postBudgetYear.values)
             .then(res => {
-                if(res.affectedRows == 1){
+                if (res.affectedRows == 1) {
                     resolve()
                 }
             })
@@ -297,20 +342,20 @@ function postBudgetYear(budget_year) {
         client.end()
     })
 }
-function updateBudgetYear(budget_year){
+function updateBudgetYear(budget_year) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let updateBudgetYear = {
-            text: "UPDATE Budget_year"+
-            "SET  year = ? , master_hours= ?, bachelor_hours =?, total_tutoring_hours=?,factor_1=?,factor_2=?,factor_3=?,factor_4=?,factor_5=? "+
-            "WHERE year = ?",
-            values: [budget_year.year,budget_year.master_hours,budget_year.bachelor_hours,budget_year.total_tutoring_hours,
-                budget_year.factor_1,budget_year.factor_2,budget_year.factor_3,budget_year.factor_4,budget_year.factor_5,'2020']
+            text: "UPDATE Budget_year" +
+                "SET  year = ? , master_hours= ?, bachelor_hours =?, total_tutoring_hours=?,factor_1=?,factor_2=?,factor_3=?,factor_4=?,factor_5=? " +
+                "WHERE year = ?",
+            values: [budget_year.year, budget_year.master_hours, budget_year.bachelor_hours, budget_year.total_tutoring_hours,
+            budget_year.factor_1, budget_year.factor_2, budget_year.factor_3, budget_year.factor_4, budget_year.factor_5, '2020']
         }
         client
-            .query(updateBudgetYear.text,updateBudgetYear.values)
+            .query(updateBudgetYear.text, updateBudgetYear.values)
             .then(res => {
-                if(res.affectedRows == 1){
+                if (res.affectedRows == 1) {
                     resolve()
                 }
             })
@@ -320,18 +365,18 @@ function updateBudgetYear(budget_year){
         client.end()
     })
 }
-function deleteBudgetYear(budget_year){
+function deleteBudgetYear(budget_year) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let deleteBudgetYear = {
-            text: "DELETE FROM Budget_year"+
-            "WHERE year = ?",
+            text: "DELETE FROM Budget_year" +
+                "WHERE year = ?",
             values: [budget_year.budget_year]
         }
         client
-            .query(deleteBudgetYear.text,deleteBudgetYear.values)
+            .query(deleteBudgetYear.text, deleteBudgetYear.values)
             .then(res => {
-                if(res.affectedRows == 1){
+                if (res.affectedRows == 1) {
                     resolve()
                 }
             })
