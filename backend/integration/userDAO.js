@@ -290,7 +290,7 @@ function updateExpertise(expertise_name, expertise_id) {
         client.end()
     })
 }
-function deleteExpertise(expertise_name, expertise_id) {
+function deleteExpertise( expertise_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let deleteExpertise = {

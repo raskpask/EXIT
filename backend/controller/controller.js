@@ -176,7 +176,7 @@ function updateExpertise(req){
     return userDAO.updateExpertise(requestHandler.extractExpertiseName(req),requestHandler.extractExpertiseID(req))
 }
 function deleteExpertise(req){
-    return userDAO.deleteExpertise()
+    return userDAO.deleteExpertise(requestHandler.extractExpertiseID(req))
 }
 function getBudgetYear(req){
     return userDAO.getBudgetYear()
