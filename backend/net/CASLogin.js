@@ -1,34 +1,70 @@
-const session = require('express-session');
-const CASAuthentication = require('cas-authentication');
+var saml2 = require('saml2-js');
+const fs = require('fs');
+const sp_options = {
+    entity_id: "https://saml.sys.kth.se/idp/shibboleth",
+    // private_key: fs.readFileSync("key-file.pem").toString(),
+    // certificate: fs.readFileSync("md-signer2.crt").toString(),
+    assert_endpoint: "https://localhost:8080/assert",
+}
+const idp_options = {
+    sso_login_url: "https://login.kth.se/login",
+    sso_logout_url: "https://login.kth.se/logout",
+    // certificates: [fs.readFileSync("cert-file1.crt").toString(), fs.readFileSync("cert-file2.crt").toString()]
+};
+const sp = new saml2.ServiceProvider(sp_options);
+const idp = new saml2.IdentityProvider(idp_options);
 
-const cas = new CASAuthentication({
-    cas_url: 'https://login.kth.se',
-    service_url: 'https://130.237.202.87:8080'
-});
 /**
  * Routes all api requests. 
  *
  * @param {App} router - The express application.
  */
 function router(router) {
-    router.use( session({
-        secret            : 'super secret key',
-        resave            : false,
-        saveUninitialized : true
-    }));
-    router.get('/app', cas.bounce, function (req, res) {
-        res.send('<html><body>Hello!</body></html>');
+    // Endpoint to retrieve metadata
+    router.get("/metadata.xml", function (req, res) {
+        res.type('application/xml');
+        res.send(sp.create_metadata());
     });
 
-    router.get('/api', cas.block, function (req, res) {
-        res.json({ success: true });
+    // Starting point for login
+    router.get("/login", function (req, res) {
+        sp.create_login_request_url(idp, {}, function (err, login_url, request_id) {
+            if (err != null)
+                return res.send(500);
+            res.redirect(login_url);
+        });
     });
-    router.get( '/api/user', cas.block, function ( req, res ) {
-        res.json( { cas_user: req.session[ cas.session_name ] } );
+
+    // Assert endpoint for when login completes
+    router.post("/assert", function (req, res) {
+        var options = { request_body: req.body };
+        sp.post_assert(idp, options, function (err, saml_response) {
+            if (err != null)
+                return res.send(500);
+
+            // Save name_id and session_index for logout
+            // Note:  In practice these should be saved in the user session, not globally.
+            name_id = saml_response.user.name_id;
+            session_index = saml_response.user.session_index;
+            console.log("Logged in")
+            res.send("Hello!");
+        });
     });
-    router.get( '/authenticate', cas.bounce_redirect );
-    router.get( '/logout', cas.logout );
+
+    // Starting point for logout
+    router.get("/logout", function (req, res) {
+        var options = {
+            name_id: name_id,
+            session_index: session_index
+        };
+
+        sp.create_logout_request_url(idp, options, function (err, logout_url) {
+            if (err != null)
+                return res.send(500);
+            res.redirect(logout_url);
+        });
+    });
 }
-    module.exports = {
-        router,
-    }
+module.exports = {
+    router,
+}
