@@ -80,21 +80,21 @@ class Header extends Component {
     chooseUserLevel() {
         return this.renderAdmin()
 
-        let privilegeLevel = document.cookie.split('privilegeLevel=')[1];
+        // let privilegeLevel = document.cookie.split('privilegeLevel=')[1];
 
-        if (Boolean(privilegeLevel)) {
-            privilegeLevel = privilegeLevel.split(';')[0];
-        }
-        if (privilegeLevel === '1') {
-            return this.renderAdmin()
-        } else if (privilegeLevel === '2') {
-            return this.renderDirector()
-        } else if (privilegeLevel === '3') {
-            return this.renderExaminer()
-        } else if (privilegeLevel === '4') {
-            return this.renderStudent()
-        } else {
-            return this.renderLogin()
+        // if (Boolean(privilegeLevel)) {
+        //     privilegeLevel = privilegeLevel.split(';')[0];
+        // }
+        // if (privilegeLevel === '1') {
+        //     return this.renderAdmin()
+        // } else if (privilegeLevel === '2') {
+        //     return this.renderDirector()
+        // } else if (privilegeLevel === '3') {
+        //     return this.renderExaminer()
+        // } else if (privilegeLevel === '4') {
+        //     return this.renderStudent()
+        // } else {
+        //     return this.renderLogin()
         }
     }
     renderBrand() {
