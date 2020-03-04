@@ -172,7 +172,8 @@ function postExpertise(req){
     return userDAO.postExpertise(requestHandler.extractExpertiseName(req))
 }
 function updateExpertise(req){
-    return userDAO.updateExpertise(requestHandler.extractExpertiseName(req),requestHandler.extractUserID(req))
+    console.log(req.body)
+    return userDAO.updateExpertise(requestHandler.extractExpertiseName(req),requestHandler.extractExpertiseID(req))
 }
 function deleteExpertise(req){
     return userDAO.deleteExpertise()
