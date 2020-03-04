@@ -102,7 +102,6 @@ function router(router) {
     });
     router.get('/api/budgetYear', async (req, res) => {
         try {
-            // Send a budget year
             res.send(await controller.getBudgetYear(req))
         } catch (error) {
             dbErrors.respondError(error.message, res)
