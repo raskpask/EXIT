@@ -259,6 +259,7 @@ function postExpertise(expertise_name) {
             .query(postExpertise.text, postExpertise.values)
             .then(res => {
                 if (res.affectedRows == 1) {
+                    console.log("Added!")
                     resolve()
                 }
             })
