@@ -81,32 +81,31 @@ function router(router) {
 
     router.get('/api/expertise', async (req, res) => {
         try {
-            await controller.getExpertise(req)
-            res.send()
+            res.send(await controller.getExpertise(req))
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }
     });
     router.post('/api/expertise', async (req, res) => {
         try {
-            // Adds the expertise to user
-            res.send(500)
+            await controller.postExpertise(req)
+            res.send()
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }
     });
     router.put('/api/expertise', async (req, res) => {
         try {
-            // Updates the expertise of the user
-            res.send(500)
+            await controller.updateExpertise(req)
+            res.send()
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }
     });
     router.delete('/api/expertise', async (req, res) => {
         try {
-            // Deletes the expertise of the user
-            res.send(500)
+            await controller.deleteExpertise(req)
+            res.send()
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }
