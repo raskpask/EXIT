@@ -11,8 +11,8 @@ class SpecifiedBudgetYears extends Component {
         this.state = {
             budgetYears: [
                 {
-                    budgetYear:"",
-                    masterHours:"",
+                    budgetYear: "",
+                    masterHours: "",
                     bachleorHours: "",
                     factor2: "",
                     factor3: "",
@@ -23,21 +23,23 @@ class SpecifiedBudgetYears extends Component {
             ]
         }
     }
-    componentDidMount(){
+    componentDidMount() {
         this.getBudgetYears()
     }
-    getBudgetYears= ()=>{
+    getBudgetYears = () => {
         axios
-        .get('/api/budgetYear')
-        .then(res=>{
-            if(res.status === 200){
-                this.setState({budgetYears: res.data})
-            }
-        })
-        .catch(err=>{
-            console.error(err)
-            toast(this.props.info.specifiedBudgetYears.fail)
-        })
+            .get('/api/budgetYear')
+            .then(res => {
+                if (res.status === 200 && res.data !== '') {
+                    this.setState({ budgetYears: res.data })
+                } else {
+                    toast(this.props.info.specifiedBudgetYears.fail)
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                toast(this.props.info.specifiedBudgetYears.fail)
+            })
     }
     renderTable() {
         return (
@@ -47,24 +49,26 @@ class SpecifiedBudgetYears extends Component {
                         <th>{this.props.info.specifiedBudgetYears.budgetYear}</th>
                         <th>{this.props.info.specifiedBudgetYears.masterHours}</th>
                         <th>{this.props.info.specifiedBudgetYears.bachleorHours}</th>
+                        <th>{this.props.info.specifiedBudgetYears.totalTutoringHours}</th>
+                        <th>{this.props.info.specifiedBudgetYears.factor1}</th>
                         <th>{this.props.info.specifiedBudgetYears.factor2}</th>
                         <th>{this.props.info.specifiedBudgetYears.factor3}</th>
                         <th>{this.props.info.specifiedBudgetYears.factor4}</th>
                         <th>{this.props.info.specifiedBudgetYears.factor5}</th>
-                        <th>{this.props.info.specifiedBudgetYears.factor6}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {this.state.budgetYears.map((budgetYear, key) =>
                         < tr key={key} className="pressForInfo" >
-                            <td key={"budgetYear: " + key} >{budgetYear.budgetYear}</td>
-                            <td key={"masterHours: " + key} > {budgetYear.masterHours}</td>
-                            <td key={"bachleorHours: " + key} > {budgetYear.bachleorHours}</td>
-                            <td key={"factor2: " + key} > {budgetYear.factor2}</td>
-                            <td key={"factor3: " + key} > {budgetYear.factor3}</td>
-                            <td key={"factor4: " + key} > {budgetYear.factor4}</td>
-                            <td key={"factor5: " + key} > {budgetYear.factor5}</td>
-                            <td key={"factor6: " + key} > {budgetYear.factor6}</td>
+                            <td key={"budgetYear: " + key} >{budgetYear.year}</td>
+                            <td key={"masterHours: " + key} > {budgetYear.master_hours}</td>
+                            <td key={"bachleorHours: " + key} > {budgetYear.bachelor_hours}</td>
+                            <td key={"totalTutoringHours: " + key} > {budgetYear.total_tutoring_hours}</td>
+                            <td key={"factor2: " + key} > {budgetYear.factor_1}</td>
+                            <td key={"factor3: " + key} > {budgetYear.factor_2}</td>
+                            <td key={"factor4: " + key} > {budgetYear.factor_3}</td>
+                            <td key={"factor5: " + key} > {budgetYear.factor_4}</td>
+                            <td key={"factor6: " + key} > {budgetYear.factor_5}</td>
                         </tr>
                     )}
                 </tbody>

@@ -66,11 +66,12 @@ function getLanguage() {
             budgetYear: "Budget year",
             masterHours: "Master hours",
             bachleorHours: "Bachleor hours",
+            totalTutoringHours: "Total tutoring hours",
             factor2: "Factor two",
             factor3: "Factor three",
             factor4: "Factor four",
             factor5: "Factor five",
-            factor6: "Factor six",
+            factor1: "Factor one",
             fail: "Something went wrong and the budget years could not be fetched."
         },
         addBudgetYear: {
@@ -81,11 +82,12 @@ function getLanguage() {
             budgetYearPlaceholder: "Enter the year of the buget",
             masterHoursPlaceholder: "Enter amount of hours for a master project",
             bachleorHoursPlaceholder: "Enter amount of hours for a bachleor project",
+            totalTutoringHoursPlaceholder: "Enter the total amount of tutoring hours",
             factor2Placeholder: "Factor two students",
             factor3Placeholder: "Factor three students",
             factor4Placeholder: "Factor four students",
             factor5Placeholder: "Factor five students",
-            factor6Placeholder: "Factor six students",
+            factor1Placeholder: "Factor one students",
             added: "The budget year was added to the database.",
             fail: "Something went wrong, the budget year was not added to the database."
         },
