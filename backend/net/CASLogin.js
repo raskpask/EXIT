@@ -1,15 +1,16 @@
 var saml2 = require('saml2-js');
 const fs = require('fs');
+const cert = require("/Users/molin/Desktop/EXIT/backend/net/md-signer2.crt")
 const sp_options = {
     entity_id: "https://saml.sys.kth.se/idp/shibboleth",
     // private_key: fs.readFileSync("key-file.pem").toString(),
     // certificate: fs.readFileSync("md-signer2.crt").toString(),
-    assert_endpoint: "https://localhost:8080/assert",
+    assert_endpoint: "https://130.237.202.87:8080/assert",
 }
 const idp_options = {
     sso_login_url: "https://login.kth.se/login",
     sso_logout_url: "https://login.kth.se/logout",
-    // certificates: [fs.readFileSync("cert-file1.crt").toString(), fs.readFileSync("cert-file2.crt").toString()]
+    // certificates: [fs.readFileSync(cert).toString()] //, fs.readFileSync("cert-file2.crt").toString()]
 };
 const sp = new saml2.ServiceProvider(sp_options);
 const idp = new saml2.IdentityProvider(idp_options);
