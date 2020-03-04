@@ -211,7 +211,9 @@ function extractProjectID(req) {
     }
     return ID;
 }
-
+function extractUserID(req){
+    return req.body.userID;
+}
 function extractBudgetYear(req){
     const budgetYear = req.body;
     const year = budgetYear.budgetYear
@@ -236,5 +238,6 @@ module.exports = {
     extractCreateApplication,
     extractLang,
     extractRegisterProjectDetails,
-    extractBudgetYear
+    extractBudgetYear,
+    extractUserID
 }

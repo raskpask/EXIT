@@ -4,12 +4,12 @@ const fs = require('fs');
 const sp_options = {
     entity_id: "https://saml.sys.kth.se/idp/shibboleth",
     // private_key: fs.readFileSync("key-file.pem").toString(),
-    // certificate: fs.readFileSync("md-signer2.crt").toString(),
+    certificate: "https://mds.swamid.se/md/md-signer2.crt",
     assert_endpoint: "https://130.237.202.87:8080/assert",
 }
 const idp_options = {
-    sso_login_url: "https://login.kth.se/login",
-    sso_logout_url: "https://login.kth.se/logout",
+    sso_login_url: "https://saml-5.sys.kth.se/idp/profile/SAML2/Redirect/SSO",
+    sso_logout_url: "https://saml-5.sys.kth.se/",
     certificates: ["https://mds.swamid.se/md/md-signer2.crt"] //, fs.readFileSync("cert-file2.crt").toString()]
 };
 const sp = new saml2.ServiceProvider(sp_options);

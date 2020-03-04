@@ -166,7 +166,7 @@ function extractLangCookie(req) {
     return requestHandler.extractLang(req);
 }
 function getExpertise(req){
-    return userDAO.getExpertise()
+    return userDAO.getExpertise(requestHandler.extractUserID)
 }
 function postExpertise(req){
     return userDAO.postExpertise()

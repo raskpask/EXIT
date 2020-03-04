@@ -216,17 +216,37 @@ function registerProject(project_details) {
         }
     });
 }
-function getExpertise(){
+function getExpertise(user_id){
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let getExpertise = {
             text: "SELECT expertise_name"+
                 "FROM Area_of_expertise INNER JOIN Expertise "+
                 "ON Area_of_expertise.expertise_id = Expertise.expertise_id"+
-                "WHERE Expertise.user_id "
+                "WHERE Expertise.user_id = ?",
+            values: [user_id]
         }
         client
-            .query(getBudgetYear.text)
+            .query(getExpertise.text,getExpertise.values)
+            .then(res => {
+                resolve(res)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        client.end()
+    })
+}
+function postExpertise(expertise_name){
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection()
+        let postExpertise = {
+            text: "INSERT INTO Area_of_expertise (expertise_name)"+
+                "VALUES (?)",
+            values: [expertise_name]
+        }
+        client
+            .query(postExpertise.text,postExpertise.values)
             .then(res => {
                 resolve(res)
             })
@@ -330,6 +350,9 @@ module.exports = {
     getProject,
     registerProject,
     getExpertise,
+    postExpertise,
+    updateExpertise,
+    deleteExpertise,
     getBudgetYear,
     postBudgetYear,
     updateBudgetYear,
