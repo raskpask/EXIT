@@ -103,31 +103,31 @@ function router(router) {
     router.get('/api/budgetYear', async (req, res) => {
         try {
             // Send a budget year
-            res.send(500)
+            res.send(await controller.getBudgetYear(req))
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }
     });
     router.post('/api/budgetYear', async (req, res) => {
         try {
-            // Add a budget year
-            res.send(500)
-        } catch (error) {
-            dbErrors.respondError(error.message, res)
+            await controller.postBudgetYear(req)
+            res.send()
+        } catch (err) {
+            console.error(err)
         }
     });
     router.put('/api/budgetYear', async (req, res) => {
         try {
-            // Update a budget year
-            res.send(500)
+            await controller.updateBudgetYear(req)
+            res.send()
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }
     });
     router.delete('/api/budgetYear', async (req, res) => {
         try {
-            // Delete a budget year
-            res.send(500)
+            await controller.deleteBudgetYear(req)
+            res.send()
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }

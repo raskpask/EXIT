@@ -166,6 +166,20 @@ function extractLangCookie(req) {
     return requestHandler.extractLang(req);
 }
 
+function getBudgetYear(req){
+    return userDAO.getBudgetYear();
+}
+
+function postBudgetYear(req){
+    return userDAO.postBudgetYear(requestHandler.extractBudgetYear(req))
+}
+function updateBudgetYear(req){
+    return userDAO.updateBudgetYear(requestHandler.extractBudgetYear(req))
+}
+function deleteBudgetYear(req){
+    return userDAO.deleteBudgetYear(requestHandler.extractBudgetYear(req))
+}
+
 module.exports = {
     registerUser,
     registerProject,
@@ -180,5 +194,9 @@ module.exports = {
     checkIfUsernameIsAvailable,
     getToken,
     extractLangCookie,
-    getProject
+    getProject,
+    getBudgetYear,
+    postBudgetYear,
+    updateBudgetYear,
+    deleteBudgetYear
 }
