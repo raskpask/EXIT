@@ -3,11 +3,23 @@ import { Navbar, Nav } from 'react-bootstrap';
 import Cookies from 'universal-cookie';
 import { errorCodes } from '../model/dbErrors'
 import { toast } from 'react-toastify';
-
-
 import axios from 'axios';
-
 import '../resources/css/header.css';
+// var saml2 = require('saml2-js');
+// // const fs = require('fs');
+// const sp_options = {
+//     entity_id: "https://saml.sys.kth.se/idp/shibboleth",
+//     // private_key: fs.readFileSync("key-file.pem").toString(),
+//     // certificate: fs.readFileSync("../resources/md-signer2.crt").toString(),
+//     assert_endpoint: "https://sp.example.com/assert",
+// }
+// const idp_options = {
+//     sso_login_url: "https://login.kth.se/login",
+//     sso_logout_url: "https://login.kth.se/logout",
+//     // certificates: [fs.readFileSync("cert-file1.crt").toString(), fs.readFileSync("cert-file2.crt").toString()]
+// };
+// const sp = new saml2.ServiceProvider(sp_options);
+// const idp = new saml2.IdentityProvider(idp_options);
 
 class Header extends Component {
     constructor(props) {
@@ -24,40 +36,38 @@ class Header extends Component {
         this.props.app.forceUpdate()
     }
     login = async () => {
-        this.setState({
-            form: {
-                invalidLogin: false,
-                isLoading: true
-            }
-        });
         try {
-            const credentials = {
-                username: this.state.username,
-                password: this.state.password
-            }
-
-            const responseLogin = await axios.post('/api/authentication', credentials)
-            if (responseLogin.status === 200) {
-                window.location.href = "/";
-                await axios.get('/api/user');
-                this.forceUpdate()
-            }
-
-        } catch (error) {
-            if (error.response.data === errorCodes.LOGIN_ERROR.code) {
-                toast(this.props.info.header.loginError)
-                this.setState({
-                    form: {
-                        invalidLogin: true,
-                        isLoading: false
-                    }
-                });
-            } else {
-                this.setState({ isLoading: false })
-                console.error(error)
-                toast(this.props.info.general.error)
-            }
+            await axios.get('/api/login')
+        } catch(err){
+            console.error(err)
         }
+        //     const credentials = {
+        //         username: this.state.username,
+        //         password: this.state.password
+        //     }
+
+        //     const responseLogin = await axios.post('/api/authentication', credentials)
+        //     if (responseLogin.status === 200) {
+        //         window.location.href = "/";
+        //         await axios.get('/api/user');
+        //         this.forceUpdate()
+        //     }
+
+        // } catch (error) {
+        //     if (error.response.data === errorCodes.LOGIN_ERROR.code) {
+        //         toast(this.props.info.header.loginError)
+        //         this.setState({
+        //             form: {
+        //                 invalidLogin: true,
+        //                 isLoading: false
+        //             }
+        //         });
+        //     } else {
+        //         this.setState({ isLoading: false })
+        //         console.error(error)
+        //         toast(this.props.info.general.error)
+        //     }
+        // }
     }
     logout = async () => {
         try {
@@ -78,7 +88,7 @@ class Header extends Component {
         return true
     }
     chooseUserLevel() {
-        return this.renderDirector()
+        return this.renderLogin()
 
         let privilegeLevel = document.cookie.split('privilegeLevel=')[1];
 
