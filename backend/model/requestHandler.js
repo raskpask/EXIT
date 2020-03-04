@@ -147,43 +147,45 @@ async function extractApplication(req) {
  */
 function extractRegisterProjectDetails(req) {
     if(validation.validateProject(req)){
-    let project_id = null;
-    let number_of_students = 0;
-    let project_title = '';
-    let project_description = '';
-    let credits = 0;
-    let start_date = '';
-    let end_date = '';
-    let in_progress = null;
-    let out_of_date = null;
-    let all_info_specified = null;
-    let company = null;
-    let company_contact = null;
-    let company_name = null;
-    let company_address = null;
-    let company_phone_number = null;
+        let project_id = null;
+        let number_of_students = 0;
+        let project_title = '';
+        let project_description = '';
+        let credits = 0;
+        let start_date = '';
+        let end_date = '';
+        let in_progress = null;
+        let out_of_date = null;
+        let all_info_specified = null;
+        let company = null;
+        let company_contact = null;
+        let company_name = null;
+        let company_address = null;
+        let company_phone_number = null;
 
-    //if(Boolean(req.body)){
+
         let project = req.body;//JSON.parse(req.body);
-        console.log(project);
+        //console.log(project);
 
-            //project_id = project.project_id;
-            number_of_students = project.numberOfStudents;
-            project_title = project.title;
-            project_description = project.projectDescription;
-            credits = project.credits;
-            start_date = project.startDate;
-            end_date = project.endDate;
-            if(project.companyName !== ''){
-                company_name = project.companyName;
-                company_address = project.companyAddress;
-                company_phone_number = project.companyPhoneNumber;
-            }
+                //project_id = project.project_id;
+        number_of_students = project.numberOfStudents;
+        project_title = project.title;
+        project_description = project.projectDescription;
+        credits = project.credits;
+        start_date = project.startDate;
+        end_date = project.endDate;
+
+        if(project.companyName !== ''){
+            company_name = project.companyName;
+            company_address = project.companyAddress;
+            company_phone_number = project.companyPhoneNumber;
+        }
     //}
 
     pd = new ProjectDetails(project_id,number_of_students,project_title,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,company_name,company_address,company_phone_number);
     console.log(pd);
     return pd;
+    
     }else{
         throw new Error(dbError.errorCodes.BAD_REQUEST_ERROR.code);
     }
