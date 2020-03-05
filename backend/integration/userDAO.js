@@ -459,7 +459,7 @@ module.exports = {
     registerUser,
     getUser,
     getWorkYear,
-    updateWorkYear
+    updateWorkYear,
     getUsername,
     getUserID,
     getProject,
