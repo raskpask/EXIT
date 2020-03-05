@@ -379,7 +379,7 @@ function deleteBudgetYear(budget_year) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let deleteBudgetYear = {
-            text: "DELETE FROM Budget_year" +
+            text: "DELETE FROM Budget_year " +
                 "WHERE year = ?",
             values: [budget_year.budget_year]
         }
