@@ -80,7 +80,7 @@ errorCodes = {
         code: 'APPLICATION_EDITED_ERROR',
         message: 'The application was updated after the user checked the status'
     },
-    BAD_REQUEST_ERROR:{
+    BAD_REQUEST_ERROR: {
         code: 'BAD_REQUEST_ERROR',
         message: 'There are errors in the sent data'
     }
@@ -98,19 +98,19 @@ function respondError(error, res) {
     switch (error) {
         case errorCodes.BAD_REQUEST_ERROR.code:
             res.status(403);
-            res.send(BAD_REQUEST_ERROR.code);
+            res.send(errorCodes.BAD_REQUEST_ERROR.code);
             break;
         case errorCodes.CONNECTION_ERROR.code:
             res.status(503);
-            res.send(CONNECTION_ERROR.code);
+            res.send(errorCodes.CONNECTION_ERROR.code);
             break;
         case errorCodes.INSERTING_USER_ERROR.code:
             res.status(503);
-            res.send(INSERTING_USER_ERROR.code);
+            res.send(errorCodes.INSERTING_USER_ERROR.code);
             break;
         case errorCodes.UNKNOWN_ERROR.code:
             res.status(500);
-            res.send(UNKNOWN_ERROR.code);
+            res.send(errorCodes.UNKNOWN_ERROR.code);
             break;
         case errorCodes.USER_ERROR.code:
             res.status(503);

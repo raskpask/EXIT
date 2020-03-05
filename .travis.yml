@@ -51,4 +51,4 @@ env:
 
 script:
 
-  - node_modules/.bin/newman run tests/IV1201_API_test.postman_collection.json -e tests/IV1201_RecApp.postman_environment.json --color auto --disable-unicode
+  #- node_modules/.bin/newman run tests/IV1201_API_test.postman_collection.json -e tests/IV1201_RecApp.postman_environment.json --color auto --disable-unicode
