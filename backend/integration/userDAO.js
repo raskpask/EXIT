@@ -85,7 +85,7 @@ function getWorkYear(user_id, year) {
         const getWorkYearQuery = {
             text: "SELECT work_hours,available_hours " +
                 "FROM Work_year INNER JOIN Budget_work "+
-                "ON Work_year.work_year_id = Budget_work.work_year_id"+
+                "ON Work_year.work_year_id = Budget_work.work_year_id "+
                 "WHERE person_id=? AND year = ?",
             values: [user_id,year]
         }
