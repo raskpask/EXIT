@@ -42,8 +42,7 @@ function router(router) {
 
     router.get('/api/user', async (req, res) => {
         try {
-            const user = await controller.getUser(req);
-            res.send(JSON.stringify({ user: user }));
+            res.send(await controller.getUser(req));
         } catch (error) {
             dbErrors.respondError(error.message, res)
             console.error(error)

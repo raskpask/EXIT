@@ -56,7 +56,10 @@ function getUser(user_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const getUserQuery = {
-            text: "SELECT * FROM User WHERE user_id=?",
+            text: "SELECT * "+
+            "FROM User INNER JOIN Work_year "+
+            "On User.user_id = Work_year.person_id "+
+            "WHERE user_id=?",
             values: [user_id]
         }
         client
