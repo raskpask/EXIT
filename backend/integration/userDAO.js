@@ -97,6 +97,7 @@ function getWorkYear(user_id, year) {
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
                 }
                 client.end()
+                console.log(res[0])
                 resolve({work_year:{
                     work_hours: res[0].work_hours,
                     available_hours: res[0].available_hours
