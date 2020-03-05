@@ -56,7 +56,7 @@ function getUser(user_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const getUserQuery = {
-            text: "SELECT * "+
+            text: "SELECT user_type_id,email,first_name,last_name,kth_username,phone_number,user_id,work_hours,available_hours,work_year_id "+
             "FROM User INNER JOIN Work_year "+
             "On User.user_id = Work_year.person_id "+
             "WHERE User.user_id=?",
@@ -65,7 +65,7 @@ function getUser(user_id) {
         client
             .query(getUserQuery.text, getUserQuery.values)
             .then(res => {
-                console.log(res)
+                console.log(res[0])
                 if (res == undefined) {
                     client.end();
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
