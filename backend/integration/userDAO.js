@@ -21,8 +21,8 @@ function registerUser(user) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const query = {
-            text: "INSERT INTO person (user_type_id,kth_email,alt_email,first_name,last_name,kth_username,phone_number) VALUES(?,?,?,?,?,?)",
-            values: [user.user_type_id, user.kth_email, user.alt_email, user.first_name, user.last_name, user.kth_username, user.phone_number]
+            text: "INSERT INTO person (user_type_id,email,first_name,last_name,kth_username,phone_number) VALUES(?,?,?,?,?)",
+            values: [user.user_type_id, user.email, user.first_name, user.last_name, user.kth_username, user.phone_number]
         }
         client
             .query(query)
@@ -182,7 +182,7 @@ function registerProject(project_details) {
         const client = await pool.getConnection()
         try {
             await client.query("BEGIN");
-            if (project_details.company_name !== null) {
+            if (project_details.company_name !== undefined) {
                 let addCompanyQuery = {
                     text: "INSERT INTO Company (name,address,phone_number) "
                         + "VALUES (?,?,?); SELECT LAST_INSERT_ID()",
@@ -406,8 +406,8 @@ module.exports = {
     registerProject,
     getExpertise,
     postExpertise,
-    updateExpertise,
-    deleteExpertise,
+    //updateExpertise,
+    //deleteExpertise,
     getBudgetYear,
     postBudgetYear,
     updateBudgetYear,
