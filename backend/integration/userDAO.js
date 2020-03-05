@@ -360,7 +360,7 @@ function updateBudgetYear(budget_year) {
                 "SET  year = ? , master_hours_examiner= ?,master_hours_supervisor= ?, bachelor_hours_examiner =?, bachelor_hours_supervisor =?, total_tutoring_hours=?,factor_1=?,factor_2=?,factor_3=?,factor_4=?,factor_5=? " +
                 "WHERE year = ?",
             values: [budget_year.year, budget_year.master_hours_examiner, budget_year.master_hours_supervisor, budget_year.bachelor_hours_examiner, budget_year.bachelor_hours_supervisor, budget_year.total_tutoring_hours,
-            budget_year.factor_1, budget_year.factor_2, budget_year.factor_3, budget_year.factor_4, budget_year.factor_5]
+            budget_year.factor_1, budget_year.factor_2, budget_year.factor_3, budget_year.factor_4, budget_year.factor_5,budget_year.year]
         }
         client
             .query(updateBudgetYear.text, updateBudgetYear.values)
