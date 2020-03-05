@@ -10,8 +10,10 @@ class AddBudgetYear extends Component {
         super(props);
         this.state = {
             budgetYear: "",
-            masterHours: "",
-            bachleorHours: "",
+            masterHoursExaimer: "",
+            masterHoursSupervisor: "",
+            bachleorHoursExaminer: "13",
+            bachleorHoursSupervisor: "13",
             totalTutoringHours: "",
             factor1: "",
             factor2: "",
@@ -89,26 +91,47 @@ class AddBudgetYear extends Component {
                 </Row>
                 <Row>
                     <Col>
-                        <Form.Label>{this.props.info.specifiedBudgetYears.masterHours}</Form.Label>
+                        <Form.Label>{this.props.info.specifiedBudgetYears.masterHoursExaminer}</Form.Label>
                         <Form.Control
                             required
                             type="number"
-                            value={this.state.masterHours}
-                            placeholder={this.props.info.addBudgetYear.masterHoursPlaceholder}
-                            onChange={event => this.setState({ masterHours: event.target.value })}
+                            value={this.state.masterHoursExaminer}
+                            placeholder={this.props.info.specifiedBudgetYears.masterHoursExaminerPlaceholder}
+                            onChange={event => this.setState({ masterHoursExaminer: event.target.value })}
                         />
                     </Col>
                     <Col>
-                        <Form.Label>{this.props.info.specifiedBudgetYears.bachleorHours}</Form.Label>
+                        <Form.Label>{this.props.info.specifiedBudgetYears.masterHoursSupervisor}</Form.Label>
                         <Form.Control
                             required
                             type="number"
-                            value={this.state.bachleorHours}
-                            placeholder={this.props.info.addBudgetYear.bachleorHoursPlaceholder}
-                            onChange={event => this.setState({ bachleorHours: event.target.value })}
+                            value={this.state.masterHoursSupervisor}
+                            placeholder={this.props.info.specifiedBudgetYears.masterHoursSupervisorPlaceholder}
+                            onChange={event => this.setState({ masterHoursSupervisor: event.target.value })}
                         />
                     </Col>
-
+                </Row>
+                <Row>
+                    <Col>
+                        <Form.Label>{this.props.info.specifiedBudgetYears.bachleorHoursExaminer}</Form.Label>
+                        <Form.Control
+                            required
+                            type="number"
+                            value={this.state.bachleorHoursExaminer}
+                            placeholder={this.props.info.specifiedBudgetYears.bachleorHoursExaminerPlaceholder}
+                            onChange={event => this.setState({ bachleorHoursExaminer: event.target.value })}
+                        />
+                    </Col>
+                    <Col>
+                        <Form.Label>{this.props.info.specifiedBudgetYears.bachleorHoursSupervisor}</Form.Label>
+                        <Form.Control
+                            required
+                            type="number"
+                            value={this.state.bachleorHoursSupervisor}
+                            placeholder={this.props.info.specifiedBudgetYears.bachleorHoursSupervisorPlaceholder}
+                            onChange={event => this.setState({ bachleorHoursSupervisor: event.target.value })}
+                        />
+                    </Col>
                 </Row>
                 <Row>
                     <Col>

@@ -1,5 +1,10 @@
 function getLanguage() {
     const lang = {
+        button:{
+            submit: "Submit",
+            add: "Add",
+            remove: "Remove"
+        },
         access: {
             message: "You do not have the access rights for this page! Login or get higher privilege from admin"
         },
@@ -32,7 +37,13 @@ function getLanguage() {
             status: "Status",
             outDated: "Outdated",
             inProgess: "In progress",
-
+            edit: "Edit project",
+            delete: "Delete",
+            projectDeleted: "The project was successfully deleted!",
+            projectDeletedFail: "The project could not be deleted!",
+            updateSuccess: "The projects was updated",
+            updateFail :"The project could not be updated try again.",
+            submit: "Submit"
 
         },
         addDegreeProject: {
@@ -58,14 +69,28 @@ function getLanguage() {
             today: "Today",
             projectTitle: "Title",
             projectTitlePlaceholder: "Enter the title of the project",
+            addStudent: "Add student",
+            removeStudent: "Remove student",
+            studentName: "Student name",
+            studentNamePlaceholder: "Enter full name of the student",
+            kthUsername: "KTH username",
+            kthUsernamePlaceholder: "Enter KTH username.",
+            supervisor: "Supervisor",
+            supervisorPlaceholder: "Enter the KTH username of the supervisor.",
         },
         specifiedBudgetYears: {
             title: "Specified budget years",
             paragraph0: "This table shows all parameters for all specified budget years.",
             paragraph1: "Budget years",
             budgetYear: "Budget year",
-            masterHours: "Master hours",
-            bachleorHours: "Bachleor hours",
+            masterHoursExaminer: "Master hours examiner",
+            masterHoursSupervisor: "Master hours supervisor",
+            bachleorHoursExaminer: "Bachleor hours examiner (two students)",
+            bachleorHoursSupervisor: "Bachleor hours supervisor (two students)",
+            masterHoursExaminerPlaceholder: "Amount of hours for examiner in master project",
+            masterHoursSupervisorPlaceholder: "Amount of hours for supervisor in master project",
+            bachleorHoursExaminerPlaceholder: "Amount of hours for examiner in bachleor project",
+            bachleorHoursSupervisorPlaceholder: "Amount of hours for supervisor in bachleor project",
             totalTutoringHours: "Total tutoring hours",
             factor2: "Factor two",
             factor3: "Factor three",
@@ -89,7 +114,8 @@ function getLanguage() {
             factor5Placeholder: "Factor five students",
             factor1Placeholder: "Factor one students",
             added: "The budget year was added to the database.",
-            fail: "Something went wrong, the budget year was not added to the database."
+            fail: "Something went wrong, the budget year was not added to the database.",
+            addExaminer: "Add examiner"
         },
         addExaminer: {
             title: "Add examiner",
@@ -106,11 +132,13 @@ function getLanguage() {
                 "examiner mail and define the number of hours the examiner is supposed to use " +
                 "to tutor degree projects during the selected budget year.",
             bugetYear: "Budget Year",
-            budgetYearPlaceholder: "Enter the buget year you want to add the examiner to.",
+            budgetYearPlaceholder: "Enter the buget year you want to add the examiner/examiners to.",
             username: "Username",
-            usernamePlaceholder: "Enter the kth username of the user you want to add.",
-            numberOfHours: "Amout of hours",
-            numberOfHoursPlaceholder: "Enter the amout of hours the examiner should spend this budget year."
+            usernamePlaceholder: "KTH username.",
+            examinerHours: "Examiner hours",
+            supervisorHours: "Supervisor hours",
+            examinerHoursPlaceholder: "Amount of hours to be examiner.",
+            supervisorHoursPlaceholder: "Amount of hours to be supervisor."
         },
         header: {
             home: "Home",
@@ -130,7 +158,8 @@ function getLanguage() {
             addExaminer: "Add examiner",
             specifyTutoringHours: "Specify tutoring hours",
             addDirectorOfStudies: "Add director of studies",
-            directorsOfStudies: "Directors of studies"
+            directorsOfStudies: "Directors of studies",
+            
 
         },
         help: {
@@ -161,7 +190,8 @@ function getLanguage() {
             endDate: "End date",
             project: "Project information",
             withinTimeLimit: "Within time limit",
-            fail: "Something went wrong could not load your projects."
+            fail: "Something went wrong could not load your projects.",
+            info: "Info"
         },
         directorsOfStudies: {
             title: "Directors of studies",
