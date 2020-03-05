@@ -26,7 +26,7 @@ function registerUser(user) {
         }
         client
             .query(query)
-            .then(res => {
+            .then(res => {//., (err, res) => {
                 if (notVaildResponse(res)) {
                     client.end()
                     reject(new Error(dbError.errorCodes.INSERTING_USER_ERROR.code))
@@ -56,25 +56,21 @@ function getUser(user_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const getUserQuery = {
-            text: "SELECT user_type_id,email,first_name,last_name,kth_username,phone_number,user_id,work_hours,available_hours,work_year_id "+
-            "FROM User INNER JOIN Work_year "+
-            "ON User.user_id = Work_year.person_id "+
-            "WHERE User.user_id=?",
+            text: "SELECT * " +
+                "FROM User WHERE user_id=?",
             values: [user_id]
         }
         client
             .query(getUserQuery.text, getUserQuery.values)
             .then(res => {
-                console.log(res[0])
                 if (res == undefined) {
                     client.end();
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
                 }
-                // const rawUser = res[0];
-                // client.end()
-                // var foundUser = new User(rawUser.user_type_id, rawUser.kth_email, rawUser.alt_email, rawUser.first_name, rawUser.last_name, rawUser.kth_username, rawUser.phone_number, rawUser.user_id);
-                // resolve(foundUser);
-                resolve()
+                const rawUser = res[0];
+                client.end()
+                var foundUser = new User(rawUser.user_type_id, rawUser.email, rawUser.first_name, rawUser.last_name, rawUser.kth_username, rawUser.phone_number, rawUser.user_id);
+                resolve(foundUser);
             })
             .catch(err => {
                 client.end()
@@ -83,7 +79,64 @@ function getUser(user_id) {
             });
     });
 }
-
+function getWorkYear(user_id, year) {
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection();
+        const getWorkYearQuery = {
+            text: "SELECT work_hours,available_hours " +
+                "FROM Work_year INNER JOIN Budget_work "+
+                "ON Work_year.work_year_id = Budget_work.work_year_id"+
+                "WHERE person_id=? AND year = ?",
+            values: [user_id,year]
+        }
+        client
+            .query(getWorkYearQuery.text, getWorkYearQuery.values)
+            .then(res => {
+                if (res == undefined) {
+                    client.end();
+                    reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
+                }
+                client.end()
+                resolve({work_year:{
+                    work_hours: res[0].work_hours,
+                    available_hours: res[0].available_hours
+                }});
+            })
+            .catch(err => {
+                client.end()
+                console.error(err);
+                reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
+            });
+    });
+}
+function updateWorkYear(user_id, year,data) {
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection();
+        const updateWorkYearQuery = {
+            text: "UPDATE Work_year INNER JOIN Budget_year ON Work_year.work_year_id = Budget_work.work_year_id " +
+                "SET work_hours = ?, available_hours = ? "+
+                "WHERE person_id=? AND year = ?",
+            values: [user_id,year,data.work_hours,data.available_hours]
+        }
+        client
+            .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
+            .then(res => {
+                if (res == undefined) {
+                    client.end();
+                    reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
+                }
+                client.end()
+                if (res.affectedRows == 1) {
+                    resolve()
+                }
+            })
+            .catch(err => {
+                client.end()
+                console.error(err);
+                reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
+            });
+    });
+}
 /**
  * Gets the KTH username of a user using their database ID.
  * @param {int} user_id the database id of the user
@@ -365,7 +418,7 @@ function updateBudgetYear(budget_year) {
                 "SET  year = ? , master_hours_examiner= ?,master_hours_supervisor= ?, bachelor_hours_examiner =?, bachelor_hours_supervisor =?, total_tutoring_hours=?,factor_1=?,factor_2=?,factor_3=?,factor_4=?,factor_5=? " +
                 "WHERE year = ?",
             values: [budget_year.year, budget_year.master_hours_examiner, budget_year.master_hours_supervisor, budget_year.bachelor_hours_examiner, budget_year.bachelor_hours_supervisor, budget_year.total_tutoring_hours,
-            budget_year.factor_1, budget_year.factor_2, budget_year.factor_3, budget_year.factor_4, budget_year.factor_5,budget_year.year]
+            budget_year.factor_1, budget_year.factor_2, budget_year.factor_3, budget_year.factor_4, budget_year.factor_5, budget_year.year]
         }
         client
             .query(updateBudgetYear.text, updateBudgetYear.values)
@@ -405,16 +458,18 @@ function deleteBudgetYear(budget_year) {
 module.exports = {
     registerUser,
     getUser,
+    getWorkYear,
+    updateWorkYear
     getUsername,
     getUserID,
     getProject,
     registerProject,
     getExpertise,
     postExpertise,
-    //updateExpertise,
-    //deleteExpertise,
+    updateExpertise,
+    deleteExpertise,
     getBudgetYear,
     postBudgetYear,
     updateBudgetYear,
-    deleteBudgetYear
+    deleteBudgetYear,
 }

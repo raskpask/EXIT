@@ -71,6 +71,22 @@ async function getProject(req) {
         throw error
     }
 }
+async function getWorkYear(req) {
+    try {
+        return await userDAO.getWorkYear(req.body.user_id,req.body.year);
+    }
+    catch (error) {
+        throw error
+    }
+}
+async function updateWorkYear(req) {
+    try {
+        return await userDAO.getProject(req.body.user_id,req.body.year,requestHandler.getWorkYear(req));
+    }
+    catch (error) {
+        throw error
+    }
+}
 /**
  * Validates if the username is in the DB.
  *
@@ -213,5 +229,7 @@ module.exports = {
     getBudgetYear,
     postBudgetYear,
     updateBudgetYear,
-    deleteBudgetYear
+    deleteBudgetYear,
+    getWorkYear,
+    updateWorkYear
 }

@@ -77,7 +77,22 @@ function router(router) {
         }
         res.send();
     });
-
+    router.get('/api/workYear', async (req, res) => {
+        try {
+            res.send(await controller.getWorkYear(req))
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+        res.send();
+    });
+    router.put('/api/workYear', async (req, res) => {
+        try {
+            res.send(await controller.updateWorkYear(req))
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+        res.send();
+    });
     router.get('/api/expertise', async (req, res) => {
         try {
             res.send(await controller.getExpertise(req))
