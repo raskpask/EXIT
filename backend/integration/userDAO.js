@@ -356,7 +356,7 @@ function updateBudgetYear(budget_year) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let updateBudgetYear = {
-            text: "UPDATE Budget_year" +
+            text: "UPDATE Budget_year " +
                 "SET  year = ? , master_hours= ?, bachelor_hours =?, total_tutoring_hours=?,factor_1=?,factor_2=?,factor_3=?,factor_4=?,factor_5=? " +
                 "WHERE year = ?",
             values: [budget_year.year, budget_year.master_hours, budget_year.bachelor_hours, budget_year.total_tutoring_hours,
