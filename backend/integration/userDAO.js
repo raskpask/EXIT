@@ -114,7 +114,7 @@ function updateWorkYear(user_id, year,data) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const updateWorkYearQuery = {
-            text: "UPDATE Work_year INNER JOIN Budget_year ON Work_year.work_year_id = Budget_work.work_year_id " +
+            text: "UPDATE Work_year " +
                 "SET work_hours = ?, available_hours = ? "+
                 "WHERE person_id=? AND year = ?",
             values: [user_id,year,data.work_hours,data.available_hours]
