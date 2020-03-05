@@ -84,10 +84,10 @@ function getWorkYear(user_id, year) {
         const client = await pool.getConnection();
         const getWorkYearQuery = {
             text: "SELECT work_hours,available_hours " +
-                "FROM Work_year INNER JOIN Budget_work "+
-                "ON Work_year.work_year_id = Budget_work.work_year_id "+
+                "FROM Work_year INNER JOIN Budget_work " +
+                "ON Work_year.work_year_id = Budget_work.work_year_id " +
                 "WHERE person_id=? AND year = ?",
-            values: [user_id,year]
+            values: [user_id, year]
         }
         client
             .query(getWorkYearQuery.text, getWorkYearQuery.values)
@@ -98,10 +98,12 @@ function getWorkYear(user_id, year) {
                 }
                 client.end()
                 console.log(res[0])
-                resolve({work_year:{
-                    work_hours: res[0].work_hours,
-                    available_hours: res[0].available_hours
-                }});
+                resolve({
+                    work_year: {
+                        work_hours: res[0].work_hours,
+                        available_hours: res[0].available_hours
+                    }
+                });
             })
             .catch(err => {
                 client.end()
@@ -110,14 +112,14 @@ function getWorkYear(user_id, year) {
             });
     });
 }
-function updateWorkYear(user_id, year,data) {
+function updateWorkYear(user_id, year, data) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const updateWorkYearQuery = {
             text: "UPDATE Work_year INNER JOIN Budget_year ON Work_year.work_year_id = Budget_work.work_year_id " +
-                "SET work_hours = ?, available_hours = ? "+
+                "SET work_hours = ?, available_hours = ? " +
                 "WHERE person_id=? AND year = ?",
-            values: [user_id,year,data.work_hours,data.available_hours]
+            values: [user_id, year, data.work_hours, data.available_hours]
         }
         client
             .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
@@ -398,17 +400,37 @@ function postBudgetYear(budget_year) {
             values: [budget_year.year, budget_year.master_hours_examiner, budget_year.master_hours_supervisor, budget_year.bachelor_hours_examiner, budget_year.bachelor_hours_supervisor, budget_year.total_tutoring_hours,
             budget_year.factor_1, budget_year.factor_2, budget_year.factor_3, budget_year.factor_4, budget_year.factor_5]
         }
+        const postBudgetWorkQuery = {
+            text: "INSERT INTO Budget_work (year)" +
+                "VALUES (?)",
+            values: [budget_year.year]
+        }
+        try{
+        await client.query("BEGIN");
         client
             .query(postBudgetYear.text, postBudgetYear.values)
             .then(res => {
                 if (res.affectedRows == 1) {
-                    resolve()
+                }
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        client
+            .query(postBudgetWorkQuery.text, postBudgetWorkQuery.values)
+            .then(res => {
+                if (res.affectedRows == 1) {
                 }
             })
             .catch(err => {
                 console.error(err)
             })
         client.end()
+        client.query("COMMIT");
+        } catch (err){
+            client.query("ROLLBACK")
+            console.error(err)
+        }
     })
 }
 function updateBudgetYear(budget_year) {
