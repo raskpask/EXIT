@@ -70,6 +70,7 @@ function getUser(user_id) {
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
                 }
                 const rawUser = res[0];
+                console.log(rawUser)
                 client.end()
                 var foundUser = new User(rawUser.user_type_id, rawUser.kth_email, rawUser.alt_email, rawUser.first_name, rawUser.last_name, rawUser.kth_username, rawUser.phone_number, rawUser.user_id);
                 resolve(foundUser);
