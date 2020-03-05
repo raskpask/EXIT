@@ -381,7 +381,7 @@ function deleteBudgetYear(budget_year) {
         let deleteBudgetYear = {
             text: "DELETE FROM Budget_year " +
                 "WHERE year = ?",
-            values: [budget_year.budget_year]
+            values: [budget_year.year]
         }
         client
             .query(deleteBudgetYear.text, deleteBudgetYear.values)
