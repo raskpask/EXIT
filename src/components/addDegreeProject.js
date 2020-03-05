@@ -14,8 +14,15 @@ class AddDegreeProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            students: [
+                {
+                    name: "",
+                    username: ""
+                },
+            ],
+            supervisor: "",
             projectTitle: "",
-            numberOfStudents: "",
+            numberOfStudents: 1,
             projectDescription: "",
             credits: "",
             startDate: "",
@@ -47,7 +54,14 @@ class AddDegreeProject extends Component {
     resetValues() {
         this.setState({
             projectTitle: "",
-            numberOfStudents: "",
+            numberOfStudents: 1,
+            students: [
+                {
+                    name: "",
+                    username: ""
+                },
+            ],
+            supervisor: "",
             projectDescription: "",
             credits: "",
             startDate: "",
@@ -63,6 +77,7 @@ class AddDegreeProject extends Component {
         return {
             title: this.state.projectTitle,
             numberOfStudents: this.state.numberOfStudents,
+            students: this.state.students,
             projectDescription: this.state.projectDescription,
             credits: this.state.credits,
             startDate: startDates[2] + '-' + startDates[0] + '-' + startDates[1],
@@ -71,6 +86,30 @@ class AddDegreeProject extends Component {
             companyAddress: this.state.companyAddress,
             companyPhone: this.state.companyPhone,
         }
+    }
+    handleChangeStudent(value, type, index) {
+        let studentsTemp = this.state.students
+        if (type === 'name') {
+            studentsTemp[index].name = value
+        } else {
+            studentsTemp[index].username = value
+        }
+        this.setState({ students: studentsTemp })
+        console.log(this.state.students)
+    }
+    addStudent() {
+        let studentsTemp = this.state.students
+        let numberOfStudentsTemp = this.state.numberOfStudents
+        numberOfStudentsTemp++
+        studentsTemp.push({ name: "", username: "" })
+        this.setState({ numberOfStudents: numberOfStudentsTemp, students: studentsTemp })
+    }
+    removeStudent() {
+        let studentsTemp = this.state.students
+        let numberOfStudentsTemp = this.state.numberOfStudents
+        numberOfStudentsTemp--
+        studentsTemp.pop({ name: "", username: "" })
+        this.setState({ numberOfStudents: numberOfStudentsTemp, students: studentsTemp })
     }
     renderForm() {
         return (
@@ -90,20 +129,46 @@ class AddDegreeProject extends Component {
                         </Form.Group>
                     </Col>
                 </Row>
+                {this.state.students.map((student, key) =>
+                    <Row>
+                        <Col md={8}>
+                            <Form.Group>
+                                <Form.Label>{this.props.info.addDegreeProject.studentName}</Form.Label>
+                                <Form.Control
+                                    as="input"
+                                    type="text"
+                                    value={student.name}
+                                    placeholder={this.props.info.addDegreeProject.studentNamePlaceholder}
+                                    onChange={event => this.handleChangeStudent(event.target.value, 'name', key)}
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group>
+                                <Form.Label>{this.props.info.addDegreeProject.kthUsername}</Form.Label>
+                                <Form.Control
+                                    required
+                                    as="input"
+                                    type="text"
+                                    value={student.username}
+                                    placeholder={this.props.info.addDegreeProject.kthUsernamePlaceholder}
+                                    onChange={event => this.handleChangeStudent(event.target.value, 'username', key)}
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                )}
                 <Row>
-                    <Col>
-                        <Form.Group>
-                            <Form.Label>{this.props.info.addDegreeProject.numOfStudents}</Form.Label>
-                            <Form.Control
-                                required
-                                as="input"
-                                type="number"
-                                value={this.state.numberOfStudents}
-                                placeholder={this.props.info.addDegreeProject.numOfStudentsPlaceholder}
-                                onChange={event => this.setState({ numberOfStudents: event.target.value })}
-                            />
-                        </Form.Group>
+                    <Col></Col>
+                    <Col className="alignCenter">
+                        <Button onClick={() => this.addStudent()}>{this.props.info.addDegreeProject.addStudent}</Button>
                     </Col>
+                    <Col className="alignCenter">
+                        <Button variant="danger" disabled={this.state.numberOfStudents === 1} onClick={() => this.removeStudent()}>{this.props.info.addDegreeProject.removeStudent}</Button>
+                    </Col>
+                    <Col></Col>
+                </Row>
+                <Row>
                     <Col>
                         <Form.Group>
                             <Form.Label>{this.props.info.addDegreeProject.credits}</Form.Label>
@@ -114,7 +179,19 @@ class AddDegreeProject extends Component {
                                 placeholder={this.props.info.addDegreeProject.credits}
                                 onChange={event => this.setState({ credits: event.target.value })}
                             />
-                        </Form.Group></Col>
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Group>
+                            <Form.Label>{this.props.info.addDegreeProject.supervisor}</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={this.state.supervisor}
+                                placeholder={this.props.info.addDegreeProject.supervisorPlaceholder}
+                                onChange={event => this.setState({ supervisor: event.target.value })}
+                            />
+                        </Form.Group>
+                    </Col>
                 </Row>
                 <Row>
                     <Col>

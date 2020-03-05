@@ -12,7 +12,8 @@ class MyDegreeProjects extends Component {
         this.state = {
             showUser: [],
             projects: [
-                {
+                {   
+                    projectID: "",
                     credits: "",
                     degreeTitle: "",
                     numOfStudents: "",
@@ -76,7 +77,7 @@ class MyDegreeProjects extends Component {
     renderFullProject(project) {
         return (
             <Fragment>
-                <Button variant="primary" className="ml-auto" id={project.id} onClick={() => this.showInfo(project.id, true)}>Info</Button>
+                <Button variant="primary" className="ml-auto" id={project.id} onClick={() => this.showInfo(project.id, true)}>{this.props.info.myDegreeProjects.info}</Button>
                 <Modal
                     centered
                     show={this.state.showUser[project.id]}
@@ -88,7 +89,7 @@ class MyDegreeProjects extends Component {
                         <Modal.Title>{this.props.info.myDegreeProjects.project}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <DegreeProject info={this.props.info} project={project} />
+                        <DegreeProject info={this.props.info} project={project} showInfo={this.showInfo} id={project.id}/>
                     </Modal.Body>
                 </Modal>
             </Fragment>
