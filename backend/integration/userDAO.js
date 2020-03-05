@@ -26,7 +26,7 @@ function registerUser(user) {
         }
         client
             .query(query)
-            .then(res => {//., (err, res) => {
+            .then(res => {
                 if (notVaildResponse(res)) {
                     client.end()
                     reject(new Error(dbError.errorCodes.INSERTING_USER_ERROR.code))
@@ -58,7 +58,7 @@ function getUser(user_id) {
         const getUserQuery = {
             text: "SELECT user_type_id,email,first_name,last_name,kth_username,phone_number,user_id,work_hours,available_hours,work_year_id "+
             "FROM User INNER JOIN Work_year "+
-            "On User.user_id = Work_year.person_id "+
+            "ON User.user_id = Work_year.person_id "+
             "WHERE User.user_id=?",
             values: [user_id]
         }
@@ -70,10 +70,11 @@ function getUser(user_id) {
                     client.end();
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
                 }
-                const rawUser = res[0];
-                client.end()
-                var foundUser = new User(rawUser.user_type_id, rawUser.kth_email, rawUser.alt_email, rawUser.first_name, rawUser.last_name, rawUser.kth_username, rawUser.phone_number, rawUser.user_id);
-                resolve(foundUser);
+                // const rawUser = res[0];
+                // client.end()
+                // var foundUser = new User(rawUser.user_type_id, rawUser.kth_email, rawUser.alt_email, rawUser.first_name, rawUser.last_name, rawUser.kth_username, rawUser.phone_number, rawUser.user_id);
+                // resolve(foundUser);
+                resolve()
             })
             .catch(err => {
                 client.end()
