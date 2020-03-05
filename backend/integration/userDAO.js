@@ -290,7 +290,7 @@ function updateExpertise(expertise_name, expertise_id) {
         client.end()
     })
 }
-function deleteExpertise( expertise_id) {
+function deleteExpertise(expertise_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let deleteExpertise = {
@@ -334,9 +334,9 @@ function postBudgetYear(budget_year) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let postBudgetYear = {
-            text: "INSERT INTO Budget_year (year,master_hours,bachelor_hours,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5) " +
+            text: "INSERT INTO Budget_year (year,master_hours_examiner,master_hours_supervisor,bachelor_hours_examiner,bachelor_hours_supervisor,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5) " +
                 "VALUES (?,?,?,?,?,?,?,?,?)",
-            values: [budget_year.year, budget_year.master_hours, budget_year.bachelor_hours, budget_year.total_tutoring_hours,
+            values: [budget_year.year, budget_year.master_hours_examiner, budget_year.master_hours_supervisor, budget_year.bachelor_hours_examiner, budget_year.bachelor_hours_supervisor, budget_year.total_tutoring_hours,
             budget_year.factor_1, budget_year.factor_2, budget_year.factor_3, budget_year.factor_4, budget_year.factor_5]
         }
         client
@@ -357,10 +357,10 @@ function updateBudgetYear(budget_year) {
         const client = await pool.getConnection()
         let updateBudgetYear = {
             text: "UPDATE Budget_year " +
-                "SET  year = ? , master_hours= ?, bachelor_hours =?, total_tutoring_hours=?,factor_1=?,factor_2=?,factor_3=?,factor_4=?,factor_5=? " +
+                "SET  year = ? , master_hours_examiner= ?,master_hours_supervisor= ?, bachelor_hours_examiner =?, bachelor_hours_supervisor =?, total_tutoring_hours=?,factor_1=?,factor_2=?,factor_3=?,factor_4=?,factor_5=? " +
                 "WHERE year = ?",
-            values: [budget_year.year, budget_year.master_hours, budget_year.bachelor_hours, budget_year.total_tutoring_hours,
-            budget_year.factor_1, budget_year.factor_2, budget_year.factor_3, budget_year.factor_4, budget_year.factor_5, '2020']
+            values: [budget_year.year, budget_year.master_hours_examiner, budget_year.master_hours_supervisor, budget_year.bachelor_hours_examiner, budget_year.bachelor_hours_supervisor, budget_year.total_tutoring_hours,
+            budget_year.factor_1, budget_year.factor_2, budget_year.factor_3, budget_year.factor_4, budget_year.factor_5]
         }
         client
             .query(updateBudgetYear.text, updateBudgetYear.values)
