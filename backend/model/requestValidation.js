@@ -67,7 +67,7 @@ function checkUsername(username) {
     return true;
 }
 
-}
+
 function checkEmail(email) {
     email = email.split('@');
     if (email.length < 2 || email.length > 2 || email[1].split('.').length < 2) {
