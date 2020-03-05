@@ -351,7 +351,7 @@ module.exports = {
     registerProject,
     getExpertise,
     postExpertise,
-    updateExpertise,
+    //updateExpertise,
     deleteExpertise,
     getBudgetYear,
     postBudgetYear,
