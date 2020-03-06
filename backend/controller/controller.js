@@ -89,6 +89,7 @@ async function updateWorkYear(req) {
 }
 async function getAvailableExaminers(req) {
     try {
+        console.log(req.body)
         return await userDAO.getAvailableExaminers(req.body.year);
     }
     catch (error) {
