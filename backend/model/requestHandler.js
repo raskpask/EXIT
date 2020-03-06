@@ -238,12 +238,11 @@ function extractProjectID(req) {
     return ID;
 }
 function extractWorkYear(req) {
-    return {
-        data: {
-            work_hours: req.body.work_hours,
+    return data = {
+        work_hours: req.body.work_hours,
             available_hours: req.body.available_hours
-        }
-    };
+    }
+
 }
 
 function extractUserID(req) {
