@@ -160,14 +160,7 @@ function getAvailableExaminers(year) {
                 }
                 client.end()
                 console.log(res[0])
-                resolve({work_year:{
-                    first_name: res[0].first_name,
-                    last_name: res[0].last_name,
-                    email: res[0].email,
-                    expertise_name: res[0].expertise_name,
-                    user_id: res[0].user_id,
-                    available_hours_examiner: res[0].available_hours_examiner
-                }});
+                resolve(res);
             })
             .catch(err => {
                 client.end()
