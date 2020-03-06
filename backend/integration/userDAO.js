@@ -96,7 +96,6 @@ function getWorkYear(user_id, year) {
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
                 }
                 client.end()
-                console.log(res[0])
                 resolve({work_year:{
                     work_hours: res[0].work_hours,
                     available_hours: res[0].available_hours
@@ -118,7 +117,6 @@ function updateWorkYear(user_id, year,data) {
                 "WHERE person_id=? AND year = ?",
             values: [data.work_hours,data.available_hours,user_id,year]
         }
-        console.log(updateWorkYearQuery)
         client
         .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
         .then(res => {
@@ -127,7 +125,6 @@ function updateWorkYear(user_id, year,data) {
                 reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
             }
             client.end()
-            console.log(res)
                 if (res.affectedRows == 1) {
                     resolve()
                 }
