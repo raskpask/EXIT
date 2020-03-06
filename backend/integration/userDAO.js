@@ -118,7 +118,7 @@ function updateWorkYear(user_id, year,data) {
                 "WHERE person_id=? AND year = ?",
             values: [user_id,year,data.work_hours,data.available_hours]
         }
-        console.log(data)
+        console.log(data.work_hours)
         client
             .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
             .then(res => {
@@ -130,6 +130,7 @@ function updateWorkYear(user_id, year,data) {
                 if (res.affectedRows == 1) {
                     resolve()
                 }
+                reject()
             })
             .catch(err => {
                 client.end()
