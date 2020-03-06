@@ -239,7 +239,8 @@ function extractProjectID(req) {
 }
 function extractWorkYear(req) {
     return data = {
-        work_hours: req.body.work_hours,
+        work_hours_examiner: req.body.work_hours_examiner,
+        work_hours_supervisor: req.body.work_hours_examiner_supervisor,
         available_hours_examiner: req.body.available_hours_examiner,
         available_hours_supervisor: req.body.available_hours_supervisor
     }
