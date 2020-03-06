@@ -84,8 +84,7 @@ function getWorkYear(user_id, year) {
         const client = await pool.getConnection();
         const getWorkYearQuery = {
             text: "SELECT work_hours,available_hours " +
-                "FROM Work_year INNER JOIN Budget_work "+
-                "ON Work_year.work_year_id = Budget_work.work_year_id "+
+                "FROM Work_year "+
                 "WHERE person_id=? AND year = ?",
             values: [user_id,year]
         }
