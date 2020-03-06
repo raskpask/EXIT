@@ -1,3 +1,4 @@
+dist: precise
 language: node_js
 node_js:
   - "10"
@@ -19,7 +20,7 @@ before_script:
   #- psql -c 'create database travis_ci_test;' -U postgres
   #- psql -f ./tests/tables.sql -U postgres
   #- psql -f ./tests/values.sql -U postgres
-  - mysql -u root --password="" < tests/dump.sql
+  - sudo mysql -u root --password="" < tests/dump.sql
   - npm start &
 script: bundle exec rake spec
 env:
