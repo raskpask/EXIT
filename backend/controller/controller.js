@@ -81,7 +81,7 @@ async function getWorkYear(req) {
 }
 async function updateWorkYear(req) {
     try {
-        return await userDAO.getProject(req.body.user_id,req.body.year,requestHandler.getWorkYear(req));
+        return await userDAO.updateWorkYear(req.body.user_id,req.body.year,requestHandler.getWorkYear(req));
     }
     catch (error) {
         throw error
