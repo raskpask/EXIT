@@ -14,12 +14,6 @@ before_script:
   - node --version
   - npm --version
   - node_modules/.bin/newman --version
-  #- psql --version
-  #- psql -c "CREATE DATABASE testdatabase WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8';" -U postgres
-  #- psql -f ./tests/testDatabase.sql -U postgres
-  #- psql -c 'create database travis_ci_test;' -U postgres
-  #- psql -f ./tests/tables.sql -U postgres
-  #- psql -f ./tests/values.sql -U postgres
   - sudo mysql -u root --password="" < tests/dump.sql
   - npm start &
 script: bundle exec rake spec
