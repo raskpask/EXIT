@@ -93,6 +93,14 @@ function router(router) {
         }
         res.send();
     });
+    router.get('/api/availableExaminers', async (req, res) => {
+        try {
+            res.send(await controller.getAvailableExaminers(req))
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+        res.send();
+    });
     router.get('/api/expertise', async (req, res) => {
         try {
             res.send(await controller.getExpertise(req))

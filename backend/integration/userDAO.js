@@ -139,6 +139,42 @@ function updateWorkYear(user_id, year,data) {
             });
     });
 }
+function getAvailableExaminers(year) {
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection();
+        const getAvailableExaminersQuery = {
+            text: "SELECT User.first_name,User.last_name,User.email,Area_of_expertise.expertise_name, User.user_id " +
+                "FROM User "+
+                "INNER JOIN Expertise ON User.user_id = Expertise.user_id "+
+                "INNER JOIN Area_of_expertise ON Expertise.expertise_id = Area_of_expertise.expertise_id "+
+                "INNER JOIN Work_year ON User.user_id = Work_year.person_id "+
+                "WHERE Work_year.year = ? AND Work_year.available_hours_examiner => 10",
+            values: [year]
+        }
+        client
+            .query(getWorkYearQuery.text, getWorkYearQuery.values)
+            .then(res => {
+                if (res == undefined) {
+                    client.end();
+                    reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
+                }
+                client.end()
+                resolve({work_year:{
+                    first_name: res[0].first_name,
+                    last_name: res[0].last_name,
+                    email: res[0].email,
+                    expertise_name: res[0].expertise_name,
+                    user_id: res[0].user_id
+                }});
+            })
+            .catch(err => {
+                client.end()
+                console.error(err);
+                reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
+            });
+    });
+}
+
 /**
  * Gets the KTH username of a user using their database ID.
  * @param {int} user_id the database id of the user
@@ -481,4 +517,5 @@ module.exports = {
     postBudgetYear,
     updateBudgetYear,
     deleteBudgetYear,
+    getAvailableExaminers,
 }
