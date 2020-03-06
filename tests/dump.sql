@@ -65,8 +65,8 @@ CREATE TABLE `Budget_year` (
   `bachelor_hours_examiner` int(11) DEFAULT NULL,
   `master_hours_examiner` int(11) DEFAULT NULL,
   `master_hours_supervisor` int(11) DEFAULT NULL,
-  `year` int(11) DEFAULT NULL,
-  KEY `year` (`year`),
+  `year` int(11) NOT NULL,
+  PRIMARY KEY (`year`),
   CONSTRAINT `Budget_year_ibfk_1` FOREIGN KEY (`year`) REFERENCES `Work_year` (`year`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -77,7 +77,6 @@ CREATE TABLE `Budget_year` (
 
 LOCK TABLES `Budget_year` WRITE;
 /*!40000 ALTER TABLE `Budget_year` DISABLE KEYS */;
-INSERT INTO `Budget_year` VALUES (300,1.5,1.6,1.7,1.8,2.7,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `Budget_year` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -264,4 +263,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-06  9:49:53
+-- Dump completed on 2020-03-06 12:31:08

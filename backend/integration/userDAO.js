@@ -341,9 +341,9 @@ function updateExpertise(expertise_name, expertise_id) {
         client
             .query(updateExpertise.text, updateExpertise.values)
             .then(res => {
-                if (res.affectedRows == 1) {
+                //if (res.affectedRows == 1) {
                     resolve()
-                }
+                //}
             })
             .catch(err => {
                 console.error(err)
@@ -362,9 +362,9 @@ function deleteExpertise(expertise_id) {
         client
             .query(deleteExpertise.text, deleteExpertise.values)
             .then(res => {
-                if (res.affectedRows == 1) {
+                //if (res.affectedRows == 1) {
                     resolve()
-                }
+                //}
             })
             .catch(err => {
                 console.error(err)
@@ -392,6 +392,7 @@ function getBudgetYear() {
     })
 }
 function postBudgetYear(budget_year) {
+    console.log(budget_year);
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let postBudgetYear = {
@@ -403,9 +404,9 @@ function postBudgetYear(budget_year) {
         client
             .query(postBudgetYear.text, postBudgetYear.values)
             .then(res => {
-                if (res.affectedRows == 1) {
+                //if (res.affectedRows == 1) {
                     resolve()
-                }
+                //}
             })
             .catch(err => {
                 client.end()
@@ -432,9 +433,9 @@ function updateBudgetYear(budget_year) {
         client
             .query(updateBudgetYear.text, updateBudgetYear.values)
             .then(res => {
-                if (res.affectedRows == 1) {
+                //if (res.affectedRows == 1) {
                     resolve()
-                }
+                //}
             })
             .catch(err => {
                 console.error(err)
@@ -453,9 +454,9 @@ function deleteBudgetYear(budget_year) {
         client
             .query(deleteBudgetYear.text, deleteBudgetYear.values)
             .then(res => {
-                if (res.affectedRows == 1) {
+                //if (res.affectedRows == 1) {
                     resolve()
-                }
+                //}
             })
             .catch(err => {
                 console.error(err)

@@ -1,0 +1,908 @@
+{
+	"info": {
+		"_postman_id": "1ab74e14-0d8d-43b6-8580-53f2c1803644",
+		"name": "EXIT_API_testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Budget year",
+			"item": [
+				{
+					"name": "Post budget year",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6cfab894-e891-4d4e-a246-150a682c6a84",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n\t\"budgetYear\":\"2020\",\n\t\"masterHoursSupervisor\":\"100\",\n\t\"masterHoursExaminer\":\"100\",\n\t\"bachelorHoursSupervisor\":\"200\",\n\t\"bachelorHoursExaminer\":\"200\",\n\t\"totalTutoringHours\": \"300\",\n\t\"factor1\":\"1.5\",\n\t\"factor2\":\"1.6\",\n\t\"factor3\":\"1.7\",\n\t\"factor4\":\"1.8\",\n\t\"factor5\":\"2.7\"\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/budgetYear",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"budgetYear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post budget year Duplicate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6cfab894-e891-4d4e-a246-150a682c6a84",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"DUPLICATE_BUDGET_YEAR_ERROR\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"DUPLICATE_BUDGET_YEAR_ERROR\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n\t\"budgetYear\":\"2020\",\n\t\"masterHoursSupervisor\":\"100\",\n\t\"masterHoursExaminer\":\"100\",\n\t\"bachelorHoursSupervisor\":\"200\",\n\t\"bachelorHoursExaminer\":\"200\",\n\t\"totalTutoringHours\": \"300\",\n\t\"factor1\":\"1.5\",\n\t\"factor2\":\"1.6\",\n\t\"factor3\":\"1.7\",\n\t\"factor4\":\"1.8\",\n\t\"factor5\":\"2.7\"\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/budgetYear",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"budgetYear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get budget year",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "abc620f6-4e13-425e-8e0c-c7818dabd244",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"JSON data contains the year 2020\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData[0].year).to.eql(2020);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/budgetYear",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"budgetYear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update buget year",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "179fcb70-99be-4aaf-a802-6a177a090769",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n\t\"budgetYear\":\"2020\",\n\t\"masterHoursSupervisor\":\"100\",\n\t\"masterHoursExaminer\":\"100\",\n\t\"bachelorHoursSupervisor\":\"200\",\n\t\"bachelorHoursExaminer\":\"200\",\n\t\"totalTutoringHours\": \"300\",\n\t\"factor1\":\"1.6\",\n\t\"factor2\":\"1.7\",\n\t\"factor3\":\"1.8\",\n\t\"factor4\":\"1.8\",\n\t\"factor5\":\"2.7\"\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/budgetYear",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"budgetYear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete budget year",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "92fccada-aba7-42f3-b17c-cea53d7e56ce",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"budgetYear\":\"2020\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/budgetYear",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"budgetYear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete non existant budget year",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "92fccada-aba7-42f3-b17c-cea53d7e56ce",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"budgetYear\":\"2020\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/budgetYear",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"budgetYear"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Expertise",
+			"item": [
+				{
+					"name": "Get Expertise",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "481a3a59-b3b3-4681-ba2b-0e5876e075d8",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Contains network\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData[0].expertise_name).to.eql(\"Network\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/expertise",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"expertise"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Expertise Specific",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9ea9a898-9d13-4a85-8319-b588570cc8d4",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Contains network\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData[0].expertise_name).to.eql(\"Network\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"userID\":\"1\"} ",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/expertise",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"expertise"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Expertise",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n\t\"expertiseName\":\"Network\"\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/expertise",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"expertise"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Expertise",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"expertiseID\":\"1\",\"expertiseName\":\"Network and testing\"} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/expertise",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"expertise"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete expertise",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"expertiseID\":\"1\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/expertise",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"expertise"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Project",
+			"item": [
+				{
+					"name": "Create project valid",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						},
+						"description": "Adds a project using valid data"
+					},
+					"response": []
+				},
+				{
+					"name": "Create project invalid date",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "17cc5993-65cd-48c9-a8e3-5331a479e9c6",
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"pm.test(\"Body matches BAD_REQUEST_ERROR\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"BAD_REQUEST_ERROR\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"numberOfStudents\": 3,\r\n    \"credits\": 15,\r\n    \"projectDescription\": \"This is a project\",\r\n    \"title\": \"Project\",\r\n    \"startDate\":\"2020-02-30\",\r\n    \"endDate\":\"2020-06-15\",\r\n    \"companyName\": \"Testsons\",\r\n    \"companyAddress\":\"Testsvängen 12\",\r\n    \"companyPhoneNumber\":\"072-12 34 567\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/project",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"project"
+							]
+						},
+						"description": "Creates a project using invalid data"
+					},
+					"response": []
+				},
+				{
+					"name": "Create project invalid date order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "17cc5993-65cd-48c9-a8e3-5331a479e9c6",
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"pm.test(\"Body matches BAD_REQUEST_ERROR\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"BAD_REQUEST_ERROR\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"numberOfStudents\": 3,\r\n    \"credits\": 15,\r\n    \"projectDescription\": \"This is a project\",\r\n    \"title\": \"Project\",\r\n    \"startDate\":\"2020-02-30\",\r\n    \"endDate\":\"2020-01-15\",\r\n    \"companyName\": \"Testsons\",\r\n    \"companyAddress\":\"Testsvängen 12\",\r\n    \"companyPhoneNumber\":\"072-12 34 567\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/project",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"project"
+							]
+						},
+						"description": "Creates a project using invalid data"
+					},
+					"response": []
+				},
+				{
+					"name": "Create project no data",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/project",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"project"
+							]
+						},
+						"description": "Creates a project using invalid data"
+					},
+					"response": []
+				},
+				{
+					"name": "Creata a project no company",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"numberOfStudents\": 3,\r\n    \"credits\": 15,\r\n    \"projectDescription\": \"This is a project\",\r\n    \"title\": \"Project\",\r\n    \"startDate\":\"2020-01-15\",\r\n    \"endDate\":\"2020-06-15\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/project",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"project"
+							]
+						},
+						"description": "Creates a project with no company data"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create user valid",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userID\":\"1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						},
+						"description": "Creates a user using valid parameters. "
+					},
+					"response": []
+				},
+				{
+					"name": "Create user invalid",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						},
+						"description": "Tries to create a user using invalid data. This will fail."
+					},
+					"response": []
+				},
+				{
+					"name": "Create user no data",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}/api/user",
+							"host": [
+								"{{url}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						},
+						"description": "Tries to create a user with no data at all"
+					},
+					"response": []
+				},
+				{
+					"name": "Create user SQL injection",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						},
+						"description": "Tries to add a user with an sql injection as a parameter. "
+					},
+					"response": []
+				},
+				{
+					"name": "Get user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9552d1e6-0039-49b0-b496-6b593d77fb5e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.first_name).to.eql(\"hej\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userID\":1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Work year",
+			"item": [
+				{
+					"name": "Get work year",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f7aa96a3-1db0-4d27-825c-295fa9f3a22c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user_id\":\"1\",\n\t\"year\":\"2020\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/workYear",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"workYear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update work year",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user_id\":\"1\",\n\t\"year\":\"2020\",\n\t\"work_hours\":\"200\",\n\t\"available_hours\":\"100\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/workYear",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"workYear"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
