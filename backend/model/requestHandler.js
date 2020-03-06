@@ -256,11 +256,12 @@ function extractExpertiseName(req) {
 }
 function extractBudgetYear(req) {
     const budgetYear = req.body;
+
     const year = budgetYear.budgetYear
     const master_hours_supervisor = budgetYear.masterHoursSupervisor
-    const master_hours_examiner = budgetYear.masterHoursExaimer
-    const bachelor_hours_supervisor = budgetYear.bachleorHoursSupervisor
-    const bachelor_hours_examiner = budgetYear.bachleorHoursExaminer
+    const master_hours_examiner = budgetYear.masterHoursExaminer
+    const bachelor_hours_supervisor = budgetYear.bachelorHoursSupervisor
+    const bachelor_hours_examiner = budgetYear.bachelorHoursExaminer
     const total_tutoring_hours = budgetYear.totalTutoringHours
     const factor_1 = budgetYear.factor1
     const factor_2 = budgetYear.factor2

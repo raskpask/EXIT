@@ -48,32 +48,6 @@ INSERT INTO `Area_of_expertise` VALUES (2,'Network');
 UNLOCK TABLES;
 
 --
--- Table structure for table `Budget_work`
---
-
-DROP TABLE IF EXISTS `Budget_work`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Budget_work` (
-  `work_year_id` int(11) NOT NULL,
-  `year` int(11) DEFAULT NULL,
-  PRIMARY KEY (`work_year_id`),
-  KEY `year` (`year`),
-  CONSTRAINT `Budget_work_ibfk_1` FOREIGN KEY (`year`) REFERENCES `Budget_year` (`year`) ON DELETE CASCADE,
-  CONSTRAINT `work_year_id` FOREIGN KEY (`work_year_id`) REFERENCES `Work_year` (`work_year_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Budget_work`
---
-
-LOCK TABLES `Budget_work` WRITE;
-/*!40000 ALTER TABLE `Budget_work` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Budget_work` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `Budget_year`
 --
 
@@ -81,16 +55,19 @@ DROP TABLE IF EXISTS `Budget_year`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Budget_year` (
-  `master_hours` int(11) DEFAULT NULL,
-  `bachelor_hours` int(11) DEFAULT NULL,
   `total_tutoring_hours` int(11) DEFAULT NULL,
   `factor_1` double DEFAULT NULL,
   `factor_2` double DEFAULT NULL,
   `factor_3` double DEFAULT NULL,
   `factor_4` double DEFAULT NULL,
   `factor_5` double DEFAULT NULL,
-  `year` int(11) NOT NULL,
-  PRIMARY KEY (`year`)
+  `bachelor_hours_supervisor` int(11) DEFAULT NULL,
+  `bachelor_hours_examiner` int(11) DEFAULT NULL,
+  `master_hours_examiner` int(11) DEFAULT NULL,
+  `master_hours_supervisor` int(11) DEFAULT NULL,
+  `year` int(11) DEFAULT NULL,
+  KEY `year` (`year`),
+  CONSTRAINT `Budget_year_ibfk_1` FOREIGN KEY (`year`) REFERENCES `Work_year` (`year`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -100,7 +77,7 @@ CREATE TABLE `Budget_year` (
 
 LOCK TABLES `Budget_year` WRITE;
 /*!40000 ALTER TABLE `Budget_year` DISABLE KEYS */;
-INSERT INTO `Budget_year` VALUES (200,100,300,1.5,1.6,1.7,1.8,2.7,2020),(200,100,300,1.5,1.6,1.7,1.8,2.7,2021);
+INSERT INTO `Budget_year` VALUES (300,1.5,1.6,1.7,1.8,2.7,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `Budget_year` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -229,8 +206,7 @@ DROP TABLE IF EXISTS `User`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `User` (
   `user_type_id` int(11) NOT NULL,
-  `kth_email` varchar(45) DEFAULT NULL,
-  `alt_email` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
   `first_name` varchar(45) DEFAULT NULL,
   `last_name` varchar(45) DEFAULT NULL,
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -246,7 +222,7 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (1,'asdf@kth.se','hej','hej','hej',1,NULL,NULL),(2,'test@kth.se','ldsf@gmail.com','tets','Testson',2,'uxisfgd','23445');
+INSERT INTO `User` VALUES (1,'hej','hej','hej',1,NULL,NULL),(2,'ldsf@gmail.com','tets','Testson',2,'uxisfgd','23445');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -259,10 +235,11 @@ DROP TABLE IF EXISTS `Work_year`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Work_year` (
   `person_id` int(11) DEFAULT NULL,
-  `work_hours` int(11) DEFAULT NULL,
+  `work_hours_examiner` int(11) DEFAULT NULL,
   `available_hours` int(11) DEFAULT NULL,
-  `work_year_id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`work_year_id`),
+  `year` int(11) NOT NULL,
+  `work_hours_supervisor` int(11) DEFAULT NULL,
+  PRIMARY KEY (`year`),
   KEY `person_id_idx` (`person_id`),
   CONSTRAINT `person_id` FOREIGN KEY (`person_id`) REFERENCES `User` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -274,6 +251,7 @@ CREATE TABLE `Work_year` (
 
 LOCK TABLES `Work_year` WRITE;
 /*!40000 ALTER TABLE `Work_year` DISABLE KEYS */;
+INSERT INTO `Work_year` VALUES (1,200,150,1,NULL),(1,200,75,2020,NULL);
 /*!40000 ALTER TABLE `Work_year` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -286,4 +264,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-05 13:46:08
+-- Dump completed on 2020-03-06  9:49:53
