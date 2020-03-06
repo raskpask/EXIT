@@ -118,15 +118,15 @@ function updateWorkYear(user_id, year,data) {
                 "WHERE person_id=? AND year = ?",
             values: [user_id,year,data.work_hours,data.available_hours]
         }
-        console.log(data.work_hours)
         client
-            .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
-            .then(res => {
-                if (res == undefined) {
-                    client.end();
-                    reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
-                }
-                client.end()
+        .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
+        .then(res => {
+            if (res == undefined) {
+                client.end();
+                reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
+            }
+            client.end()
+            console.log(res)
                 if (res.affectedRows == 1) {
                     resolve()
                 }
