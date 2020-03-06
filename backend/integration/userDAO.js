@@ -83,7 +83,7 @@ function getWorkYear(user_id, year) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const getWorkYearQuery = {
-            text: "SELECT work_hours,available_hours " +
+            text: "SELECT work_hours,available_hours_examiner,available_hours_supervisor " +
                 "FROM Work_year "+
                 "WHERE person_id=? AND year = ?",
             values: [user_id,year]
@@ -98,7 +98,8 @@ function getWorkYear(user_id, year) {
                 client.end()
                 resolve({work_year:{
                     work_hours: res[0].work_hours,
-                    available_hours: res[0].available_hours
+                    available_hours_examiner: res[0].available_hours_examiner,
+                    available_hours_supervisor: res[0].available_hours_supervisor
                 }});
             })
             .catch(err => {
@@ -113,7 +114,7 @@ function updateWorkYear(user_id, year,data) {
         const client = await pool.getConnection();
         const updateWorkYearQuery = {
             text: "UPDATE Work_year " +
-                "SET work_hours = ?, available_hours = ? "+
+                "SET work_hours = ?, available_hours_examiner = ?, available_hours_supervisor = ? "+
                 "WHERE person_id=? AND year = ?",
             values: [data.work_hours,data.available_hours,user_id,year]
         }
