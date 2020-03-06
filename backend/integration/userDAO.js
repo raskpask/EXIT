@@ -143,7 +143,7 @@ function getAvailableExaminers(year) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const getAvailableExaminersQuery = {
-            text: "SELECT User.first_name,User.last_name,User.email,Area_of_expertise.expertise_name, User.user_id " +
+            text: "SELECT User.first_name,User.last_name,User.email,Area_of_expertise.expertise_name, User.user_id, Work_year.available_hours_examiner " +
                 "FROM User "+
                 "INNER JOIN Expertise ON User.user_id = Expertise.user_id "+
                 "INNER JOIN Area_of_expertise ON Expertise.expertise_id = Area_of_expertise.expertise_id "+
@@ -165,7 +165,8 @@ function getAvailableExaminers(year) {
                     last_name: res[0].last_name,
                     email: res[0].email,
                     expertise_name: res[0].expertise_name,
-                    user_id: res[0].user_id
+                    user_id: res[0].user_id,
+                    available_hours_examiner: res[0].available_hours_examiner
                 }});
             })
             .catch(err => {
