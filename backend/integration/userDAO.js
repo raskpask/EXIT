@@ -152,7 +152,7 @@ function getAvailableExaminers(year) {
             values: [year]
         }
         client
-            .query(getWorkYearQuery.text, getWorkYearQuery.values)
+            .query(getAvailableExaminersQuery.text, getAvailableExaminersQuery.values)
             .then(res => {
                 if (res == undefined) {
                     client.end();
