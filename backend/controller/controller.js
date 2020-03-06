@@ -198,7 +198,11 @@ function getBudgetYear(req){
     return userDAO.getBudgetYear()
 }
 function postBudgetYear(req){
+    try{
     return userDAO.postBudgetYear(requestHandler.extractBudgetYear(req))
+    }catch(error){
+        throw error;
+    }
 }
 function updateBudgetYear(req){
     return userDAO.updateBudgetYear(requestHandler.extractBudgetYear(req))

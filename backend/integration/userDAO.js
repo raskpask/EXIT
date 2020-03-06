@@ -4,10 +4,10 @@ const dbError = require('../error/dbErrors');
 const ProjectDetails = require('../model/projectDetails');
 const BudgetYear = require('../model/budgetYear.js');
 const pool = mariadb.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'EXITEXIT',
-    database: 'exit_db',
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE,
     connectionLimit: 5,
     multipleStatements: true
 });
@@ -408,7 +408,13 @@ function postBudgetYear(budget_year) {
                 }
             })
             .catch(err => {
-                console.error(err)
+                client.end()
+                console.error(err.code);
+                if (err.code === 'ER_DUP_ENTRY') {
+                    reject(new Error(dbError.errorCodes.DUPLICATE_BUDGET_YEAR_ERROR.code))
+                }
+                reject(err);
+
             })
         client.end()
     })
