@@ -237,7 +237,7 @@ function extractProjectID(req) {
     }
     return ID;
 }
-function getWorkYear(req) {
+function extractWorkYear(req) {
     return {
         data: {
             work_hours: req.body.work_hours,
@@ -285,5 +285,5 @@ module.exports = {
     extractUserID,
     extractExpertiseName,
     extractExpertiseID,
-    getWorkYear
+    extractWorkYear
 }
