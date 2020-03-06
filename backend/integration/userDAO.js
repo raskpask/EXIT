@@ -4,10 +4,10 @@ const dbError = require('../error/dbErrors');
 const ProjectDetails = require('../model/projectDetails');
 const BudgetYear = require('../model/budgetYear.js');
 const pool = mariadb.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'EXITEXIT',
-    database: 'exit_db',
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE,
     connectionLimit: 5,
     multipleStatements: true
 });
@@ -338,9 +338,9 @@ function updateExpertise(expertise_name, expertise_id) {
         client
             .query(updateExpertise.text, updateExpertise.values)
             .then(res => {
-                if (res.affectedRows == 1) {
+                //if (res.affectedRows == 1) {
                     resolve()
-                }
+                //}
             })
             .catch(err => {
                 console.error(err)
@@ -359,9 +359,9 @@ function deleteExpertise(expertise_id) {
         client
             .query(deleteExpertise.text, deleteExpertise.values)
             .then(res => {
-                if (res.affectedRows == 1) {
+                //if (res.affectedRows == 1) {
                     resolve()
-                }
+                //}
             })
             .catch(err => {
                 console.error(err)
@@ -389,6 +389,7 @@ function getBudgetYear() {
     })
 }
 function postBudgetYear(budget_year) {
+    console.log(budget_year);
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let postBudgetYear = {
@@ -400,12 +401,18 @@ function postBudgetYear(budget_year) {
         client
             .query(postBudgetYear.text, postBudgetYear.values)
             .then(res => {
-                if (res.affectedRows == 1) {
+                //if (res.affectedRows == 1) {
                     resolve()
-                }
+                //}
             })
             .catch(err => {
-                console.error(err)
+                client.end()
+                console.error(err.code);
+                if (err.code === 'ER_DUP_ENTRY') {
+                    reject(new Error(dbError.errorCodes.DUPLICATE_BUDGET_YEAR_ERROR.code))
+                }
+                reject(err);
+
             })
         client.end()
     })
@@ -423,9 +430,9 @@ function updateBudgetYear(budget_year) {
         client
             .query(updateBudgetYear.text, updateBudgetYear.values)
             .then(res => {
-                if (res.affectedRows == 1) {
+                //if (res.affectedRows == 1) {
                     resolve()
-                }
+                //}
             })
             .catch(err => {
                 console.error(err)
@@ -444,9 +451,9 @@ function deleteBudgetYear(budget_year) {
         client
             .query(deleteBudgetYear.text, deleteBudgetYear.values)
             .then(res => {
-                if (res.affectedRows == 1) {
+                //if (res.affectedRows == 1) {
                     resolve()
-                }
+                //}
             })
             .catch(err => {
                 console.error(err)

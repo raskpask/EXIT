@@ -83,6 +83,10 @@ errorCodes = {
     BAD_REQUEST_ERROR: {
         code: 'BAD_REQUEST_ERROR',
         message: 'There are errors in the sent data'
+    },
+    DUPLICATE_BUDGET_YEAR_ERROR: {
+        code: 'DUPLICATE_BUDGET_YEAR_ERROR',
+        message: 'This budget year already exists'
     }
 
 
@@ -99,6 +103,10 @@ function respondError(error, res) {
         case errorCodes.BAD_REQUEST_ERROR.code:
             res.status(403);
             res.send(errorCodes.BAD_REQUEST_ERROR.code);
+            break;
+        case errorCodes.DUPLICATE_BUDGET_YEAR_ERROR.code:
+            res.status(400);
+            res.send(errorCodes.DUPLICATE_BUDGET_YEAR_ERROR.code);
             break;
         case errorCodes.CONNECTION_ERROR.code:
             res.status(503);
