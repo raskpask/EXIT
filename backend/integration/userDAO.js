@@ -116,7 +116,7 @@ function updateWorkYear(user_id, year,data) {
             text: "UPDATE Work_year " +
                 "SET work_hours = ?, available_hours = ? "+
                 "WHERE person_id=? AND year = ?",
-            values: [user_id,year,data.work_hours,data.available_hours]
+            values: [data.work_hours,data.available_hours,user_id,year]
         }
         console.log(updateWorkYearQuery)
         client
