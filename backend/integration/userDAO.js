@@ -160,11 +160,11 @@ function getAvailableExaminers(year) {
                 }
                 client.end()
                 resolve({work_year:{
-                    first_name: res[0].first_name,
-                    last_name: res[0].last_name,
-                    email: res[0].email,
-                    expertise_name: res[0].expertise_name,
-                    user_id: res[0].user_id
+                    first_name: res[0].User.first_name,
+                    last_name: res[0].User.last_name,
+                    email: res[0].User.email,
+                    expertise_name: res[0].Area_of_expertise.expertise_name,
+                    user_id: res[0].User.user_id
                 }});
             })
             .catch(err => {
