@@ -84,9 +84,9 @@ function getWorkYear(user_id, year) {
         const client = await pool.getConnection();
         const getWorkYearQuery = {
             text: "SELECT work_hours_examiner,work_hours_supervisor,available_hours_examiner,available_hours_supervisor " +
-                "FROM Work_year "+
+                "FROM Work_year " +
                 "WHERE person_id=? AND year = ?",
-            values: [user_id,year]
+            values: [user_id, year]
         }
         client
             .query(getWorkYearQuery.text, getWorkYearQuery.values)
@@ -96,12 +96,14 @@ function getWorkYear(user_id, year) {
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
                 }
                 client.end()
-                resolve({work_year:{
-                    work_hours_examiner: res[0].work_hours_examiner,
-                    work_hours_supervisor: res[0].work_hours_supervisor,
-                    available_hours_examiner: res[0].available_hours_examiner,
-                    available_hours_supervisor: res[0].available_hours_supervisor
-                }});
+                resolve({
+                    work_year: {
+                        work_hours_examiner: res[0].work_hours_examiner,
+                        work_hours_supervisor: res[0].work_hours_supervisor,
+                        available_hours_examiner: res[0].available_hours_examiner,
+                        available_hours_supervisor: res[0].available_hours_supervisor
+                    }
+                });
             })
             .catch(err => {
                 client.end()
@@ -110,23 +112,23 @@ function getWorkYear(user_id, year) {
             });
     });
 }
-function updateWorkYear(user_id, year,data) {
+function updateWorkYear(user_id, year, data) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const updateWorkYearQuery = {
             text: "UPDATE Work_year " +
-                "SET work_hours_examiner = ?,work_hours_supervisor = ?, available_hours_examiner = ?, available_hours_supervisor = ? "+
+                "SET work_hours_examiner = ?,work_hours_supervisor = ?, available_hours_examiner = ?, available_hours_supervisor = ? " +
                 "WHERE person_id=? AND year = ?",
-            values: [data.work_hours_examiner,data.work_hours_supervisor,data.available_hours_examiner,data.available_hours_supervisor,user_id,year]
+            values: [data.work_hours_examiner, data.work_hours_supervisor, data.available_hours_examiner, data.available_hours_supervisor, user_id, year]
         }
         client
-        .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
-        .then(res => {
-            if (res == undefined) {
-                client.end();
-                reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
-            }
-            client.end()
+            .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
+            .then(res => {
+                if (res == undefined) {
+                    client.end();
+                    reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
+                }
+                client.end()
                 if (res.affectedRows == 1) {
                     resolve()
                 }
@@ -144,10 +146,10 @@ function getAvailableExaminers(year) {
         const client = await pool.getConnection();
         const getAvailableExaminersQuery = {
             text: "SELECT User.first_name,User.last_name,User.email,Area_of_expertise.expertise_name, User.user_id, Work_year.available_hours_examiner " +
-                "FROM User "+
-                "INNER JOIN Expertise ON User.user_id = Expertise.user_id "+
-                "INNER JOIN Area_of_expertise ON Expertise.expertise_id = Area_of_expertise.expertise_id "+
-                "INNER JOIN Work_year ON User.user_id = Work_year.person_id "+
+                "FROM User " +
+                "INNER JOIN Expertise ON User.user_id = Expertise.user_id " +
+                "INNER JOIN Area_of_expertise ON Expertise.expertise_id = Area_of_expertise.expertise_id " +
+                "INNER JOIN Work_year ON User.user_id = Work_year.person_id " +
                 "WHERE Work_year.year = ? AND Work_year.available_hours_examiner > 9",
             values: [year]
         }
@@ -372,7 +374,7 @@ function updateExpertise(expertise_name, expertise_id) {
             .query(updateExpertise.text, updateExpertise.values)
             .then(res => {
                 //if (res.affectedRows == 1) {
-                    resolve()
+                resolve()
                 //}
             })
             .catch(err => {
@@ -393,7 +395,7 @@ function deleteExpertise(expertise_id) {
             .query(deleteExpertise.text, deleteExpertise.values)
             .then(res => {
                 //if (res.affectedRows == 1) {
-                    resolve()
+                resolve()
                 //}
             })
             .catch(err => {
@@ -402,15 +404,26 @@ function deleteExpertise(expertise_id) {
         client.end()
     })
 }
-function getBudgetYear() {
+function getBudgetYear(year) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
-        let getBudgetYear = {
-            text: "SELECT year,master_hours_examiner,master_hours_supervisor,bachelor_hours_examiner,bachelor_hours_supervisor,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5 " +
-                "FROM Budget_year"
+        let getBudgetYear = ""
+        if (year === undefined) {
+            getBudgetYear = {
+                text: "SELECT year,master_hours_examiner,master_hours_supervisor,bachelor_hours_examiner,bachelor_hours_supervisor,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5 " +
+                    "FROM Budget_year",
+                values: []
+            }
+        } else {
+            getBudgetYear = {
+                text: "SELECT year,master_hours_examiner,master_hours_supervisor,bachelor_hours_examiner,bachelor_hours_supervisor,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5 " +
+                    "FROM Budget_year " +
+                    "WHERE year = ?",
+                values: [year]
+            }
         }
         client
-            .query(getBudgetYear.text)
+            .query(getBudgetYear.text, getBudgetYear.values)
             .then(res => {
                 resolve(res)
             })
@@ -435,7 +448,7 @@ function postBudgetYear(budget_year) {
             .query(postBudgetYear.text, postBudgetYear.values)
             .then(res => {
                 //if (res.affectedRows == 1) {
-                    resolve()
+                resolve()
                 //}
             })
             .catch(err => {
@@ -464,7 +477,7 @@ function updateBudgetYear(budget_year) {
             .query(updateBudgetYear.text, updateBudgetYear.values)
             .then(res => {
                 //if (res.affectedRows == 1) {
-                    resolve()
+                resolve()
                 //}
             })
             .catch(err => {
@@ -485,7 +498,7 @@ function deleteBudgetYear(budget_year) {
             .query(deleteBudgetYear.text, deleteBudgetYear.values)
             .then(res => {
                 //if (res.affectedRows == 1) {
-                    resolve()
+                resolve()
                 //}
             })
             .catch(err => {
