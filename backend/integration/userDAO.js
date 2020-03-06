@@ -118,6 +118,7 @@ function updateWorkYear(user_id, year,data) {
                 "WHERE person_id=? AND year = ?",
             values: [user_id,year,data.work_hours,data.available_hours]
         }
+        console.log(updateWorkYearQuery)
         client
         .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
         .then(res => {
