@@ -148,7 +148,7 @@ function getAvailableExaminers(year) {
                 "INNER JOIN Expertise ON User.user_id = Expertise.user_id "+
                 "INNER JOIN Area_of_expertise ON Expertise.expertise_id = Area_of_expertise.expertise_id "+
                 "INNER JOIN Work_year ON User.user_id = Work_year.person_id "+
-                "WHERE Work_year.year = ? AND Work_year.available_hours_examiner => 10",
+                "WHERE Work_year.year = ? AND Work_year.available_hours_examiner > 9",
             values: [year]
         }
         client
