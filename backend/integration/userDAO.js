@@ -493,6 +493,14 @@ function updateProject(supervisor, project_id) {
                             "VALUES (?,?, SELECT user_id FROM User WHERE kth_username= ?)",
                         values: [ROLE_SUPERVISOR, project_id, supervisor]
                     }
+                    client
+                        .query(updateExpertise.text, updateExpertise.values)
+                        .then(res =>
+                            resolve()
+                        )
+                        .catch(err =>
+                            console.error(err)
+                        )
                 } else if (res.affectedRows === 1) {
                     resolve()
                 }
