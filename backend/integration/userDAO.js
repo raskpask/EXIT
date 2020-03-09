@@ -316,12 +316,8 @@ function getProject(user_id, year) {
             client.query("BEGIN")
             const getUserQuery = {
                 text: "SELECT project_id, number_of_students, title, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number " +
-                    "FROM Degree_project "+
-                    "LEFT JOIN Company ON Degree_project.company = Company.company_id " +
-                    "INNER JOIN Student_project ON Degree_project.project_id = Student_project.degree_project_id " +
-                    "INNER JOIN User ON User.user_id = Student_project.user_id " +
-                    "WHERE Degree_project.project_id IN (SELECT degree_project_id FROM Student_project WHERE user_id = ?) " +
-                    "AND year(start_date) = ? ",
+                    "FROM (Degree_project LEFT JOIN Company ON Degree_project.company = Company.company_id) " +
+                    "WHERE Degree_project.project_id IN (SELECT degree_project_id FROM Student_project WHERE user_id = ?) AND year(start_date) = ?",
                 values: [user_id, year]
             }
             client
@@ -336,20 +332,24 @@ function getProject(user_id, year) {
                             values: [project.project_id]
                         }
                         client
-                            .query(getProjectUserQuery.text, getProjectUserQuery.values)
-                            .then(res => {
-                                users.push(res[0])
-                            })
-                            .catch(err => {
-                                console.error(err)
-                                client.query("ROLLBACK")
-                            })
-                    })
-                    // const rawProject = res[0]//.person.split('(')[1].split(',');
-                    // console.log(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,users))
-                    // new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number)
-                    console.log(res)
-                    resolve()
+                        .query(getProjectUserQuery.text,getProjectUserQuery.values)
+                        .then(res=>{
+                            console.log(res)
+                            users.push(res[0])
+                        })
+                        .catch(err=>{
+                            console.error(err)
+                            client.query("ROLLBACK")
+                        })
+                        .finally(
+                            )
+                        })
+                        if (res !== undefined) {
+                            // const rawProject = res[0]//.person.split('(')[1].split(',');
+                            // console.log(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,users))
+                        // new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number)
+                        // console.log(res)
+                    }
                 })
                 .catch(err => {
                     client.end()
@@ -360,9 +360,11 @@ function getProject(user_id, year) {
         } catch (err) {
             console.error(err)
             client.query("ROLLBACK")
-        } finally {
+        } finally{
             client.release()
         }
+        console.log(users)
+        resolve()
     });
 }
 /**
