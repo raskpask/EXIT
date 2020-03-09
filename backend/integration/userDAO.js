@@ -480,7 +480,7 @@ function updateProject(supervisor, project_id) {
         const client = await pool.getConnection()
         let updateExpertise = {
             text: "UPDATE Student_project " +
-                "SET user_id = (SELECT user_id FROM User WHERE kth_username = ?) project_role_id = ?" +
+                "SET user_id = (SELECT user_id FROM User WHERE kth_username = ?) project_role_id = ? " +
                 "WHERE  degree_project_id = ? ",
             values: [supervisor, ROLE_SUPERVISOR, project_id]
         }
@@ -490,7 +490,7 @@ function updateProject(supervisor, project_id) {
                 if (res.affectedRows === 0) {
                     let updateExpertise = {
                         text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id) " +
-                            "VALUES (?,?,SELECT user_id FROM User WHERE kth_username=?)",
+                            "VALUES (?,?,SELECT user_id FROM User WHERE kth_username= ?)",
                         values: [ROLE_SUPERVISOR, project_id, supervisor]
                     }
                 } else if (res.affectedRows === 1) {
