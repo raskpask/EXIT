@@ -334,7 +334,8 @@ function getProject(user_id, year) {
                         client
                             .query(getProjectUserQuery.text, getProjectUserQuery.values)
                             .then(res => {
-                                projects.push(new ProjectDetails(project.project_id, project.number_of_students, project.title, project.project_description, project.credits, project.start_date, project.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number, res))
+                                const users = JSON.stringify(res).split(",meta")[0]+']'
+                                projects.push(new ProjectDetails(project.project_id, project.number_of_students, project.title, project.project_description, project.credits, project.start_date, project.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number, users))
                                 console.log(projects)
                             })
                             .catch(err => {
