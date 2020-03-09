@@ -92,12 +92,12 @@ function getUser(user_id) {
  * Updates a user in the database
  * @param {*} user 
  */
-function updateUser(user){
+function updateUser(user) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const query = {
             text: "UPDATE User SET user_type_id = ?,email= ?,first_name= ?,last_name = ?,kth_username = ?,phone_number = ? WHERE user_id = ?",
-            values: [user.user_type_id, user.email, user.first_name, user.last_name, user.kth_username, user.phone_number,user.user_id]
+            values: [user.user_type_id, user.email, user.first_name, user.last_name, user.kth_username, user.phone_number, user.user_id]
         }
         client
             .query(query)
@@ -137,7 +137,7 @@ function deleteUser(user_id) {
             .query(deleteExpertise.text, deleteExpertise.values)
             .then(res => {
                 //if (res.affectedRows == 1) {
-                    resolve()
+                resolve()
                 //}
             })
             .catch(err => {
@@ -192,16 +192,16 @@ function updateWorkYear(user_id, year, data) {
             values: [data.work_hours_examiner, data.work_hours_supervisor, data.available_hours_examiner, data.available_hours_supervisor, user_id, year]
         }
         client
-        .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
-        .then(res => {
-            if (res == undefined) {
-                client.end();
-                reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
-            }
-            client.end()
-            console.log(res)
+            .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
+            .then(res => {
+                if (res == undefined) {
+                    client.end();
+                    reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
+                }
+                client.end()
+                console.log(res)
                 //if (res.affectedRows == 1) {
-                    resolve()
+                resolve()
                 //}
                 reject()
             })
@@ -308,32 +308,56 @@ function getUserID(username) {
  * Gets a project with all details from the database
  * @param {int} project_id - The ID of the project
  */
-function getProject(user_id) {
+function getProject(user_id, year) {
     return new Promise(async function (resolve, reject) {
-        const client = await pool.getConnection();
-        const getUserQuery = {
-            text: "SELECT project_id, number_of_students, title, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number FROM (Degree_project LEFT JOIN Company ON Degree_project.company = Company.company_id) WHERE Degree_project.project_id IN (SELECT degree_project_id FROM Student_project WHERE user_id = ?)",
-            values: [user_id]
-        }
-        client
-            .query(getUserQuery.text, getUserQuery.values)
-            .then(res => {//, (err, res) => {
-                // if (notVaildResponse(res)) {
-                //     client.end();
-                //     reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
-                // }
-                if (res !== undefined) {
-                    // const rawProject = res[0]//.person.split('(')[1].split(',');
+        try {
+            const client = await pool.getConnection();
+            client.query("BEGIN")
+            const getUserQuery = {
+                text: "SELECT project_id, number_of_students, title, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number " +
+                    "FROM (Degree_project LEFT JOIN Company ON Degree_project.company = Company.company_id) " +
+                    "WHERE Degree_project.project_id IN (SELECT degree_project_id FROM Student_project WHERE user_id = ?) AND year(start_date) = ?",
+                values: [user_id, year]
+            }
+            client
+                .query(getUserQuery.text, getUserQuery.values)
+                .then(res => {
+                    let users =[];
+                    let getProjectUserQuery;
+                    res.forEach(project => {
+                        getProjectUserQuery = {
+                            text: "SELECT * " +
+                                "FROM User INNER JOIN Student_project ON User.user_id = Student_project.user_id" +
+                                "WHERE Student_project.degree_project_id = ?",
+                            values: [project.project_id]
+                        }
+                        client
+                        .query(getProjectUserQuery.text,getProjectUserQuery.values)
+                        .then(res=>{
+                            users.push(res[0])
+                        })
+                        .catch(err=>{
+                            console.error(err)
+                            client.query("ROLLBACK")
+                        })
+                    })
+                    if (res !== undefined) {
+                        // const rawProject = res[0]//.person.split('(')[1].split(',');
+                        resolve(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,users))
+                    }
+                })
+                .catch(err => {
                     client.end()
-                    // let foundProject = new ProjectDetails(rawProject.project_id, rawProject.number_of_students, rawProject.title, rawProject.project_description, rawProject.credits, rawProject.start_date, rawProject.end_date, rawProject.in_progress, rawProject.out_of_date, rawProject.all_info_specified, rawProject.company, rawProject.company_contact, rawProject.name, rawProject.address, rawProject.phone_number);
-                    resolve(res);
-                }
-            })
-            .catch(err => {
-                client.end()
-                console.error(err);
-                reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
-            });
+                    client.query("ROLLBACK")
+                    console.error(err);
+                    reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
+                });
+        } catch (err) {
+            console.error(err)
+            client.query("ROLLBACK")
+        } finally{
+            cleint.release()
+        }
     });
 }
 /**
@@ -342,8 +366,8 @@ function getProject(user_id) {
  */
 function registerProject(project_details) {
     return new Promise(async function (resolve, reject) {
-        const client = await pool.getConnection()
         try {
+            const client = await pool.getConnection()
             const examiner_id = 1
             const supervisor_id = 1
             let company_id;
@@ -391,7 +415,7 @@ function registerProject(project_details) {
                 })
             let addStudentQuery = "";
             let addStudentToProjectQuery = "";
-            project_details.students.forEach(student => {
+            await project_details.users.forEach(student => {
                 addStudentQuery = {
                     text: "INSERT INTO User (user_type_id,first_name,email)" +
                         "VALUES (?,?,?);" +
@@ -424,13 +448,21 @@ function registerProject(project_details) {
                     "VALUES (?,?,?)",
                 values: [ROLE_SUPERVISOR, project_id, supervisor_id]
             }
+            await client
+                .query(addSupervisorToProjectQuery.text, addSupervisorToProjectQuery.values)
+                .then(res => {
+                    client.query("COMMIT");
+                    resolve(200);
+                })
+                .catch(err => {
+                    console.error(err)
+                    client.query("ROLLBACK");
+                })
         } catch (e) {
             client.query("ROLLBACK");
             console.error(e);
             reject(e);
         } finally {
-            client.query("COMMIT");
-            resolve(200);
             client.release();
         }
     });

@@ -65,7 +65,7 @@ async function getUser(req) {
  */
 async function getProject(req) {
     try {
-        return await userDAO.getProject(1);//requestHandler.extractProjectID(req));
+        return await userDAO.getProject(1,2020);//requestHandler.extractProjectID(req));
     }
     catch (error) {
         throw error
