@@ -341,13 +341,14 @@ function getProject(user_id, year) {
                             client.query("ROLLBACK")
                         })
                         .finally(
-                            resolve(projects)
+                            
                         )
                     })
                     if (res !== undefined) {
                         // const rawProject = res[0]//.person.split('(')[1].split(',');
                         // console.log(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,users))
-                        
+                        console.log(projects)
+                        resolve(projects)
                     }
                 })
                 .catch(err => {
