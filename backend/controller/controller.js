@@ -73,6 +73,7 @@ async function getProject(req) {
 }
 async function updateProject(req) {
     try {
+        console.log(req.body)
         return await userDAO.updateProject(req.body.supervisor,req.body.project_id);
     }
     catch (error) {
