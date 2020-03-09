@@ -324,7 +324,7 @@ function getProject(user_id, year) {
                 .then(res => {
                     let projects = []
                     let getProjectUserQuery;
-                    res.forEach((project,index,arr) => {
+                    res.forEach((project, index, arr) => {
                         getProjectUserQuery = {
                             text: "SELECT user_type_id,email,first_name,last_name,kth_username,phone_number, User.user_id,Student_project.project_role_id " +
                                 "FROM User INNER JOIN Student_project ON User.user_id = Student_project.user_id " +
@@ -480,16 +480,22 @@ function updateProject(supervisor, project_id) {
         const client = await pool.getConnection()
         let updateExpertise = {
             text: "UPDATE Student_project " +
-                "SET user_id = (SELECT user_id FROM User WHERE kth_username = ?) " +
+                "SET user_id = (SELECT user_id FROM User WHERE kth_username = ?) project_role_id = ?" +
                 "WHERE  degree_project_id = ? ",
-            values: [supervisor, project_id]
+            values: [supervisor, ROLE_SUPERVISOR, project_id]
         }
         client
             .query(updateExpertise.text, updateExpertise.values)
             .then(res => {
-                //if (res.affectedRows == 1) {
-                resolve()
-                //}
+                if (res.affectedRows === 0) {
+                    let updateExpertise = {
+                        text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id) " +
+                            "VALUES (?,?,SELECT user_id FROM User WHERE kth_username=?)",
+                        values: [ROLE_SUPERVISOR, project_id, supervisor]
+                    }
+                } else if (res.affectedRows === 1) {
+                    resolve()
+                }
             })
             .catch(err => {
                 console.error(err)
