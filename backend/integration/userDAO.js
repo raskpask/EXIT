@@ -334,7 +334,7 @@ function getProject(user_id, year) {
                         client
                         .query(getProjectUserQuery.text,getProjectUserQuery.values)
                         .then(resUser=>{
-                            projects.push(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,resUser[0]))
+                            projects.push(resUser[0])
                             console.log(projects)
                         })
                         .catch(err=>{
@@ -342,14 +342,14 @@ function getProject(user_id, year) {
                             client.query("ROLLBACK")
                         })
                         .finally(
-                            
-                        )
-                    })
-                    if (res !== undefined) {
-                        // const rawProject = res[0]//.person.split('(')[1].split(',');
-                        // console.log(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,users))
-                        console.log(projects)
-                        resolve(projects)
+                            )
+                        })
+                        if (res !== undefined) {
+                            // const rawProject = res[0]//.person.split('(')[1].split(',');
+                            // console.log(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,users))
+                        new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,resUser[0])
+                        console.log(res)
+                        resolve()
                     }
                 })
                 .catch(err => {
