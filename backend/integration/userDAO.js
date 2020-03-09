@@ -480,9 +480,10 @@ function updateProject(supervisor, project_id) {
         const client = await pool.getConnection()
         let updateSupervisor = {
             text: "UPDATE Student_project " +
-                "SET user_id = (SELECT user_id FROM User WHERE kth_username = ?), project_role_id = ? " +
-                "WHERE  degree_project_id = ? AND project_role_id = ?",
-            values: [supervisor, ROLE_SUPERVISOR, project_id,ROLE_SUPERVISOR]
+                "INNER JOIN User ON User.user_id = Student_project.user_id "+
+                "SET Student_project.user_id = User.user_id, project_role_id = ? " +
+                "WHERE  degree_project_id = ? AND project_role_id = ? AND User.kth_username = ?" ,
+            values: [ROLE_SUPERVISOR, project_id,ROLE_SUPERVISOR,supervisor]
         }
         client
             .query(updateSupervisor.text, updateSupervisor.values)
