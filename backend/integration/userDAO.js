@@ -332,21 +332,20 @@ function getProject(user_id, year) {
                             values: [project.project_id]
                         }
                         client
-                        .query(getProjectUserQuery.text,getProjectUserQuery.values)
-                        .then(res=>{
-                            console.log(res)
-                            users.push(res[0])
-                        })
-                        .catch(err=>{
-                            console.error(err)
-                            client.query("ROLLBACK")
-                        })
-                        .finally(
-                            )
-                        })
-                        if (res !== undefined) {
-                            // const rawProject = res[0]//.person.split('(')[1].split(',');
-                            // console.log(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,users))
+                            .query(getProjectUserQuery.text, getProjectUserQuery.values)
+                            .then(res => {
+                                console.log(res)
+                                console.log(project)
+                                users.push(res[0])
+                            })
+                            .catch(err => {
+                                console.error(err)
+                                client.query("ROLLBACK")
+                            })
+                    })
+                    if (res !== undefined) {
+                        // const rawProject = res[0]//.person.split('(')[1].split(',');
+                        // console.log(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,users))
                         // new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number)
                         // console.log(res)
                     }
@@ -360,7 +359,7 @@ function getProject(user_id, year) {
         } catch (err) {
             console.error(err)
             client.query("ROLLBACK")
-        } finally{
+        } finally {
             client.release()
         }
         console.log(users)
