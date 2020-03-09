@@ -170,7 +170,6 @@ function getAvailableExaminers(year) {
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
                 }
                 client.end()
-                // console.log(res[0])
                 resolve(res);
             })
             .catch(err => {
@@ -297,7 +296,6 @@ function registerProject(project_details) {
                 await client
                     .query(addCompanyQuery.text, addCompanyQuery.values)
                     .then(res => {
-                        console.log(res[0])
                         company_id = res[0].insertId;
                     })
                     .catch(err => {
@@ -316,7 +314,6 @@ function registerProject(project_details) {
             await client
                 .query(addProjectDetailsQuery.text, addProjectDetailsQuery.values)
                 .then(res => {
-                    console.log(res[0])
                     project_id = res[0].insertId
                     const addExaminerQuery = {
                         text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
@@ -502,7 +499,6 @@ function getBudgetYear(year) {
     })
 }
 function postBudgetYear(budget_year) {
-    // console.log(budget_year);
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let postBudgetYear = {
