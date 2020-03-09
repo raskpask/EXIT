@@ -493,7 +493,7 @@ function updateProject(supervisor, project_id) {
                     
                     let addSupervisor = {
                         text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id) " +
-                            "VALUES (?,?,(SELECT user_id FROM User WHERE kth_username = supervisor))",
+                            "VALUES (?,?,(SELECT user_id FROM User WHERE kth_username = ?))",
                         values: [ROLE_SUPERVISOR, project_id, supervisor]
                     }
                     client
