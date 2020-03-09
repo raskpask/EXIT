@@ -336,7 +336,7 @@ function getProject(user_id, year) {
                         .then(res=>{
 
                             // console.log(res[0])
-                            users.push({users: res,project: project})
+                            users.push(res[0])
                         })
                         .catch(err=>{
                             console.error(err)
