@@ -79,7 +79,8 @@ function router(router) {
     });
     router.put('/api/project', async (req, res) => {
         try {
-            const project = await controller.updateProject(req);
+            await controller.updateProject(req);
+            res.send()
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }

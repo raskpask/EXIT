@@ -478,7 +478,6 @@ function registerProject(project_details) {
 function updateProject(supervisor, project_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
-
         let updateExpertise = {
             text: "UPDATE Student_project " +
                 "SET user_id = (SELECT user_id FROM User WHERE kth_username = ?) " +
