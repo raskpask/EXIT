@@ -189,12 +189,14 @@ function extractRegisterProjectDetails(req) {
         let company_name = null;
         let company_address = null;
         let company_phone_number = null;
+        let students= [];
 
         //if(Boolean(req.body)){
         let project = req.body;//JSON.parse(req.body);
-        console.log(project);
+        // console.log(project);
 
         //project_id = project.project_id;
+        students = project.students;
         number_of_students = project.numberOfStudents;
         project_title = project.title;
         project_description = project.projectDescription;
@@ -208,8 +210,8 @@ function extractRegisterProjectDetails(req) {
         }
         //}
 
-        pd = new ProjectDetails(project_id, number_of_students, project_title, project_description, credits, start_date, end_date, in_progress, out_of_date, all_info_specified, company, company_contact, company_name, company_address, company_phone_number);
-        console.log(pd);
+        pd = new ProjectDetails(project_id, number_of_students, project_title, project_description, credits, start_date, end_date, in_progress, out_of_date, all_info_specified, company, company_contact, company_name, company_address, company_phone_number,students);
+        // console.log(pd);
         return pd;
     } else {
         throw new Error(dbError.errorCodes.BAD_REQUEST_ERROR.code);

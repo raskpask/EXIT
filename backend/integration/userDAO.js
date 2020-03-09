@@ -11,6 +11,15 @@ const pool = mariadb.createPool({
     connectionLimit: 5,
     multipleStatements: true
 });
+TYPE_ADMIN = 1;
+TYPE_DIRECTOR_OF_STUDIES = 2;
+TYPE_EXAMINER = 3;
+TYPE_STUDENT = 4;
+TYPE_COMPANT_CONTACT = 5;
+
+ROLE_EXAMINER = 1;
+ROLE_SUPERVISOR = 2;
+ROLE_STUDENT = 3;
 /**
  * Regisers a user to the DB.
  *
@@ -161,7 +170,7 @@ function getAvailableExaminers(year) {
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
                 }
                 client.end()
-                console.log(res[0])
+                // console.log(res[0])
                 resolve(res);
             })
             .catch(err => {
@@ -274,6 +283,9 @@ function registerProject(project_details) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         try {
+            const examiner_id = 1
+            const supervisor_id = 1
+            let project_id;
             await client.query("BEGIN");
             if (project_details.company_name !== undefined) {
                 let addCompanyQuery = {
@@ -281,7 +293,8 @@ function registerProject(project_details) {
                         + "VALUES (?,?,?); SELECT LAST_INSERT_ID()",
                     values: [project_details.company_name, project_details.company_address, project_details.company_phone_number]
                 }
-                await client.query(addCompanyQuery.text, addCompanyQuery.values)
+                client
+                    .query(addCompanyQuery.text, addCompanyQuery.values)
                     .then(res => {
                         project_details.company = Object.values(res[1][0])[0];
                     })
@@ -292,19 +305,70 @@ function registerProject(project_details) {
                     });
             }
             let addProjectDetailsQuery = {
-                text: "INSERT INTO Degree_project (number_of_students,title,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact)"
-                    + "VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                text: "INSERT INTO Degree_project (number_of_students,title,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact)" +
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?);" +
+                    "SELECT LAST_INSERT_ID()",
                 values: [project_details.number_of_students, project_details.project_title, project_details.project_description, project_details.credits, project_details.start_date, project_details.end_date, project_details.in_progress, project_details.out_of_date, project_details.all_info_specified, project_details.company, project_details.company_contact]
             }
-            await client.query(addProjectDetailsQuery.text, addProjectDetailsQuery.values);
-            await client.query("COMMIT");
-            resolve(200);
 
+            await client
+                .query(addProjectDetailsQuery.text, addProjectDetailsQuery.values)
+                .then(res => {
+                    project_id = res[0]
+                    const addExaminerQuery = {
+                        text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
+                            "VALUES (?,?,?)",
+                        values: [ROLE_EXAMINER, project_id, examiner_id]
+                    }
+                    client
+                        .query(addExaminerQuery.text, addExaminerQuery.values)
+                })
+                .catch(err => {
+                    console.error(err)
+                    client.query("ROLLBACK");
+                })
+            let addStudentQuery = "";
+            let addStudentToProjectQuery = "";
+            project_details.students.forEach(student => {
+                addStudentQuery = {
+                    text: "INSERT INTO User (user_type_id,first_name,email)" +
+                        "VALUES (?,?,?);" +
+                        "SELECT LAST_INSERT_ID()",
+                    values: [TYPE_STUDENT, student.name, student.email]
+                }
+                client
+                    .query(addStudentQuery.text, addStudentQuery.values)
+                    .then(res => {
+                        const user_id = res[0]
+                        addStudentToProjectQuery = {
+                            text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
+                                "VALUES (?,?,?)",
+                            values: [ROLE_STUDENT, project_id, user_id]
+                        }
+                        client
+                            .query(addStudentToProjectQuery.text, addStudentToProjectQuery.values)
+                            .catch(err => {
+                                console.error(err)
+                                client.query("ROLLBACK");
+                            })
+                    })
+                    .catch(err => {
+                        console.error(err)
+                        client.query("ROLLBACK");
+                    })
+            })
+            addSupervisorToProjectQuery = {
+                text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
+                    "VALUES (?,?,?)",
+                values: [ROLE_SUPERVISOR, project_id, supervisor_id]
+            }
         } catch (e) {
             client.query("ROLLBACK");
             console.error(e);
             reject(e);
         } finally {
+            client.query("COMMIT");
+            resolve(200);
             client.release();
         }
     });
@@ -435,7 +499,7 @@ function getBudgetYear(year) {
     })
 }
 function postBudgetYear(budget_year) {
-    console.log(budget_year);
+    // console.log(budget_year);
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let postBudgetYear = {
