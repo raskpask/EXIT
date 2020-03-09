@@ -326,7 +326,7 @@ function getProject(user_id, year) {
                     let getProjectUserQuery;
                     res.forEach((project,index,arr) => {
                         getProjectUserQuery = {
-                            text: "SELECT user_type_id,email,first_name,last_name,kth_username,phone_number, User.user_id " +
+                            text: "SELECT user_type_id,email,first_name,last_name,kth_username,phone_number, User.user_id,Student_project.project_role_id " +
                                 "FROM User INNER JOIN Student_project ON User.user_id = Student_project.user_id " +
                                 "WHERE Student_project.degree_project_id = ?",
                             values: [project.project_id]
