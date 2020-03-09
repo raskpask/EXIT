@@ -71,6 +71,15 @@ async function getProject(req) {
         throw error
     }
 }
+async function updateProject(req) {
+    try {
+        return await userDAO.updateProject(req.body.supervisor,req.body.project_id);
+    }
+    catch (error) {
+        throw error
+    }
+}
+
 async function getWorkYear(req) {
     try {
         return await userDAO.getWorkYear(req.body.user_id,req.body.year);
@@ -242,6 +251,7 @@ module.exports = {
     getToken,
     extractLangCookie,
     getProject,
+    updateProject,
     getExpertise,
     postExpertise,
     updateExpertise,
