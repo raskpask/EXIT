@@ -333,9 +333,8 @@ function getProject(user_id, year) {
                         }
                         client
                         .query(getProjectUserQuery.text,getProjectUserQuery.values)
-                        .then(resUser=>{
-                            users.push(resUser[0])
-                            console.log(projects)
+                        .then(res=>{
+                            users.push(res)
                         })
                         .catch(err=>{
                             console.error(err)
