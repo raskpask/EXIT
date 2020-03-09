@@ -312,7 +312,7 @@ function getProject(user_id, year) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         try {
-            let projects = []
+            let users = []
             client.query("BEGIN")
             const getUserQuery = {
                 text: "SELECT project_id, number_of_students, title, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number " +
@@ -334,7 +334,7 @@ function getProject(user_id, year) {
                         client
                         .query(getProjectUserQuery.text,getProjectUserQuery.values)
                         .then(resUser=>{
-                            projects.push(resUser[0])
+                            users.push(resUser[0])
                             console.log(projects)
                         })
                         .catch(err=>{
@@ -349,6 +349,7 @@ function getProject(user_id, year) {
                             // console.log(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,users))
                         new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,resUser[0])
                         console.log(res)
+                        console.log(users)
                         resolve()
                     }
                 })
