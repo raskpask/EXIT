@@ -487,7 +487,9 @@ function updateProject(supervisor, project_id) {
         client
             .query(updateSupervisor.text, updateSupervisor.values)
             .then(res => {
+                console.log(res)
                 if (res.affectedRows === 0) {
+                    
                     let addSupervisor = {
                         text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id) " +
                             "VALUES (?,?, SELECT user_id FROM User WHERE kth_username= ?)",
