@@ -253,10 +253,10 @@ function getProject(user_id) {
                 //     reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
                 // }
                 if (res !== undefined) {
-                    const rawProject = res[0]//.person.split('(')[1].split(',');
+                    // const rawProject = res[0]//.person.split('(')[1].split(',');
                     client.end()
-                    let foundProject = new ProjectDetails(rawProject.project_id, rawProject.number_of_students, rawProject.title, rawProject.project_description, rawProject.credits, rawProject.start_date, rawProject.end_date, rawProject.in_progress, rawProject.out_of_date, rawProject.all_info_specified, rawProject.company, rawProject.company_contact, rawProject.name, rawProject.address, rawProject.phone_number);
-                    resolve(foundProject);
+                    // let foundProject = new ProjectDetails(rawProject.project_id, rawProject.number_of_students, rawProject.title, rawProject.project_description, rawProject.credits, rawProject.start_date, rawProject.end_date, rawProject.in_progress, rawProject.out_of_date, rawProject.all_info_specified, rawProject.company, rawProject.company_contact, rawProject.name, rawProject.address, rawProject.phone_number);
+                    resolve(res);
                 }
             })
             .catch(err => {
