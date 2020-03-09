@@ -339,7 +339,7 @@ function getProject(user_id, year) {
                                 console.log(index)
                                 console.log(arr.length)
                                 if (index === arr.length - 1) {
-                                    console.log(projects)
+                                    resolve(projects)
                                 }
                             })
                             .catch(err => {
