@@ -36,7 +36,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \n\t\"budgetYear\":\"2020\",\n\t\"masterHoursSupervisor\":\"100\",\n\t\"masterHoursExaminer\":\"100\",\n\t\"bachelorHoursSupervisor\":\"200\",\n\t\"bachelorHoursExaminer\":\"200\",\n\t\"totalTutoringHours\": \"300\",\n\t\"factor1\":\"1.5\",\n\t\"factor2\":\"1.6\",\n\t\"factor3\":\"1.7\",\n\t\"factor4\":\"1.8\",\n\t\"factor5\":\"2.7\"\n} ",
+							"raw": "{ \n\t\"budgetYear\":\"202020\",\n\t\"masterHoursSupervisor\":\"100\",\n\t\"masterHoursExaminer\":\"100\",\n\t\"bachelorHoursSupervisor\":\"200\",\n\t\"bachelorHoursExaminer\":\"200\",\n\t\"totalTutoringHours\": \"300\",\n\t\"factor1\":\"1.5\",\n\t\"factor2\":\"1.6\",\n\t\"factor3\":\"1.7\",\n\t\"factor4\":\"1.8\",\n\t\"factor5\":\"2.7\"\n} ",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -118,9 +118,9 @@
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
-									"pm.test(\"JSON data contains the year 2020\", function () {",
+									"pm.test(\"JSON data contains the year 202020\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData[0].year).to.eql(2020);",
+									"    pm.expect(jsonData[jsonData.length-1].year).to.eql(202020);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -171,7 +171,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \n\t\"budgetYear\":\"2020\",\n\t\"masterHoursSupervisor\":\"100\",\n\t\"masterHoursExaminer\":\"100\",\n\t\"bachelorHoursSupervisor\":\"200\",\n\t\"bachelorHoursExaminer\":\"200\",\n\t\"totalTutoringHours\": \"300\",\n\t\"factor1\":\"1.6\",\n\t\"factor2\":\"1.7\",\n\t\"factor3\":\"1.8\",\n\t\"factor4\":\"1.8\",\n\t\"factor5\":\"2.7\"\n} ",
+							"raw": "{ \n\t\"budgetYear\":\"202020\",\n\t\"masterHoursSupervisor\":\"100\",\n\t\"masterHoursExaminer\":\"100\",\n\t\"bachelorHoursSupervisor\":\"200\",\n\t\"bachelorHoursExaminer\":\"200\",\n\t\"totalTutoringHours\": \"300\",\n\t\"factor1\":\"1.6\",\n\t\"factor2\":\"1.7\",\n\t\"factor3\":\"1.8\",\n\t\"factor4\":\"1.8\",\n\t\"factor5\":\"2.7\"\n} ",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -219,7 +219,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"budgetYear\":\"2020\"\n}",
+							"raw": "{\n\t\"budgetYear\":\"202020\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -267,7 +267,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"budgetYear\":\"2020\"\n}",
+							"raw": "{\n\t\"budgetYear\":\"202020\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -385,6 +385,20 @@
 				},
 				{
 					"name": "Post Expertise",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9e0b5c30-4fd5-4566-8d71-c3f9a14617fc",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -493,17 +507,47 @@
 			"item": [
 				{
 					"name": "Create project valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "39d6dc05-b8dc-4831-ace3-b1913b426038",
+								"exec": [
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"numberOfStudents\": 3,\r\n    \"credits\": 15,\r\n    \"projectDescription\": \"This is a project\",\r\n    \"title\": \"Project\",\r\n    \"startDate\":\"2020-01-15\",\r\n    \"endDate\":\"2020-06-15\",\r\n    \"companyName\": \"Testsons\",\r\n    \"companyAddress\":\"Testsvängen 12\",\r\n    \"companyPhoneNumber\":\"072-12 34 567\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{url}}/api/user",
+							"raw": "{{url}}/api/project",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"user"
+								"project"
 							]
 						},
 						"description": "Adds a project using valid data"
@@ -593,7 +637,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"numberOfStudents\": 3,\r\n    \"credits\": 15,\r\n    \"projectDescription\": \"This is a project\",\r\n    \"title\": \"Project\",\r\n    \"startDate\":\"2020-02-30\",\r\n    \"endDate\":\"2020-01-15\",\r\n    \"companyName\": \"Testsons\",\r\n    \"companyAddress\":\"Testsvängen 12\",\r\n    \"companyPhoneNumber\":\"072-12 34 567\"\r\n}",
+							"raw": "{\r\n    \"numberOfStudents\": 3,\r\n    \"credits\": 15,\r\n    \"projectDescription\": \"This is a project\",\r\n    \"title\": \"Project\",\r\n    \"startDate\":\"2020-02-29\",\r\n    \"endDate\":\"2020-01-15\",\r\n    \"companyName\": \"Testsons\",\r\n    \"companyAddress\":\"Testsvängen 12\",\r\n    \"companyPhoneNumber\":\"072-12 34 567\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -615,7 +659,24 @@
 					"response": []
 				},
 				{
-					"name": "Create project no data",
+					"name": "Create project invalid Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "371b87f6-5f0c-46ca-99d4-0d1a94e272e7",
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"pm.test(\"Body matches BAD_REQUEST_ERROR\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"BAD_REQUEST_ERROR\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -637,10 +698,22 @@
 					"name": "Creata a project no company",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"numberOfStudents\": 3,\r\n    \"credits\": 15,\r\n    \"projectDescription\": \"This is a project\",\r\n    \"title\": \"Project\",\r\n    \"startDate\":\"2020-01-15\",\r\n    \"endDate\":\"2020-06-15\"\r\n}"
+							"raw": "{\r\n    \"numberOfStudents\": 3,\r\n    \"credits\": 15,\r\n    \"projectDescription\": \"This is a project\",\r\n    \"title\": \"Project\",\r\n    \"startDate\":\"2020-01-15\",\r\n    \"endDate\":\"2020-06-15\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/api/project",
@@ -676,7 +749,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"userID\":\"1\"\n}",
+							"raw": "{\n\t\"userType\":\"1\",\n\t\"firstName\":\"Test\",\n\t\"lastName\":\"Testsson\",\n\t\"phoneNumber\":\"01234567\",\n\t\"email\":\"bla@kth.se\",\n\t\"kthUsername\":\"u1blard\"\n\t\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -699,9 +772,33 @@
 				},
 				{
 					"name": "Create user invalid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fe0bc65b-06b3-4e68-9c92-b197ea927511",
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"pm.test(\"Bad request\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"BAD_REQUEST_ERROR\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {}
+							}
+						},
 						"url": {
 							"raw": "{{url}}/api/user",
 							"host": [
@@ -718,13 +815,30 @@
 				},
 				{
 					"name": "Create user no data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e6761823-07e5-4838-ac3a-5137a4f07be2",
+								"exec": [
+									"pm.test(\"Status code is 403\", function () {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"pm.test(\"Bad request\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"BAD_REQUEST_ERROR\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{url}/api/user",
+							"raw": "{{url}}/api/user",
 							"host": [
-								"{{url}"
+								"{{url}}"
 							],
 							"path": [
 								"api",
@@ -808,6 +922,58 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Delete user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9552d1e6-0039-49b0-b496-6b593d77fb5e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Your test name\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.first_name).to.eql(\"hej\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userID\":5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -868,6 +1034,20 @@
 				},
 				{
 					"name": "Update work year",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8b051bc9-5ea5-4e1e-ac9f-71d6e36397e6",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -880,7 +1060,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"user_id\":\"1\",\n\t\"year\":\"2020\",\n\t\"work_hours\":\"200\",\n\t\"available_hours\":\"100\"\n}",
+							"raw": "{\n\t\"user_id\":\"1\",\n\t\"year\":\"2020\",\n\t\"work_hours_examiner\":\"200\",\n\t\"work_hours_supervisor\":\"200\",\n\t\"available_hours_examiner\":\"75\",\n\t\"available_hours_supervisor\":\"75\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -895,6 +1075,30 @@
 							"path": [
 								"api",
 								"workYear"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "availableExaminers",
+			"item": [
+				{
+					"name": "Get availale examiners",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/availableExaminers",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"availableExaminers"
 							]
 						}
 					},
