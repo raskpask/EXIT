@@ -324,7 +324,7 @@ function getProject(user_id, year) {
                 .then(res => {
                     let projects = []
                     let getProjectUserQuery;
-                    res.forEach((project,index,res) => {
+                    res.forEach((project,index,arr) => {
                         getProjectUserQuery = {
                             text: "SELECT user_type_id,email,first_name,last_name,kth_username,phone_number, User.user_id " +
                                 "FROM User INNER JOIN Student_project ON User.user_id = Student_project.user_id " +
@@ -336,8 +336,9 @@ function getProject(user_id, year) {
                             .then(res => {
                                 const users = JSON.stringify(res).split("meta")[0]
                                 projects.push(new ProjectDetails(project.project_id, project.number_of_students, project.title, project.project_description, project.credits, project.start_date, project.end_date, res.in_progress, project.out_of_date, project.all_info_specified, project.company, project.company_contact, project.name, project.address, project.phone_number, users))
-
-                                if (index === res.length - 1) {
+                                console.log(index)
+                                console.log(arr.length)
+                                if (index === arr.length - 1) {
                                     console.log(projects)
                                 }
                             })
