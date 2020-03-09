@@ -7,15 +7,43 @@ const dbError = require('../error/dbErrors');
  * @returns Boolean
  */
 function registerInput(req) {
+    try{
         const body = req.body;
-        if (!body || !body.username || !body.password || !body.email || !body.date || !body.firstName || !body.lastName) {
-            throw Error(dbError.errorCodes.WRONG_REGISTER_INPUT.code);
+        if(!body.hasOwnProperty("email")){
+            return false;
         }
-        if (checkUsername(body.username) && checkPassword(body.password) && checkEmail(body.email) && checkDate(body.date) && checkName(body.firstName) && checkName(body.lastName)) {
-            return true;
+        if(!body.hasOwnProperty("userTypeID")){
+            return false;
         }
-        throw Error(dbError.errorCodes.WRONG_REGISTER_INPUT_ERROR.code);
-        return false
+        if (!checkEmail(body.Email)) {
+            return false;
+        }
+        if(body.hasOwnProperty("firstName")){
+            if(!checkName(body.firstName)){
+                return false;
+            }
+        }
+        if(body.hasOwnProperty("lastName")){
+            if(!checkName(body.lastName)){
+                return false;
+            }
+        }
+        if(body.hasOwnProperty("phoneNumber")){
+            if(!checkPhoneNumber(body.phoneNumber)){
+                return false;
+            }
+        }
+        if(body.hasOwnProperty("kthUsername")){
+            if(!(checkUsername(body.kthUsername)||checkEmail(body.kthUsername))){
+                return false;
+            }
+        }
+    }catch(error){
+        console.error(error);
+        return false;
+    }
+
+    return true;
 }
 /**
  * Checks if the user has a valid date for availability and at least one competence.
@@ -38,12 +66,7 @@ function checkUsername(username) {
     }
     return true;
 }
-function checkPassword(password) {
-    if (checkUnicode(password) && password.length > 6) {
-        return true;
-    }
-    return false;
-}
+
 function checkEmail(email) {
     email = email.split('@');
     if (email.length < 2 || email.length > 2 || email[1].split('.').length < 2) {
@@ -79,13 +102,17 @@ function checkUnicode(string) {
     }
     return true;
 }
+function checkPhoneNumber(string){
+    return string.replace(/\s/g, '').match(/^[0-9()-]+$/);
+}
 
 function validateProject(request){
     try {
         // if (Object.keys(request.body).length === 0) {
         //     return false;
         // }
-        project = request;//.body;
+        project = request.body;
+        console.log(project);
         if(isNaN(project.credits)||isNaN(project.numberOfStudents)){
             console.log('NaN');
             return false;
@@ -107,7 +134,7 @@ function validateProject(request){
             return false;
         }
 
-        if(project.companyName !== null){
+        if(project.hasOwnProperty("companyName")){
             if(!project.companyPhoneNumber.replace(/\s/g, '').match(/^[0-9()-]+$/)){
                 console.log("invalid phone number");
                 return false;
@@ -137,12 +164,7 @@ function isDate(isISO){
         return false;
     }
 }
-// let validRequest = require("../../tests/validRequest.json")
-// let invalidRequestBadDate = require("../../tests/invalidRequestBadDate.json");
-// let badDateOrder = require("../../tests/invalidRequestBadDateOrder.json");
-// console.log(validateProject(validRequest));
-// console.log(validateProject(invalidRequestBadDate));
-// console.log(validateProject(badDateOrder));
+
 
 module.exports = {
     registerInput,

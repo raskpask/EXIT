@@ -5,8 +5,12 @@ dotenv.config();
 const path = require('path');
 const port = process.env.PORT || 8080;
 const app = express();
-const cors = require('cors');
-app.use(cors());
+// const cors = require('cors');
+// app.use(cors());
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(express.json());
 app.use(favicon(__dirname + '/build/favicon.ico'));
 // the __dirname is the current directory from where the script is running

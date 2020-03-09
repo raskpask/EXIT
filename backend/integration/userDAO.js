@@ -21,8 +21,8 @@ function registerUser(user) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const query = {
-            text: "INSERT INTO person (user_type_id,kth_email,alt_email,first_name,last_name,kth_username,phone_number) VALUES(?,?,?,?,?,?)",
-            values: [user.user_type_id, user.kth_email, user.alt_email, user.first_name, user.last_name, user.kth_username, user.phone_number]
+            text: "INSERT INTO person (user_type_id,email,first_name,last_name,kth_username,phone_number) VALUES(?,?,?,?,?)",
+            values: [user.user_type_id, user.email, user.first_name, user.last_name, user.kth_username, user.phone_number]
         }
         client
             .query(query)
@@ -182,7 +182,7 @@ function registerProject(project_details) {
         const client = await pool.getConnection()
         try {
             await client.query("BEGIN");
-            if (project_details.company_name !== null) {
+            if (project_details.company_name !== undefined) {
                 let addCompanyQuery = {
                     text: "INSERT INTO Company (name,address,phone_number) "
                         + "VALUES (?,?,?); SELECT LAST_INSERT_ID()",
@@ -216,17 +216,37 @@ function registerProject(project_details) {
         }
     });
 }
-function getExpertise(){
+function getExpertise(user_id){
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let getExpertise = {
             text: "SELECT expertise_name"+
                 "FROM Area_of_expertise INNER JOIN Expertise "+
                 "ON Area_of_expertise.expertise_id = Expertise.expertise_id"+
-                "WHERE Expertise.user_id "
+                "WHERE Expertise.user_id = ?",
+            values: [user_id]
         }
         client
-            .query(getBudgetYear.text)
+            .query(getExpertise.text,getExpertise.values)
+            .then(res => {
+                resolve(res)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        client.end()
+    })
+}
+function postExpertise(expertise_name){
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection()
+        let postExpertise = {
+            text: "INSERT INTO Area_of_expertise (expertise_name)"+
+                "VALUES (?)",
+            values: [expertise_name]
+        }
+        client
+            .query(postExpertise.text,postExpertise.values)
             .then(res => {
                 resolve(res)
             })
@@ -330,6 +350,9 @@ module.exports = {
     getProject,
     registerProject,
     getExpertise,
+    postExpertise,
+    //updateExpertise,
+    //deleteExpertise,
     getBudgetYear,
     postBudgetYear,
     updateBudgetYear,

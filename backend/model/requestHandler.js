@@ -37,9 +37,35 @@ function extractUsername(req) {
  * @returns Instance of user.
  */
 function extractUser(req) {
-    validation.registerInput(req)
-    const body = req.body;
-    return new User(body.username, body.password, body.email, body.date, body.firstName, body.lastName);
+    if(validation.registerInput(req)){
+        userType = null;
+        email = '';
+        firstName = null;
+        lastName = null;
+        kthUsername = null;
+        phoneNumber = null;
+
+
+        const body = req.body;
+        email = body.email;
+        userType = body.userTypeID;
+        if(body.hasOwnProperty("firstName")){
+            firstName = body.firstName;
+        }
+        if(body.hasOwnProperty("lastName")){
+            lastName = body.lastName;
+        }
+        if(body.hasOwnProperty("phoneNumber")){
+            phoneNumber = body.phoneNumber;
+        }
+        if(body.hasOwnProperty("kthUsername")){
+            kthUsername = body.kthUsername;
+        }
+        
+        return new User(userType, email, firstName, lastName, kthUsername,phoneNumber,null);
+    }else{
+        throw new Error(dbError.errorCodes.BAD_REQUEST_ERROR.code);
+    }
 }
 /**
  * Extract the language of the client from the cookie
@@ -213,7 +239,9 @@ function extractProjectID(req) {
     }
     return ID;
 }
-
+function extractUserID(req){
+    return req.body.userID;
+}
 function extractBudgetYear(req){
     const budgetYear = req.body;
     const year = budgetYear.budgetYear
@@ -238,5 +266,6 @@ module.exports = {
     extractCreateApplication,
     extractLang,
     extractRegisterProjectDetails,
-    extractBudgetYear
+    extractBudgetYear,
+    extractUserID
 }
