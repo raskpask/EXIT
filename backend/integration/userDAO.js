@@ -324,7 +324,7 @@ function getProject(user_id, year) {
                 .query(getUserQuery.text, getUserQuery.values)
                 .then(res => {
                     let getProjectUserQuery;
-                    res.forEach(project => {
+                    await res.forEach(project => {
                         getProjectUserQuery = {
                             text: "SELECT * " +
                                 "FROM User INNER JOIN Student_project ON User.user_id = Student_project.user_id " +
