@@ -223,7 +223,8 @@ function extractRegisterProjectDetails(req) {
  */
 function extractUserID(req) {
     ID = req.body.userID;
-    if (isNaN(ID)|| ID < 1) {
+    console.log(ID)
+    if (isNaN(ID) || ID < 1) {
         throw new Error(dbError.errorCodes.BAD_REQUEST_ERROR.code);
     }
     return ID;
