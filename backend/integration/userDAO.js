@@ -324,14 +324,14 @@ function getProject(user_id, year) {
                 .query(getUserQuery.text, getUserQuery.values)
                 .then(res => {
                     let getProjectUserQuery;
-                    await res.forEach(project => {
+                    res.forEach(project => {
                         getProjectUserQuery = {
                             text: "SELECT * " +
                                 "FROM User INNER JOIN Student_project ON User.user_id = Student_project.user_id " +
                                 "WHERE Student_project.degree_project_id = ?",
                             values: [project.project_id]
                         }
-                        client
+                        await client
                         .query(getProjectUserQuery.text,getProjectUserQuery.values)
                         .then(res=>{
                             projects.push(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,res[0]))
