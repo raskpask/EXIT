@@ -219,12 +219,20 @@ function deleteBudgetYear(req){
     return userDAO.deleteBudgetYear(requestHandler.extractBudgetYear(req))
 }
 
+function deleteUser(req){
+    return userDAO.deleteUser(requestHandler.extractUserID(req));
+}
+function updateUser(req){
+    return userDAO.updateUser(requestHandler.extractUser(req));
+}
+
 module.exports = {
     registerUser,
     registerProject,
     authenticateUser,
     getUser,
     updateUser,
+    deleteUser,
     getApplication,
     createApplication,
     updateApplicationStatus,

@@ -30,7 +30,7 @@ function registerUser(user) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const query = {
-            text: "INSERT INTO person (user_type_id,email,first_name,last_name,kth_username,phone_number) VALUES(?,?,?,?,?)",
+            text: "INSERT INTO User (user_type_id,email,first_name,last_name,kth_username,phone_number) VALUES(?,?,?,?,?)",
             values: [user.user_type_id, user.email, user.first_name, user.last_name, user.kth_username, user.phone_number]
         }
         client
@@ -88,6 +88,67 @@ function getUser(user_id) {
             });
     });
 }
+/**
+ * Updates a user in the database
+ * @param {*} user 
+ */
+function updateUser(user){
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection();
+        const query = {
+            text: "UPDATE User SET user_type_id = ?,email= ?,first_name= ?,last_name = ?,kth_username = ?,phone_number = ? WHERE user_id = ?",
+            values: [user.user_type_id, user.email, user.first_name, user.last_name, user.kth_username, user.phone_number,user.user_id]
+        }
+        client
+            .query(query)
+            .then(res => {//., (err, res) => {
+                if (notVaildResponse(res)) {
+                    client.end()
+                    reject(new Error(dbError.errorCodes.INSERTING_USER_ERROR.code))
+                } else if (res.rows[0].username == user.username) {
+                    client.end()
+                    resolve(200)
+                }
+                client.end()
+                reject(new Error(dbError.errorCodes.USER_ERROR.code))
+            })
+            .catch(err => {
+                if (err) {
+                    if (err.code === '23505') {
+                        reject(new Error(dbError.errorCodes.DUPLICATE_USER_ERROR.code))
+                    }
+                }
+            });
+    });
+}
+/**
+ * Deletes the user from the database
+ * @param {int} user_id 
+ */
+function deleteUser(user_id) {
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection()
+        let deleteExpertise = {
+            text: "DELETE FROM User " +
+                "WHERE user_id = ? ",
+            values: [user_id]
+        }
+        client
+            .query(deleteExpertise.text, deleteExpertise.values)
+            .then(res => {
+                //if (res.affectedRows == 1) {
+                    resolve()
+                //}
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        client.end()
+    })
+}
+/**
+ * Gets a work year from the database
+ */
 function getWorkYear(user_id, year) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
@@ -131,16 +192,17 @@ function updateWorkYear(user_id, year, data) {
             values: [data.work_hours_examiner, data.work_hours_supervisor, data.available_hours_examiner, data.available_hours_supervisor, user_id, year]
         }
         client
-            .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
-            .then(res => {
-                if (res == undefined) {
-                    client.end();
-                    reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
-                }
-                client.end()
-                if (res.affectedRows == 1) {
+        .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
+        .then(res => {
+            if (res == undefined) {
+                client.end();
+                reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
+            }
+            client.end()
+            console.log(res)
+                //if (res.affectedRows == 1) {
                     resolve()
-                }
+                //}
                 reject()
             })
             .catch(err => {
@@ -574,6 +636,8 @@ function deleteBudgetYear(budget_year) {
 module.exports = {
     registerUser,
     getUser,
+    updateUser,
+    deleteUser,
     getWorkYear,
     updateWorkYear,
     getUsername,

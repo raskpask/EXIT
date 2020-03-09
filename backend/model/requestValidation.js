@@ -15,7 +15,7 @@ function registerInput(req) {
         if(!body.hasOwnProperty("userTypeID")){
             return false;
         }
-        if (!checkEmail(body.Email)) {
+        if (!checkEmail(body.email)) {
             return false;
         }
         if(body.hasOwnProperty("firstName")){
@@ -104,7 +104,7 @@ function checkUnicode(string) {
     return true;
 }
 function checkPhoneNumber(string){
-    return string.replace(/\s/g, '').match(/^[0-9()-]+$/);
+    return string.replace(/\s/g, '').match(/^[0-9()-+]+$/);
 }
 
 function validateProject(request){
