@@ -310,8 +310,8 @@ function getUserID(username) {
  */
 function getProject(user_id, year) {
     return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection();
         try {
-            const client = await pool.getConnection();
             client.query("BEGIN")
             const getUserQuery = {
                 text: "SELECT project_id, number_of_students, title, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number " +
