@@ -285,6 +285,7 @@ function registerProject(project_details) {
         try {
             const examiner_id = 1
             const supervisor_id = 1
+            let company_id;
             let project_id;
             await client.query("BEGIN");
             if (project_details.company_name !== undefined) {
@@ -296,7 +297,7 @@ function registerProject(project_details) {
                 client
                     .query(addCompanyQuery.text, addCompanyQuery.values)
                     .then(res => {
-                        project_details.company = Object.values(res[1][0])[0];
+                        company_id = res[0].insertId;
                     })
                     .catch(err => {
                         client.query("ROLLBACK");
@@ -308,7 +309,7 @@ function registerProject(project_details) {
                 text: "INSERT INTO Degree_project (number_of_students,title,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact)" +
                     "VALUES (?,?,?,?,?,?,?,?,?,?,?);" +
                     "SELECT LAST_INSERT_ID()",
-                values: [project_details.number_of_students, project_details.project_title, project_details.project_description, project_details.credits, project_details.start_date, project_details.end_date, project_details.in_progress, project_details.out_of_date, project_details.all_info_specified, project_details.company, project_details.company_contact]
+                values: [project_details.number_of_students, project_details.project_title, project_details.project_description, project_details.credits, project_details.start_date, project_details.end_date, project_details.in_progress, project_details.out_of_date, project_details.all_info_specified, company_id, project_details.company_contact]
             }
 
             await client
