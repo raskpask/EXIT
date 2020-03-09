@@ -481,8 +481,8 @@ function updateProject(supervisor, project_id) {
         let updateSupervisor = {
             text: "UPDATE Student_project " +
                 "SET user_id = (SELECT user_id FROM User WHERE kth_username = ?), project_role_id = ? " +
-                "WHERE  degree_project_id = ? ",
-            values: [supervisor, ROLE_SUPERVISOR, project_id]
+                "WHERE  degree_project_id = ? AND project_role_id = ?",
+            values: [supervisor, ROLE_SUPERVISOR, project_id,ROLE_SUPERVISOR]
         }
         client
             .query(updateSupervisor.text, updateSupervisor.values)
@@ -503,7 +503,7 @@ function updateProject(supervisor, project_id) {
                         .catch(err =>
                             console.error(err)
                         )
-                } else if (res.affectedRows === 1) {
+                } else {
                     resolve()
                 }
             })
