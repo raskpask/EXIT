@@ -478,23 +478,23 @@ function registerProject(project_details) {
 function updateProject(supervisor, project_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
-        let updateExpertise = {
+        let updateSupervisor = {
             text: "UPDATE Student_project " +
                 "SET user_id = (SELECT user_id FROM User WHERE kth_username = ?), project_role_id = ? " +
                 "WHERE  degree_project_id = ? ",
             values: [supervisor, ROLE_SUPERVISOR, project_id]
         }
         client
-            .query(updateExpertise.text, updateExpertise.values)
+            .query(updateSupervisor.text, updateSupervisor.values)
             .then(res => {
                 if (res.affectedRows === 0) {
-                    let updateExpertise = {
+                    let addSupervisor = {
                         text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id) " +
                             "VALUES (?,?, SELECT user_id FROM User WHERE kth_username= ?)",
                         values: [ROLE_SUPERVISOR, project_id, supervisor]
                     }
                     client
-                        .query(updateExpertise.text, updateExpertise.values)
+                        .query(addSupervisor.text, addSupervisor.values)
                         .then(res =>
                             resolve()
                         )
