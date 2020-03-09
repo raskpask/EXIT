@@ -314,7 +314,7 @@ function registerProject(project_details) {
             await client
                 .query(addProjectDetailsQuery.text, addProjectDetailsQuery.values)
                 .then(res => {
-                    project_id = res[0]
+                    project_id = res[0].insertId
                     const addExaminerQuery = {
                         text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
                             "VALUES (?,?,?)",
@@ -339,7 +339,7 @@ function registerProject(project_details) {
                 client
                     .query(addStudentQuery.text, addStudentQuery.values)
                     .then(res => {
-                        const user_id = res[0]
+                        const user_id = res[0].insertId
                         addStudentToProjectQuery = {
                             text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
                                 "VALUES (?,?,?)",
