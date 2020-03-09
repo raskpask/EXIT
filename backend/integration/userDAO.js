@@ -482,8 +482,7 @@ function updateProject(supervisor, project_id) {
             text: "UPDATE Student_project " +
                 "INNER JOIN User ON User.user_id = Student_project.user_id "+
                 "SET Student_project.user_id = User.user_id, project_role_id = ? " +
-                "WHERE  degree_project_id = ? AND project_role_id = ? AND User.kth_username = ? "+
-                "RETURN User.user_id" ,
+                "WHERE  degree_project_id = ? AND project_role_id = ? AND User.kth_username = ?",
             values: [ROLE_SUPERVISOR, project_id,ROLE_SUPERVISOR,supervisor]
         }
         client
@@ -494,7 +493,7 @@ function updateProject(supervisor, project_id) {
                     
                     let addSupervisor = {
                         text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id) " +
-                            "VALUES (?,?,?)",
+                            "VALUES (?,?,(SELECT user_id FROM User WHERE kth_username = supervisor))",
                         values: [ROLE_SUPERVISOR, project_id, supervisor]
                     }
                     client
