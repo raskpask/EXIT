@@ -327,7 +327,7 @@ function getProject(user_id, year) {
                     res.forEach(project => {
                         getProjectUserQuery = {
                             text: "SELECT * " +
-                                "FROM User INNER JOIN Student_project ON User.user_id = Student_project.user_id" +
+                                "FROM User INNER JOIN Student_project ON User.user_id = Student_project.user_id " +
                                 "WHERE Student_project.degree_project_id = ?",
                             values: [project.project_id]
                         }
@@ -356,7 +356,7 @@ function getProject(user_id, year) {
             console.error(err)
             client.query("ROLLBACK")
         } finally{
-            cleint.release()
+            client.release()
         }
     });
 }
