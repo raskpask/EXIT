@@ -294,9 +294,10 @@ function registerProject(project_details) {
                         + "VALUES (?,?,?); SELECT LAST_INSERT_ID()",
                     values: [project_details.company_name, project_details.company_address, project_details.company_phone_number]
                 }
-                client
+                await client
                     .query(addCompanyQuery.text, addCompanyQuery.values)
                     .then(res => {
+                        console.log(res[0])
                         company_id = res[0].insertId;
                     })
                     .catch(err => {
