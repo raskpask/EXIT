@@ -336,8 +336,6 @@ function getProject(user_id, year) {
                             .then(res => {
                                 const users = JSON.stringify(res).split("meta")[0]
                                 projects.push(new ProjectDetails(project.project_id, project.number_of_students, project.title, project.project_description, project.credits, project.start_date, project.end_date, res.in_progress, project.out_of_date, project.all_info_specified, project.company, project.company_contact, project.name, project.address, project.phone_number, users))
-                                console.log(index)
-                                console.log(arr.length)
                                 if (index === arr.length - 1) {
                                     resolve(projects)
                                 }
@@ -353,7 +351,7 @@ function getProject(user_id, year) {
                         // new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number)
                         // console.log(res)
                         // console.log(projects)
-                        resolve(projects)
+                        // resolve(projects)
                     }
                 })
                 .catch(err => {
