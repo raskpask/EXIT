@@ -316,9 +316,10 @@ function getProject(user_id, year) {
             client.query("BEGIN")
             const getUserQuery = {
                 text: "SELECT project_id, number_of_students, title, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number " +
-                    "FROM (Degree_project LEFT JOIN Company ON Degree_project.company = Company.company_id) " +
-                    "Degree_project INNER JOIN Student_project ON Degree_project.project_id = Student_project.degree_project_id " +
-                    "Student_project INNER JOIN User ON User.user_id = Student_project.user_id " +
+                    "FROM Degree_project "+
+                    "LEFT JOIN Company ON Degree_project.company = Company.company_id " +
+                    "INNER JOIN Student_project ON Degree_project.project_id = Student_project.degree_project_id " +
+                    "INNER JOIN User ON User.user_id = Student_project.user_id " +
                     "WHERE Degree_project.project_id IN (SELECT degree_project_id FROM Student_project WHERE user_id = ?) " +
                     "AND year(start_date) = ? ",
                 values: [user_id, year]
