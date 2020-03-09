@@ -204,7 +204,7 @@ function extractRegisterProjectDetails(req) {
         if (project.companyName !== '') {
             company_name = project.companyName;
             company_address = project.companyAddress;
-            company_phone_number = project.companyPhoneNumber;
+            company_phone_number = project.companyPhone;
         }
         //}
 
