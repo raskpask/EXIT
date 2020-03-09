@@ -311,8 +311,8 @@ function getUserID(username) {
 function getProject(user_id, year) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
-        let users = []
         try {
+            let project = []
             client.query("BEGIN")
             const getUserQuery = {
                 text: "SELECT project_id, number_of_students, title, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number " +
@@ -333,10 +333,9 @@ function getProject(user_id, year) {
                         }
                         client
                             .query(getProjectUserQuery.text, getProjectUserQuery.values)
-                            .then(res => {
-                                console.log(res)
+                            .then(res => {                               
+                                project.push(new ProjectDetails(project.project_id, project.number_of_students, project.title, project.project_description, project.credits, project.start_date, project.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,res))
                                 console.log(project)
-                                users.push(res[0])
                             })
                             .catch(err => {
                                 console.error(err)
