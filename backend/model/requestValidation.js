@@ -136,7 +136,7 @@ function validateProject(request){
         }
 
         if(project.hasOwnProperty("companyName")){
-            if(!project.companyPhoneNumber.replace(/\s/g, '').match(/^[0-9()-]+$/)){
+            if(!project.companyPhoneNumber.replace(/\s/g, '').match(/^[0-9()-+]+$/)){
                 console.log("invalid phone number");
                 return false;
             }

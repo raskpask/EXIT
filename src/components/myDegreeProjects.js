@@ -13,13 +13,13 @@ class MyDegreeProjects extends Component {
             showUser: [],
             projects: [
                 {   
-                    projectID: "",
+                    project_id: "",
                     credits: "",
-                    degreeTitle: "",
-                    numOfStudents: "",
-                    startDate: "",
-                    endDate: "",
-                    withinTimeLimit: "",
+                    title: "",
+                    numer_of_students: "",
+                    start_date: "",
+                    end_date: "",
+                    out_of_date: "",
                 }
             ]
         }
@@ -31,6 +31,7 @@ class MyDegreeProjects extends Component {
         axios
             .get('/api/project')
             .then(res => {
+                console.log(res.data)
                 if (res.status === 200) {
                     this.setState({ projects: res.data })
                 }
@@ -57,11 +58,11 @@ class MyDegreeProjects extends Component {
                     {this.state.projects.map((project, key) =>
                         < tr key={key} className="pressForInfo" >
                             <td key={"credits: " + key} className="pressForInfo" >{project.credits}</td>
-                            <td key={"degreeTitle: " + key} > {project.degreeTitle}</td>
-                            <td key={"numOfStudents: " + key} > {project.numOfStudents}</td>
-                            <td key={"startDate: " + key} > {project.startDate}</td>
-                            <td key={"endDate: " + key} > {project.endDate}</td>
-                            <td key={"withinTimeLimit: " + key} > {project.withinTimeLimit}</td>
+                            <td key={"degreeTitle: " + key} > {project.title}</td>
+                            <td key={"numOfStudents: " + key} > {project.number_of_students}</td>
+                            <td key={"startDate: " + key} > {project.start_date.split('T')[0]}</td>
+                            <td key={"endDate: " + key} > {project.end_date.split('T')[0]}</td>
+                            <td key={"withinTimeLimit: " + key} > {project.out_of_date === 0 ? this.props.info.general.true : this.props.info.general.false }</td>
                             <td key={"moreInfo: " + key} > {this.renderFullProject(project)}</td>
                         </tr>
                     )}

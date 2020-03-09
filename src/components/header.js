@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import Cookies from 'universal-cookie';
-import { errorCodes } from '../model/dbErrors'
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import '../resources/css/header.css';
@@ -46,24 +45,24 @@ class Header extends Component {
         return true
     }
     chooseUserLevel() {
-        return this.renderDirector()
+        return this.renderExaminer()
 
-        let privilegeLevel = document.cookie.split('privilegeLevel=')[1];
+        // let privilegeLevel = document.cookie.split('privilegeLevel=')[1];
 
-        if (Boolean(privilegeLevel)) {
-            privilegeLevel = privilegeLevel.split(';')[0];
-        }
-        if (privilegeLevel === '1') {
-            return this.renderAdmin()
-        } else if (privilegeLevel === '2') {
-            return this.renderDirector()
-        } else if (privilegeLevel === '3') {
-            return this.renderExaminer()
-        } else if (privilegeLevel === '4') {
-            return this.renderStudent()
-        } else {
-            return this.renderLogin()
-        }
+        // if (Boolean(privilegeLevel)) {
+        //     privilegeLevel = privilegeLevel.split(';')[0];
+        // }
+        // if (privilegeLevel === '1') {
+        //     return this.renderAdmin()
+        // } else if (privilegeLevel === '2') {
+        //     return this.renderDirector()
+        // } else if (privilegeLevel === '3') {
+        //     return this.renderExaminer()
+        // } else if (privilegeLevel === '4') {
+        //     return this.renderStudent()
+        // } else {
+        //     return this.renderLogin()
+        // }
     }
     renderBrand() {
         return (

@@ -32,9 +32,6 @@ class AddDegreeProject extends Component {
             companyPhone: "",
         }
     }
-    componentDidUpdate() {
-        console.log(this.state.startDate)
-    }
     addProject = (e) => {
         e.preventDefault();
         const project = this.createProject()

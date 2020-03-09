@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Table } from 'react-bootstrap';
+import React, { Component, Fragment } from 'react';
+import { Table, DropdownButton, Dropdown, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Access from './fragments/access';
@@ -10,26 +10,38 @@ class AvailableExaminers extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentYear: new Date().getFullYear(),
+            budgetYear: [
+                {
+                    year: "",
+                }
+            ],
             examiners: [
                 {
-                    lastName: "",
-                    firstName: "",
+                    last_name: "",
+                    first_name: "",
                     email: "",
-                    competenceArea: ""
+                    expertise_name: "",
+                    user_id: "",
+                    available_hours_examiner: ""
                 }
             ]
         }
     }
     componentDidMount() {
-        this.getExaminers()
+        this.getExaminers(this.state.currentYear)
+        this.getBudgetYears()
     }
-    getExaminers = () => {
-
-        const response = axios
-            .get('/api/user')
+    getExaminers = (year) => {
+        axios
+            .get('/api/availableExaminers', {
+                params: {
+                    year: year
+                }
+            })
             .then(res => {
                 if (res.status === 200) {
-                    this.setState({ users: response.data })
+                    this.setState({ examiners: res.data })
                 }
             })
             .catch(err => {
@@ -37,6 +49,37 @@ class AvailableExaminers extends Component {
                 toast(this.props.info.availableExaminers.fail)
             })
 
+    }
+    getBudgetYears = () => {
+        axios
+            .get('/api/budgetYear')
+            .then(res => {
+                if (res.status === 200) {
+                    this.setState({ budgetYear: res.data })
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                toast(this.props.info.availableExaminers.fail)
+            })
+    }
+    renderDropDownYear() {
+        return (
+            <Row>
+                <Col>
+                    <h3>{this.props.info.availableExaminers.budgetYear}: {this.state.currentYear}</h3>
+                </Col>
+                <Col className="alignRight">
+                    <DropdownButton id="dropdown-basic-button" title={this.props.info.availableExaminers.changeYear}>
+                        {this.state.budgetYear.map((budgetYear, key) =>
+                            <Fragment>
+                                <Dropdown.Item onClick={() => this.getExaminers(budgetYear.year)}>{budgetYear.year}</Dropdown.Item>
+                            </Fragment>
+                        )}
+                    </DropdownButton>
+                </Col>
+            </Row>
+        )
     }
     renderTable() {
         return (
@@ -53,10 +96,10 @@ class AvailableExaminers extends Component {
                 <tbody>
                     {this.state.examiners.map((examiner, key) =>
                         < tr key={key} className="pressForInfo" >
-                            <td key={"name: " + key} className="pressForInfo" >{examiner.firstName}</td>
-                            <td key={"lastName: " + key} > {examiner.lastName}</td>
+                            <td key={"name: " + key} className="pressForInfo" >{examiner.first_name}</td>
+                            <td key={"lastName: " + key} > {examiner.last_name}</td>
                             <td key={"email: " + key} > {examiner.email}</td>
-                            <td key={"competenceArea: " + key} > {examiner.competenceArea}</td>
+                            <td key={"competenceArea: " + key} > {examiner.expertise_name}</td>
                         </tr>
                     )}
                 </tbody>
@@ -69,7 +112,8 @@ class AvailableExaminers extends Component {
                 <Access access='4' info={this.props.info.access} />
                 <h1>{this.props.info.availableExaminers.title}</h1>
                 <p>{this.props.info.availableExaminers.subtitle}</p>
-                <h3>{this.props.info.availableExaminers.budgetYear}</h3>
+                {this.renderDropDownYear()}
+
                 {this.renderTable()}
             </div>
         );

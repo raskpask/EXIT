@@ -173,12 +173,13 @@ function getLanguage() {
         availableExaminers: {
             title: "Current available examiners",
             subtitle: "This table shows all available examiners for the current calendar year.",
-            budgetYear: "Bugdet year ",
+            budgetYear: "Budget year ",
             firstName: "First name",
             lastName: "Last name",
             email: "Email",
             competenceArea: "Competence area",
-            fail: "Something went wrong, could not fatch the examiners."
+            fail: "Something went wrong, could not fatch the examiners.",
+            changeYear: "Change year"
         },
         myDegreeProjects: {
             title: "My degree projects",
@@ -353,7 +354,9 @@ function getLanguage() {
         ],
         general: {
             loading: "Loading...",
-            error: "oops something went wrong!"
+            error: "oops something went wrong!",
+            true: "True",
+            false: "False"
         }
     }
     return lang;
