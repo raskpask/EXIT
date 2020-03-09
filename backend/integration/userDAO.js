@@ -120,7 +120,7 @@ function deleteUser(user_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let deleteExpertise = {
-            text: "DELETE FROM person " +
+            text: "DELETE FROM User " +
                 "WHERE user_id = ? ",
             values: [user_id]
         }
@@ -137,6 +137,9 @@ function deleteUser(user_id) {
         client.end()
     })
 }
+/**
+ * Gets a work year from the database
+ */
 function getWorkYear(user_id, year) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
@@ -524,7 +527,6 @@ function deleteBudgetYear(budget_year) {
 }
 
 module.exports = {
-    registerUser,
     registerUser,
     getUser,
     updateUser,

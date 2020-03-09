@@ -66,8 +66,7 @@ CREATE TABLE `Budget_year` (
   `master_hours_examiner` int(11) DEFAULT NULL,
   `master_hours_supervisor` int(11) DEFAULT NULL,
   `year` int(11) NOT NULL,
-  PRIMARY KEY (`year`),
-  CONSTRAINT `Budget_year_ibfk_1` FOREIGN KEY (`year`) REFERENCES `Work_year` (`year`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`year`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -77,6 +76,7 @@ CREATE TABLE `Budget_year` (
 
 LOCK TABLES `Budget_year` WRITE;
 /*!40000 ALTER TABLE `Budget_year` DISABLE KEYS */;
+INSERT INTO `Budget_year` VALUES (300,1.5,1.6,1.7,1.8,2.7,200,200,100,100,2019),(300,1.5,1.6,1.7,1.8,2.7,200,200,100,100,2020);
 /*!40000 ALTER TABLE `Budget_year` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -125,7 +125,7 @@ CREATE TABLE `Degree_project` (
   `company` int(11) DEFAULT NULL,
   `company_contact` int(11) DEFAULT NULL,
   `project_description` varchar(1024) DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
   PRIMARY KEY (`project_id`),
   KEY `company_idx` (`company`),
   CONSTRAINT `company` FOREIGN KEY (`company`) REFERENCES `Company` (`company_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -138,7 +138,7 @@ CREATE TABLE `Degree_project` (
 
 LOCK TABLES `Degree_project` WRITE;
 /*!40000 ALTER TABLE `Degree_project` DISABLE KEYS */;
-INSERT INTO `Degree_project` VALUES (2,2,15,'2015-01-20','2008-06-20',1,0,1,1,2,'This is a dummy project',NULL),(3,2,15,'2020-01-20','2020-06-04',1,0,1,NULL,NULL,'This is another dummy project',NULL),(4,1,15,'2020-01-05','2020-06-01',1,0,1,NULL,1,'testprojekt',NULL),(5,1,15,'2020-01-05','2020-06-01',1,0,1,13,1,'testprojekt',NULL),(6,1,15,'2020-01-05','2020-06-01',1,0,1,14,1,'testprojekt',NULL),(7,1,15,'2020-01-05','2020-06-01',1,0,1,15,1,'testprojekt',NULL),(8,0,0,'2015-01-01','2020-01-01',NULL,NULL,NULL,17,NULL,'',''),(9,0,0,'2015-01-01','2020-01-01',NULL,NULL,NULL,18,NULL,'',''),(10,2,15,'2020-03-02','2020-03-09',NULL,NULL,NULL,NULL,NULL,'Test from fronend','Test Title'),(11,23,123,'2020-03-02','2020-03-02',NULL,NULL,NULL,NULL,NULL,'HEj då asfdas','HEllo'),(12,2,13,'2020-03-02','2020-03-02',NULL,NULL,NULL,NULL,NULL,'das','HEk');
+INSERT INTO `Degree_project` VALUES (2,2,15,'2015-01-20','2008-06-20',1,0,1,1,2,'This is a dummy project',''),(3,2,15,'2020-01-20','2020-06-04',1,0,1,NULL,NULL,'This is another dummy project',''),(4,1,15,'2020-01-05','2020-06-01',1,0,1,NULL,1,'testprojekt',''),(5,1,15,'2020-01-05','2020-06-01',1,0,1,13,1,'testprojekt',''),(6,1,15,'2020-01-05','2020-06-01',1,0,1,14,1,'testprojekt',''),(7,1,15,'2020-01-05','2020-06-01',1,0,1,15,1,'testprojekt',''),(8,0,0,'2015-01-01','2020-01-01',NULL,NULL,NULL,17,NULL,'',''),(9,0,0,'2015-01-01','2020-01-01',NULL,NULL,NULL,18,NULL,'',''),(10,2,15,'2020-03-02','2020-03-09',NULL,NULL,NULL,NULL,NULL,'Test from fronend','Test Title'),(11,23,123,'2020-03-02','2020-03-02',NULL,NULL,NULL,NULL,NULL,'HEj då asfdas','HEllo'),(12,2,13,'2020-03-02','2020-03-02',NULL,NULL,NULL,NULL,NULL,'das','HEk');
 /*!40000 ALTER TABLE `Degree_project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,6 +165,7 @@ CREATE TABLE `Expertise` (
 
 LOCK TABLES `Expertise` WRITE;
 /*!40000 ALTER TABLE `Expertise` DISABLE KEYS */;
+INSERT INTO `Expertise` VALUES (1,2);
 /*!40000 ALTER TABLE `Expertise` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -235,11 +236,13 @@ DROP TABLE IF EXISTS `Work_year`;
 CREATE TABLE `Work_year` (
   `person_id` int(11) DEFAULT NULL,
   `work_hours_examiner` int(11) DEFAULT NULL,
-  `available_hours` int(11) DEFAULT NULL,
-  `year` int(11) NOT NULL,
+  `available_hours_supervisor` int(11) DEFAULT NULL,
   `work_hours_supervisor` int(11) DEFAULT NULL,
-  PRIMARY KEY (`year`),
+  `available_hours_examiner` int(11) DEFAULT NULL,
+  `year` int(11) DEFAULT NULL,
   KEY `person_id_idx` (`person_id`),
+  KEY `year` (`year`),
+  CONSTRAINT `Work_year_ibfk_1` FOREIGN KEY (`year`) REFERENCES `Budget_year` (`year`),
   CONSTRAINT `person_id` FOREIGN KEY (`person_id`) REFERENCES `User` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -250,7 +253,7 @@ CREATE TABLE `Work_year` (
 
 LOCK TABLES `Work_year` WRITE;
 /*!40000 ALTER TABLE `Work_year` DISABLE KEYS */;
-INSERT INTO `Work_year` VALUES (1,200,150,1,NULL),(1,200,75,2020,NULL);
+INSERT INTO `Work_year` VALUES (1,200,150,NULL,NULL,NULL),(1,200,75,200,75,NULL),(1,200,100,200,100,2020),(2,200,100,200,100,2019);
 /*!40000 ALTER TABLE `Work_year` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -263,4 +266,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-06 12:31:08
+-- Dump completed on 2020-03-09 10:48:56
