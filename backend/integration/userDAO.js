@@ -334,7 +334,7 @@ function getProject(user_id, year) {
                         client
                             .query(getProjectUserQuery.text, getProjectUserQuery.values)
                             .then(res => {
-                                const users = JSON.stringify(res).split("meta")[0]
+                                const users = res
                                 projects.push(new ProjectDetails(project.project_id, project.number_of_students, project.title, project.project_description, project.credits, project.start_date, project.end_date, res.in_progress, project.out_of_date, project.all_info_specified, project.company, project.company_contact, project.name, project.address, project.phone_number, users))
                                 if (index === arr.length - 1) {
                                     resolve(projects)
