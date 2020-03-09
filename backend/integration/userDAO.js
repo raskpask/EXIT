@@ -342,13 +342,16 @@ function getProject(user_id, year) {
                                 console.error(err)
                                 client.query("ROLLBACK")
                             })
+                            .finally(
+                                console.log(projects)
+                            )
                     })
                     if (res !== undefined) {
                         // const rawProject = res[0]//.person.split('(')[1].split(',');
                         // console.log(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,users))
                         // new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number)
                         // console.log(res)
-                        console.log(projects)
+                        // console.log(projects)
                         resolve(projects)
                     }
                 })
