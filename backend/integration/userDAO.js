@@ -334,8 +334,9 @@ function getProject(user_id, year) {
                         client
                         .query(getProjectUserQuery.text,getProjectUserQuery.values)
                         .then(res=>{
-                            console.log(res[0])
-                            users.push(res)
+
+                            // console.log(res[0])
+                            users.push({users: res,project: project})
                         })
                         .catch(err=>{
                             console.error(err)
@@ -349,7 +350,7 @@ function getProject(user_id, year) {
                             // console.log(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,users))
                         // new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number)
                         // console.log(res)
-                        // console.log(users)
+                        console.log(users)
                         resolve()
                     }
                 })
