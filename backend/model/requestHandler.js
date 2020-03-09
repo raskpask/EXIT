@@ -249,10 +249,6 @@ function extractWorkYear(req) {
     }
 
 }
-
-function extractUserID(req) {
-    return req.body.userID;
-}
 function extractExpertiseID(req) {
     return req.body.expertiseID;
 }
