@@ -435,6 +435,35 @@ function registerProject(project_details) {
         }
     });
 }
+
+function deleteProject(project_id){
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection();
+        const getUserQuery = {
+            text: "SELECT project_id, number_of_students, title, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number FROM (Degree_project LEFT JOIN Company ON Degree_project.company = Company.company_id) WHERE Degree_project.project_id IN (SELECT degree_project_id FROM Student_project WHERE user_id = ?)",
+            values: [user_id]
+        }
+        client
+            .query(getUserQuery.text, getUserQuery.values)
+            .then(res => {//, (err, res) => {
+                // if (notVaildResponse(res)) {
+                //     client.end();
+                //     reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
+                // }
+                if (res !== undefined) {
+                    // const rawProject = res[0]//.person.split('(')[1].split(',');
+                    client.end()
+                    // let foundProject = new ProjectDetails(rawProject.project_id, rawProject.number_of_students, rawProject.title, rawProject.project_description, rawProject.credits, rawProject.start_date, rawProject.end_date, rawProject.in_progress, rawProject.out_of_date, rawProject.all_info_specified, rawProject.company, rawProject.company_contact, rawProject.name, rawProject.address, rawProject.phone_number);
+                    resolve(res);
+                }
+            })
+            .catch(err => {
+                client.end()
+                console.error(err);
+                reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
+            });
+    });
+}
 function getExpertise(user_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()

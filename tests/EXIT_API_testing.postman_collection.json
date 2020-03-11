@@ -695,7 +695,7 @@
 					"response": []
 				},
 				{
-					"name": "Creata a project no company",
+					"name": "Create project no company",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -931,13 +931,7 @@
 							"script": {
 								"id": "9552d1e6-0039-49b0-b496-6b593d77fb5e",
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"pm.test(\"Your test name\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.first_name).to.eql(\"hej\");",
-									"});"
+									""
 								],
 								"type": "text/javascript"
 							}
