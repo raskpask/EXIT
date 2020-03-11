@@ -8,7 +8,7 @@ To start the application you need to have access to your server that is to host 
 
 ### `npm start`
 
-Starts the application on port 8080 on the host server. <br />
+Starts the application on port 80 on the host server. <br />
 
 ### `npm run build`
 
