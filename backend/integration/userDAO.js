@@ -751,6 +751,7 @@ module.exports = {
     getProject,
     registerProject,
     updateProject,
+    deleteProject,
     getExpertise,
     postExpertise,
     updateExpertise,
