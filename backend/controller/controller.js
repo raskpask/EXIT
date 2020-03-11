@@ -81,7 +81,7 @@ async function updateProject(req) {
 }
 async function deleteProject(req) {
     try {
-        return await userDAO.deleteProject(req.body.supervisor,req.body.project_id);
+        return await userDAO.deleteProject(req.body.project_id);
     }
     catch (error) {
         throw error
