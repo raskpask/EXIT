@@ -537,6 +537,7 @@ function deleteProject(project_id) {
             })
             .catch(err => {
                 console.error(err)
+                reject(new Error(dbError.errorCodes.DELETE_ERROR.code))
             })
         client.end()
     })
