@@ -27,4 +27,4 @@ apiEndpoint.router(app);
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
-app.listen(port,'130.237.202.87');
+app.listen(port);
