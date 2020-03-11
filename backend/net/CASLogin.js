@@ -8,7 +8,7 @@ const sp_options = {
     entity_id: "https://samltest.sys.kth.se/idp/shibboleth",
     private_key: fs.readFileSync(private_key,"utf-8").toString(),
     certificate: fs.readFileSync(cert,"utf-8").toString(),
-    assert_endpoint: "https://130.237.202.87:8080/assert",
+    assert_endpoint: "https://exit.ict.kth.se:8080/assert",
 }
 const idp_options = {
     sso_login_url: "https://samltest-5.sys.kth.se/idp/profile/SAML2/Redirect/SSO",
@@ -27,6 +27,7 @@ function router(router) {
     // Endpoint to retrieve metadata
     router.get("/metadata.xml", function (req, res) {
         res.type('application/xml');
+        console.log(sp.create_metadata())
         res.send(sp.create_metadata());
     });
 
