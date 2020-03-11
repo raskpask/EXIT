@@ -488,7 +488,6 @@ function updateProject(supervisor, project_id) {
         client
             .query(updateSupervisor.text, updateSupervisor.values)
             .then(res => {
-                console.log(res)
                 if (res.affectedRows === 0) {
 
                     let addSupervisor = {
@@ -499,6 +498,7 @@ function updateProject(supervisor, project_id) {
                     client
                         .query(addSupervisor.text, addSupervisor.values)
                         .then(res => {
+                            console.log(res)
                             if (res.affectedRows === 0) {
                                 reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
                             }
