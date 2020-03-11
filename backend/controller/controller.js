@@ -114,6 +114,15 @@ async function getAvailableExaminers(req) {
         throw error
     }
 }
+async function getAvailableSupervisors(req) {
+    try {
+        return await userDAO.getAvailableSupervisors(req.query.year);
+    }
+    catch (error) {
+        throw error
+    }
+}
+
 /**
  * Validates if the username is in the DB.
  *
@@ -273,5 +282,6 @@ module.exports = {
     deleteBudgetYear,
     getWorkYear,
     updateWorkYear,
-    getAvailableExaminers
+    getAvailableExaminers,
+    getAvailableSupervisors
 }
