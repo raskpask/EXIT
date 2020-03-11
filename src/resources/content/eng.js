@@ -47,7 +47,9 @@ function getLanguage() {
             student: "Student",
             supervisor: "Supervisor",
             examiner: "Examiner",
-            projectRole: "Project role"
+            projectRole: "Project role",
+            pickSupervisor: "Pick supervisor",
+            supervisorPlaceholder: "Press the button to see supervisors"
 
         },
         addDegreeProject: {
@@ -79,8 +81,12 @@ function getLanguage() {
             studentNamePlaceholder: "Enter full name of the student",
             kthUsername: "KTH username",
             kthUsernamePlaceholder: "Enter KTH username.",
-            supervisor: "Supervisor",
-            supervisorPlaceholder: "Enter the KTH username of the supervisor.",
+            supervisor: "Supervisor (change start date to change available supervisors)",
+            supervisorPlaceholder: "Enter start date to see available supervisors",
+            added: "The project was added to your quota",
+            fail: "Error, The project was not added to your quota",
+            getFail: "Error could not fetch the supervisors",
+            pickSupervisor: "Pick supervisor"
         },
         specifiedBudgetYears: {
             title: "Specified budget years",
@@ -213,7 +219,8 @@ function getLanguage() {
             username: "Username",
             submit: "Submit",
             added: "The user was added as director of studies",
-            fail: "Something went wrong and the user was not add as director of studies"
+            fail: "Something went wrong and the user was not add as director of studies",
+            getFail:"Something went wrong could not fetch examiners"
         },
         validationError: {
             emptyField: {
@@ -359,8 +366,8 @@ function getLanguage() {
         general: {
             loading: "Loading...",
             error: "oops something went wrong!",
-            true: "True",
-            false: "False",
+            yes: "Yes",
+            no: "No",
             email: "Email",
             name: "Name"
         }

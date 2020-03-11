@@ -2,19 +2,27 @@ import React, { Component, Fragment } from 'react';
 import { Nav, Card, ListGroup, Form, Button, Row, Col, Table } from 'react-bootstrap';
 import axios from 'axios';
 import '../../resources/css/degreeProject.css';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { toast } from 'react-toastify';
 class DegreeProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            
-            user: "",
+            supervisors: [],
+            supervisor_id: "",
             bodyContent: this.renderInfo()
         }
     }
+    componentDidMount() {
+        this.getSupervisors()
+    }
     deleteProject = () => {
+        const payload = {
+            project_id: this.props.project.project_id
+        }
         axios
-            .delete('/api/project', this.props.project.projectID)
+            .delete('/api/project', { data: payload })
             .then(res => {
                 if (res.status === 200) {
                     toast(this.props.info.degreeProject.projectDeleted)
@@ -24,12 +32,13 @@ class DegreeProject extends Component {
                 console.error(err)
                 toast(this.props.info.degreeProject.projectDeletedFail)
             })
-        this.props.showInfo(this.props.project.projectID, false)
+        this.forceUpdate()
     }
     saveUpdates = (e) => {
+        console.log(this.state)
         e.preventDefault();
         const data = {
-            supervisor: this.state.supervisor,
+            supervisor_id: this.state.supervisor_id,
             project_id: this.props.project.project_id
         }
         axios
@@ -42,8 +51,26 @@ class DegreeProject extends Component {
             .catch(err => {
                 console.error(err)
                 toast(this.props.info.degreeProject.updateFail)
-            }
-            )
+            })
+    }
+    getSupervisors = () => {
+        axios
+            .get('/api/availableSupervisors', {
+                params: {
+                    year: this.props.project.start_date.split('-')[0]
+                }
+            })
+            .then(res => {
+                if (res.status === 200 && res.data !== '') {
+                    this.setState({ supervisors: res.data })
+                } else {
+                    toast(this.props.info.addDegreeProject.getFail)
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                toast(this.props.info.addDegreeProject.getFail)
+            })
     }
     renderInfo() {
         return (
@@ -118,13 +145,14 @@ class DegreeProject extends Component {
             <Form onSubmit={(e) => this.saveUpdates(e)}>
                 <Row>
                     <Col>
-                        <Form.Label>{this.props.info.addDegreeProject.supervisor}</Form.Label>
-                        <Form.Control
-                            required
-                            type="text"
-                            value={this.state.supervisor}
+                        <Form.Label>{this.props.info.degreeProject.supervisor}</Form.Label>
+                        <Typeahead
+                            id="changeSupervisor"
+                            labelKey={(option) => `${option.first_name} ${option.last_name} (${option.email})`}//{"" +option.first_name +option.last_name +" "+option.email +""}}
                             placeholder={this.props.info.addDegreeProject.supervisorPlaceholder}
-                            onChange={event => this.setState({ supervisor: event.target.value })}
+                            selected={this.state.supervisor}
+                            onChange={event => this.setState({ supervisor_id: event[0].user_id })}
+                            options={this.state.supervisors}
                         />
                     </Col>
                 </Row>

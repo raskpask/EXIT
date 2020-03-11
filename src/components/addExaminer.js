@@ -5,16 +5,21 @@ import { Form, Button, Col, Row } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../resources/css/form.css';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 import Access from './fragments/access';
 
 class AddExaminer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: ""
+            username: "",
+            examiners: [],
         }
     }
-
+    componentDidMount(){
+        this.getExaminers()
+    }
     addUser = (e) => {
         e.preventDefault();
         const email = this.state.username + "@kth.se"
@@ -28,18 +33,30 @@ class AddExaminer extends Component {
                 toast(this.props.info.addDirectorOfStudies.fail)
             })
     }
+    getExaminers = () =>{
+        axios
+        .get('/api/user')
+        .then(res=>{
+            this.setState({examiners: res.data})
+        })
+        .catch(err => {
+            console.log(err)
+            toast(this.props.info.addDirectorOfStudies.getFail)
+        })
+    }
     renderAdd() {
         return (
             <Form onSubmit={(e) => this.addUser(e)}>
                 <Row>
                     <Col md={8}>
                         <Form.Label>{this.props.info.addExaminer.kthUsername}</Form.Label>
-                        <Form.Control
-                            required
-                            type="text"
-                            value={this.state.username}
-                            placeholder={this.props.info.addExaminer.kthUsernamePlaceholder}
-                            onChange={event => this.setState({ username: event.target.value })}
+                        <Typeahead
+                            id="addExaminer"
+                            labelKey={(option) => `${option.first_name} ${option.last_name} (${option.email})`}
+                            placeholder={this.props.info.addDegreeProject.supervisorPlaceholder}
+                            selected={this.state.examiners}
+                            onChange={event => this.setState({ examiner_id: event[0].user_id })}
+                            options={this.state.examiners}
                         />
                         <Button className="marginTop"type="submit">{this.props.info.addBudgetYear.submit}</Button>
                     </Col>

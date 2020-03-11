@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Form, Button, Col, Row } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 import '../resources/css/form.css';
 import Access from './fragments/access';
 
@@ -96,13 +98,14 @@ class SpecifyTutoringHours extends Component {
                     <Row>
                         <Col>
                             <Form.Label>{this.props.info.specifyTutoringHours.username}</Form.Label>
-                            <Form.Control
-                                required
-                                type="text"
-                                value={examiner.username}
-                                placeholder={this.props.info.specifyTutoringHours.usernamePlaceholder}
-                                onChange={event => this.handleChangeExaminer(event.target.value,'username',key)}
-                            />
+                            <Typeahead
+                            id="changeSupervisor"
+                            labelKey={(option) => `${option.first_name} ${option.last_name} (${option.email})`}//{"" +option.first_name +option.last_name +" "+option.email +""}}
+                            placeholder={this.props.info.specifyTutoringHours.usernamePlaceholder}
+                            selected={examiner.username}
+                            onChange={event => this.setState({ supervisor_id: event[0].user_id })}
+                            options={["ja"]}
+                        />
                         </Col>
                         <Col >
                             <Form.Label>{this.props.info.specifyTutoringHours.examinerHours}</Form.Label>
