@@ -20,6 +20,9 @@ TYPE_COMPANT_CONTACT = 5;
 ROLE_EXAMINER = 1;
 ROLE_SUPERVISOR = 2;
 ROLE_STUDENT = 3;
+
+CREDITS_BACHELOR = 15;
+CREDITS_MASTER = 30;
 /**
  * Regisers a user to the DB.
  *
@@ -416,11 +419,65 @@ function registerProject(project_details) {
                     }
                     client
                         .query(addExaminerQuery.text, addExaminerQuery.values)
+                        
+                    if(project_details.supervisor_id){
+                        const addSupervisorQuery = {
+                            text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
+                                "VALUES (?,?,?)",
+                            values: [ROLE_SUPERVISOR, project_id, project_details.supervisor_id]
+                        }
+                        client
+                            .query(addSupervisorQuery.text, addSupervisorQuery.values);
+                    }    
                 })
                 .catch(err => {
                     console.error(err)
                     client.query("ROLLBACK");
                 })
+            projectType ="";
+            if(project_details.credits == CREDITS_BACHELOR){
+                projectType = "bachelor_hours_";
+            }else if(project_details.credits == CREDITS_MASTER){
+                projectType = "master_hours_";
+            }else{
+                throw new Error("Missing credits");
+            }
+            projectTypeExaminer = projectType + "examiner";
+            let updateExaminerWork = {
+                text: "UPDATE Work_year "+
+                "SET available_hours_examiner = available_hours_examiner - "+
+                "(SELECT "+ projectTypeExaminer +" FROM Budget_year*factor_"+ProjectDetails.number_of_students + 
+                "WHERE Budget_year.year = year) WHERE user_id = ?",
+                values: [examiner_id]
+            }
+            client.query(updateExaminerWork.text,updateExaminerWork.values)
+            .then({
+
+            })
+            .catch(err =>{
+                console.error(err)
+                client.query("ROLLBACK");
+            })
+            if(ProjectDetails.supervisor_id){
+                
+            projectTypeSupervisor = projectType + "supervisor";
+            let updateSupervisorWork = {
+                text: "UPDATE Work_year "+
+                "SET available_hours_supervisor = available_hours_supervisor - "+
+                "(SELECT "+ projectTypeSupervisor +" FROM Budget_year*factor_"+ProjectDetails.number_of_students + 
+                "WHERE Budget_year.year = year) WHERE user_id = ?",
+                values: [project_details.supervisor_id]
+            }
+            client.query(updateSupervisorWork.text,updateSupervisorWork.values)
+            .then({
+
+            })
+            .catch(err =>{
+                console.error(err)
+                client.query("ROLLBACK");
+            })
+        }
+
             let addStudentQuery = "";
             let addStudentToProjectQuery = "";
             await project_details.users.forEach(student => {
