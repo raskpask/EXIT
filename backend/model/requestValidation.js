@@ -166,10 +166,18 @@ function isDate(isISO){
     }
 }
 
+function isValidNumber(ID){
+    if (isNaN(ID)||ID<0) {
+        throw new Error(dbError.errorCodes.BAD_REQUEST_ERROR.code);
+    }
+    return true;
+}
+
 
 module.exports = {
     registerInput,
     applyInput,
-    validateProject
+    validateProject,
+    isValidNumber
 
 }

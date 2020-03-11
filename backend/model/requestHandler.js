@@ -110,64 +110,6 @@ function extractToken(req) {
     return token ? token : null;
 }
 /**
- * Extracts a application from client request.
- *
- * @param {String} req - Request from the client
- * @returns Instance of Application
- */
-async function extractCreateApplication(req) {
-    const competenceList = req.body.competence;
-    const availability = req.body.availability;
-    if (validation.applyInput(competenceList, availability)) {
-        return new Application(availability, null, competenceList, null)
-    } else {
-        return null
-    }
-
-}
-/**
- * Extract search params for applications from client request.
- *
- * @param {String} req - Request from the client
- * @returns Instance of application.
- */
-async function extractApplication(req) {
-    let availability = '';
-    let applicationDate = '';
-    let competenceList = [];
-    let name = '';
-    if (Boolean(req.query.application)) {
-        application = JSON.parse(req.query.application);
-        if (application.applicationDate.startDate !== '' || application.applicationDate.endDate !== '') {
-            applicationDate = application.applicationDate;
-        }
-        if (application.availability.startDate !== '' || application.availability.endDate !== '') {
-            availability = application.availability;
-        }
-        competenceList = application.competence ? application.competence : [];
-        name = application.name ? application.name : "";
-    } else {
-        const competences = await userDAO.getCompetence(this.extractLang(req))
-        for (i = 0; i < competences.length; i++) {
-            competenceList.push(competences[i].competence_id);
-        }
-    }
-    const date = new Date();
-    if (!availability) {
-        availability = {
-            startDate: '1970-01-01',
-            endDate: date.getFullYear() + 2000 + "-01-01"
-        }
-    }
-    if (!applicationDate) {
-        applicationDate = {
-            startDate: '1970-01-01',
-            endDate: date.getFullYear() + 2000 + "-01-01"
-        }
-    }
-    return new Application(availability, applicationDate, competenceList, name);
-}
-/**
  * Creates new projectDetails from data provided by the user.
  * @param {String} req - the request containting the data.
  * @returns Instance of ProjectDetails 
@@ -223,10 +165,7 @@ function extractRegisterProjectDetails(req) {
  */
 function extractUserID(req) {
     ID = req.body.userID;
-    console.log(ID)
-    if (isNaN(ID) || ID < 1) {
-        throw new Error(dbError.errorCodes.BAD_REQUEST_ERROR.code);
-    }
+    validation.isValidNumber(ID);
     return ID;
 }
 /**
@@ -235,9 +174,7 @@ function extractUserID(req) {
  */
 function extractProjectID(req) {
     ID = req.body.projectID;
-    if (isNaN(ID)) {
-        throw new Error(403);
-    }
+    validation.isValidNumber(ID);
     return ID;
 }
 function extractWorkYear(req) {
