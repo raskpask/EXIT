@@ -661,7 +661,55 @@ function deleteBudgetYear(budget_year) {
         client.end()
     })
 }
-
+function getAvailableSupervisors(year){
+    return new Promise(async function (resolve,reject){
+        const client = await pool.getConnection();
+        const getAvailableSupervisorsQuery = {
+            text: "SELECT User.first_name,User.last_name,User.email,Area_of_expertise.expertise_name, User.user_id, Work_year.available_hours_supervisor " +
+                "FROM User " +
+                "INNER JOIN Expertise ON User.user_id = Expertise.user_id " +
+                "INNER JOIN Area_of_expertise ON Expertise.expertise_id = Area_of_expertise.expertise_id " +
+                "INNER JOIN Work_year ON User.user_id = Work_year.person_id " +
+                "WHERE Work_year.year = ? AND Work_year.available_hours_supervisor > 9",
+            values: [year]
+        }
+        client
+            .query(getAvailableSupervisorsQuery.text, getAvailableSupervisorsQuery.values)
+            .then(res => {
+                if (res == undefined) {
+                    client.end();
+                    reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
+                }
+                client.end()
+                resolve(res);
+            })
+            .catch(err => {
+                client.end()
+                console.error(err);
+                reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
+            });
+    });
+    
+}
+function updateProjectInTime() {
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection()
+        let updateInTime = {
+            text: "UPDATE Degree_project " +
+                "SET out_of_date = 1" +
+                "WHERE in_progress = 1 AND end_date < GETDATE()"
+        }
+        client
+            .query(updateInTime.text)
+            .then(res => {
+                resolve()
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        client.end()
+    })
+}
 module.exports = {
     registerUser,
     getUser,
@@ -673,6 +721,7 @@ module.exports = {
     getUserID,
     getProject,
     registerProject,
+    deleteProject,
     getExpertise,
     postExpertise,
     updateExpertise,
@@ -682,4 +731,6 @@ module.exports = {
     updateBudgetYear,
     deleteBudgetYear,
     getAvailableExaminers,
+    getAvailableSupervisors,
+    updateProjectInTime,
 }
