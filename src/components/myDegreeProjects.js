@@ -58,11 +58,11 @@ class MyDegreeProjects extends Component {
                     {this.state.projects.map((project, key) =>
                         < tr key={key} className="pressForInfo" >
                             <td key={"credits: " + key} className="pressForInfo" >{project.credits}</td>
-                            <td key={"degreeTitle: " + key} > {project.title}</td>
+                            <td key={"degreeTitle: " + key} > {project.project_title}</td>
                             <td key={"numOfStudents: " + key} > {project.number_of_students}</td>
                             <td key={"startDate: " + key} > {project.start_date.split('T')[0]}</td>
                             <td key={"endDate: " + key} > {project.end_date.split('T')[0]}</td>
-                            <td key={"withinTimeLimit: " + key} > {project.out_of_date === 0 ? this.props.info.general.true : this.props.info.general.false }</td>
+                            <td key={"withinTimeLimit: " + key} > {project.out_of_date === 1 ? this.props.info.general.false : this.props.info.general.true }</td>
                             <td key={"moreInfo: " + key} > {this.renderFullProject(project)}</td>
                         </tr>
                     )}
@@ -78,11 +78,11 @@ class MyDegreeProjects extends Component {
     renderFullProject(project) {
         return (
             <Fragment>
-                <Button variant="primary" className="ml-auto" id={project.id} onClick={() => this.showInfo(project.id, true)}>{this.props.info.myDegreeProjects.info}</Button>
+                <Button variant="primary" className="ml-auto" id={project.project_id} onClick={() => this.showInfo(project.project_id, true)}>{this.props.info.myDegreeProjects.info}</Button>
                 <Modal
                     centered
-                    show={this.state.showUser[project.id]}
-                    onHide={() => this.showInfo(project.id, false)}
+                    show={this.state.showUser[project.project_id]}
+                    onHide={() => this.showInfo(project.project_id, false)}
                     animation={true}
                     size='xl'
                 >
@@ -90,7 +90,7 @@ class MyDegreeProjects extends Component {
                         <Modal.Title>{this.props.info.myDegreeProjects.project}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <DegreeProject info={this.props.info} project={project} showInfo={this.showInfo} id={project.id}/>
+                        <DegreeProject info={this.props.info} project={project} showInfo={this.showInfo} id={project.project_id}/>
                     </Modal.Body>
                 </Modal>
             </Fragment>

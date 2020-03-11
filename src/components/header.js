@@ -21,7 +21,7 @@ class Header extends Component {
     }
     login = async () => {
         try {
-            await axios.get('/api/login')
+            await axios.get('/login')
         } catch(err){
             console.error(err)
         }
@@ -45,7 +45,7 @@ class Header extends Component {
         return true
     }
     chooseUserLevel() {
-        return this.renderExaminer()
+        return this.renderLogin()
 
         // let privilegeLevel = document.cookie.split('privilegeLevel=')[1];
 

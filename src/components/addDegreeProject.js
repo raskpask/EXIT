@@ -17,7 +17,7 @@ class AddDegreeProject extends Component {
             students: [
                 {
                     name: "",
-                    username: ""
+                    email: ""
                 },
             ],
             supervisor: "",
@@ -55,7 +55,7 @@ class AddDegreeProject extends Component {
             students: [
                 {
                     name: "",
-                    username: ""
+                    email: ""
                 },
             ],
             supervisor: "",
@@ -89,23 +89,22 @@ class AddDegreeProject extends Component {
         if (type === 'name') {
             studentsTemp[index].name = value
         } else {
-            studentsTemp[index].username = value
+            studentsTemp[index].email = value
         }
         this.setState({ students: studentsTemp })
-        console.log(this.state.students)
     }
     addStudent() {
         let studentsTemp = this.state.students
         let numberOfStudentsTemp = this.state.numberOfStudents
         numberOfStudentsTemp++
-        studentsTemp.push({ name: "", username: "" })
+        studentsTemp.push({ name: "", email: "" })
         this.setState({ numberOfStudents: numberOfStudentsTemp, students: studentsTemp })
     }
     removeStudent() {
         let studentsTemp = this.state.students
         let numberOfStudentsTemp = this.state.numberOfStudents
         numberOfStudentsTemp--
-        studentsTemp.pop({ name: "", username: "" })
+        studentsTemp.pop({ name: "", email: "" })
         this.setState({ numberOfStudents: numberOfStudentsTemp, students: studentsTemp })
     }
     renderForm() {
@@ -147,9 +146,9 @@ class AddDegreeProject extends Component {
                                     required
                                     as="input"
                                     type="text"
-                                    value={student.username}
+                                    value={student.email}
                                     placeholder={this.props.info.addDegreeProject.kthUsernamePlaceholder}
-                                    onChange={event => this.handleChangeStudent(event.target.value, 'username', key)}
+                                    onChange={event => this.handleChangeStudent(event.target.value, 'email', key)}
                                 />
                             </Form.Group>
                         </Col>

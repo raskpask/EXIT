@@ -29,7 +29,7 @@ function router(router) {
 
     // Starting point for login
     router.get("/login", function (req, res) {
-        console.log("Logina")
+        console.log("Login")
         sp.create_login_request_url(idp, {}, function (err, login_url, request_id) {
             if (err != null)
                 return res.send(500);

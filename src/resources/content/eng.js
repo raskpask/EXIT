@@ -34,7 +34,7 @@ function getLanguage() {
         degreeProject: {
             company: "Company",
             info: "Info",
-            status: "Status",
+            persons: "Persons",
             outDated: "Outdated",
             inProgess: "In progress",
             edit: "Edit project",
@@ -43,7 +43,11 @@ function getLanguage() {
             projectDeletedFail: "The project could not be deleted!",
             updateSuccess: "The projects was updated",
             updateFail :"The project could not be updated try again.",
-            submit: "Submit"
+            submit: "Submit",
+            student: "Student",
+            supervisor: "Supervisor",
+            examiner: "Examiner",
+            projectRole: "Project role"
 
         },
         addDegreeProject: {
@@ -356,7 +360,9 @@ function getLanguage() {
             loading: "Loading...",
             error: "oops something went wrong!",
             true: "True",
-            false: "False"
+            false: "False",
+            email: "Email",
+            name: "Name"
         }
     }
     return lang;
