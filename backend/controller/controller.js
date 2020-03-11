@@ -79,6 +79,15 @@ async function updateProject(req) {
         throw error
     }
 }
+async function deleteProject(req) {
+    try {
+        return await userDAO.deleteProject(req.body.supervisor,req.body.project_id);
+    }
+    catch (error) {
+        throw error
+    }
+}
+
 
 async function getWorkYear(req) {
     try {
@@ -252,6 +261,7 @@ module.exports = {
     extractLangCookie,
     getProject,
     updateProject,
+    deleteProject,
     getExpertise,
     postExpertise,
     updateExpertise,

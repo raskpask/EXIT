@@ -517,6 +517,30 @@ function updateProject(supervisor, project_id) {
         client.end()
     })
 }
+
+function deleteProject(project_id) {
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection()
+        let deleteProject = {
+            text: "DELETE FROM Degree_project " +
+                "WHERE project_id = ? ",
+            values: [project_id]
+        }
+        client
+            .query(deleteProject.text, deleteProject.values)
+            .then(res => {
+                if (res.affectedRows === 1) {
+                    resolve()
+                } else {
+                    reject(new Error(dbError.errorCodes.DELETE_ERROR.code))
+                }
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        client.end()
+    })
+}
 function getExpertise(user_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()

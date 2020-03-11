@@ -87,6 +87,10 @@ errorCodes = {
     DUPLICATE_BUDGET_YEAR_ERROR: {
         code: 'DUPLICATE_BUDGET_YEAR_ERROR',
         message: 'This budget year already exists'
+    },
+    DELETE_ERROR: {
+        code: 'DELETE_ERROR',
+        message: 'Probem with deleting'
     }
 
 
@@ -183,6 +187,10 @@ function respondError(error, res) {
         case errorCodes.CREATE_APPLICATION_ERROR.code:
             res.status(400);
             res.send(errorCodes.CREATE_APPLICATION_ERROR.code);
+            break;
+        case errorCodes.DELETE_ERROR.code:
+            res.status(400);
+            res.send(errorCodes.DELETE_ERROR.code);
             break;
             
         default:

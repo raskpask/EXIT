@@ -87,7 +87,7 @@ function router(router) {
     });
     router.delete('/api/project', async (req, res) => {
         try {
-            const project = await controller.getProject(req);
+            const project = await controller.deleteProject(req);
             // res.status(statusCode);
             res.send(project);
         } catch (error) {
