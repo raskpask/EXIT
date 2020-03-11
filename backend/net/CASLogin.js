@@ -2,15 +2,15 @@ var saml2 = require('saml2-js');
 const fs = require('fs');
 // const cert = require("/Users/molin/Desktop/EXIT/backend/net/md-signer2.crt")
 const sp_options = {
-    entity_id: "https://saml.sys.kth.se/idp/shibboleth",
+    entity_id: "https://samltest.sys.kth.se/idp/shibboleth",
     // private_key: fs.readFileSync("key-file.pem").toString(),
-    certificate: "https://mds.swamid.se/md/md-signer2.crt",
+    // certificate: "https://mds.swamid.se/md/md-signer2.crt",
     assert_endpoint: "https://130.237.202.87:8080/assert",
 }
 const idp_options = {
     sso_login_url: "https://saml-5.sys.kth.se/idp/profile/SAML2/Redirect/SSO",
     sso_logout_url: "https://saml-5.sys.kth.se/",
-    certificates: ["https://mds.swamid.se/md/md-signer2.crt"] //, fs.readFileSync("cert-file2.crt").toString()]
+    // certificates: ["https://mds.swamid.se/md/md-signer2.crt"] //, fs.readFileSync("cert-file2.crt").toString()]
 };
 const sp = new saml2.ServiceProvider(sp_options);
 const idp = new saml2.IdentityProvider(idp_options);
