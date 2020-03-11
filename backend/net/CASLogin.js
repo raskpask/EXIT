@@ -1,10 +1,13 @@
 var saml2 = require('saml2-js');
 const fs = require('fs');
+let path = __dirname.split("\\").join("/");
+const private_key = path+"/key-file.pem"
+const cert = path+"/certificate.pem"
 // const cert = require("/Users/molin/Desktop/EXIT/backend/net/md-signer2.crt")
 const sp_options = {
     entity_id: "https://samltest.sys.kth.se/idp/shibboleth",
-    private_key: fs.readFileSync("key-file.pem").toString(),
-    certificate: fs.readFileSync("cetificate.pem").toString(),
+    private_key: fs.readFileSync(private_key,"utf-8").toString(),
+    certificate: fs.readFileSync(cert,"utf-8").toString(),
     assert_endpoint: "https://130.237.202.87:8080/assert",
 }
 const idp_options = {
