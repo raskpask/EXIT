@@ -480,17 +480,17 @@ function updateProject(supervisor, project_id) {
         const client = await pool.getConnection()
         let updateSupervisor = {
             text: "UPDATE Student_project " +
-                "INNER JOIN User ON User.user_id = Student_project.user_id "+
+                "INNER JOIN User ON User.user_id = Student_project.user_id " +
                 "SET Student_project.user_id = User.user_id, project_role_id = ? " +
                 "WHERE  degree_project_id = ? AND project_role_id = ? AND User.kth_username = ?",
-            values: [ROLE_SUPERVISOR, project_id,ROLE_SUPERVISOR,supervisor]
+            values: [ROLE_SUPERVISOR, project_id, ROLE_SUPERVISOR, supervisor]
         }
         client
             .query(updateSupervisor.text, updateSupervisor.values)
             .then(res => {
                 console.log(res)
                 if (res.affectedRows === 0) {
-                    
+
                     let addSupervisor = {
                         text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id) " +
                             "VALUES (?,?,(SELECT user_id FROM User WHERE kth_username = ?))",
@@ -498,9 +498,12 @@ function updateProject(supervisor, project_id) {
                     }
                     client
                         .query(addSupervisor.text, addSupervisor.values)
-                        .then(res =>
+                        .then(res => {
+                            if (res.affectedRows === 0) {
+                                reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
+                            }
                             resolve()
-                        )
+                        })
                         .catch(err =>
                             console.error(err)
                         )

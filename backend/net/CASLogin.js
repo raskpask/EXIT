@@ -27,7 +27,6 @@ function router(router) {
     // Endpoint to retrieve metadata
     router.get("/metadata.xml", function (req, res) {
         res.type('application/xml');
-        console.log(sp.create_metadata())
         res.send(sp.create_metadata());
     });
 
