@@ -5,7 +5,7 @@ const private_key = path+"/key-file.pem"
 const cert = path+"/certificate.pem"
 // const cert = require("/Users/molin/Desktop/EXIT/backend/net/md-signer2.crt")
 const sp_options = {
-    entity_id: "https://samltest.sys.kth.se/idp/shibboleth",
+    entity_id: "https://exit.ict.kth.se/",
     private_key: fs.readFileSync(private_key,"utf-8").toString(),
     certificate: fs.readFileSync(cert,"utf-8").toString(),
     assert_endpoint: "https://exit.ict.kth.se/assert",
