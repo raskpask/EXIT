@@ -81,6 +81,7 @@ async function updateProject(req) {
 }
 async function deleteProject(req) {
     try {
+        console.log(req.body)
         return await userDAO.deleteProject(req.body.project_id);
     }
     catch (error) {
