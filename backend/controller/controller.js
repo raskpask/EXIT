@@ -73,7 +73,7 @@ async function getProject(req) {
 }
 async function updateProject(req) {
     try {
-        return await userDAO.updateProject(req.body.supervisor,req.body.project_id);
+        return await userDAO.updateProject(req.body.supervisor_id,req.body.project_id);
     }
     catch (error) {
         throw error
