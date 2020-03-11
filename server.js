@@ -3,7 +3,7 @@ const favicon = require('express-favicon');
 const dotenv = require('dotenv');
 dotenv.config();
 const path = require('path');
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 80;
 const app = express();
 // const cors = require('cors');
 // app.use(cors());
