@@ -195,7 +195,7 @@ function updateWorkYear(year, examiners) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         let updateWorkYearQuery;
-        examiners.forEach((examiner, i, arr){
+        examiners.forEach((examiner, i, arr) => {
             updateWorkYearQuery = {
                 text: "UPDATE Work_year " +
                     "SET work_hours_examiner = ?,work_hours_supervisor = ?, available_hours_examiner = ?, available_hours_supervisor = ? " +
