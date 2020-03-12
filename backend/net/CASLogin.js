@@ -51,7 +51,7 @@ function router(router) {
             name_id = saml_response.user.name_id;
             session_index = saml_response.user.session_index;
             console.log(saml_response.user.attributes)
-            console.log(JSON.parse("'"+saml_response.user.attributes+"'"))
+            console.log(JSON.stringify(saml_response.user.attributes))
             res.redirect('/')
         });
     });
