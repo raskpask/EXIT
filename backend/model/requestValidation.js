@@ -166,7 +166,6 @@ function isDate(isISO) {
     }
 }
 function isValidType(userType) {
-    console.log(userType)
     if ( userType < 1 || 5 < userType){
         throw new Error(dbError.errorCodes.BAD_REQUEST_ERROR.code);
     }

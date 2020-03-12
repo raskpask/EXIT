@@ -85,9 +85,9 @@ function getUser(user_id, user_type_id) {
                     client.end();
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
                 }
-                const rawUser = res[0];
+                // const rawUser = res[0];
                 client.end()
-                var foundUser = new User(rawUser.user_type_id, rawUser.email, rawUser.first_name, rawUser.last_name, rawUser.kth_username, rawUser.phone_number, rawUser.user_id);
+                // var foundUser = new User(rawUser.user_type_id, rawUser.email, rawUser.first_name, rawUser.last_name, rawUser.kth_username, rawUser.phone_number, rawUser.user_id);
                 resolve(res);
             })
             .catch(err => {
