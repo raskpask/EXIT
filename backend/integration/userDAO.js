@@ -191,20 +191,20 @@ function getWorkYear(user_id, year) {
             });
     });
 }
-function updateWorkYear(year, examiners) {
+function postWorkYear(year, examiners) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
-        let updateWorkYearQuery;
+        let postWorkYearQuery;
         console.log(examiners)
         examiners.forEach((examiner, i, arr) => {
-            updateWorkYearQuery = {
-                text: "UPDATE Work_year " +
-                    "SET work_hours_examiner = ?,work_hours_supervisor = ?, available_hours_examiner = ?, available_hours_supervisor = ? " +
+            postWorkYearQuery = {
+                text: "INSERT INTO Work_year " +
+                    "(work_hours_examiner,work_hours_supervisor,available_hours_examiner,available_hours_supervisor,person_id,year" +
                     "WHERE person_id=? AND year = ?",
-                values: [examiner.work_hours_examiner, examiner.work_hours_supervisor, examiner.available_hours_examiner, examiner.available_hours_supervisor, examiner.user_id, year]
+                values: [examiner.examinerHours, examiner.supervisorHours, examiner.examinerHours, examiner.supervisorHours, examiner.user_id, year]
             }
             client
-                .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
+                .query(postWorkYearQuery.text, postWorkYearQuery.values)
                 .then(res => {
                     if (res == undefined) {
                         client.end();
@@ -219,6 +219,33 @@ function updateWorkYear(year, examiners) {
         });
         client.end()
         resolve()
+    });
+}
+function updateWorkYear(year, examiner) {
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection();
+        const updateWorkYearQuery = {
+            text: "UPDATE Work_year " +
+                "SET work_hours_examiner = ?,work_hours_supervisor = ?, available_hours_examiner = ?, available_hours_supervisor = ? " +
+                "WHERE person_id=? AND year = ?",
+            values: [examiner.work_hours_examiner, examiner.work_hours_supervisor, examiner.available_hours_examiner, examiner.available_hours_supervisor, examiner.user_id, year]
+        }
+        client
+            .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
+            .then(res => {
+                if (res == undefined) {
+                    client.end();
+                    reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
+                }
+                client.end()
+                resolve()
+            })
+            .catch(err => {
+                client.end()
+                console.error(err);
+                reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
+            });
+
     });
 }
 function getAvailableExaminers(year) {
@@ -802,6 +829,7 @@ module.exports = {
     updateUser,
     deleteUser,
     getWorkYear,
+    postWorkYear,
     updateWorkYear,
     getUsername,
     getUserID,

@@ -103,6 +103,15 @@ function router(router) {
         }
         res.send();
     });
+    router.post('/api/workYear', async (req, res) => {
+        try {
+            res.send(await controller.postWorkYear(req))
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+        res.send();
+    });
+    postWorkYear
     router.put('/api/workYear', async (req, res) => {
         try {
             res.send(await controller.updateWorkYear(req))

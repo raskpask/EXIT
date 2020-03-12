@@ -98,6 +98,14 @@ async function getWorkYear(req) {
         throw error
     }
 }
+async function postWorkYear(req) {
+    try {
+        return await userDAO.postWorkYear(req.body.year,requestHandler.extractWorkYear(req));
+    }
+    catch (error) {
+        throw error
+    }
+}
 async function updateWorkYear(req) {
     try {
         return await userDAO.updateWorkYear(req.body.year,requestHandler.extractWorkYear(req));
@@ -281,6 +289,7 @@ module.exports = {
     updateBudgetYear,
     deleteBudgetYear,
     getWorkYear,
+    postWorkYear,
     updateWorkYear,
     getAvailableExaminers,
     getAvailableSupervisors
