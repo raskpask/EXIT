@@ -74,7 +74,7 @@ function getUser(user_id, user_type_id) {
         } else {
             getUserQuery = {
                 text: "SELECT * " +
-                    "FROM User WHERE user_id=?",
+                    "FROM User WHERE user_id = ?",
                 values: [user_id]
             }
         }
