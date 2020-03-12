@@ -91,6 +91,10 @@ errorCodes = {
     DELETE_ERROR: {
         code: 'DELETE_ERROR',
         message: 'Probem with deleting'
+    },
+    NO_TIME_AVAILABLE:{
+        code: 'NO_TIME_AVAILABLE',
+        message: 'The teacher does not have enough time left in the budget'
     }
 
 
@@ -111,6 +115,10 @@ function respondError(error, res) {
         case errorCodes.DUPLICATE_BUDGET_YEAR_ERROR.code:
             res.status(400);
             res.send(errorCodes.DUPLICATE_BUDGET_YEAR_ERROR.code);
+            break;
+        case errorCodes.NO_TIME_AVAILABLE.code:
+            res.status(403);
+            res.send(errorCodes.NO_TIME_AVAILABLE.code);
             break;
         case errorCodes.CONNECTION_ERROR.code:
             res.status(503);

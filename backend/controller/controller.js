@@ -17,8 +17,14 @@ async function registerUser(req) {
  * @param {String} req 
  */
 async function registerProject(req) {
-    const projectDetails = requestHandler.extractRegisterProjectDetails(req);
-    return await userDAO.registerProject(projectDetails);
+    try{
+        const projectDetails = requestHandler.extractRegisterProjectDetails(req);
+        return await userDAO.registerProject(projectDetails);
+    }catch (error) {
+        console.log(error + " IN THE CONTROLLER");
+        throw error
+    }
+    
 }
 /**
  * Authenticate a user. Checks if the client used the right credentials and generate a cookie to set it to the user.

@@ -22,6 +22,8 @@ ROLE_SUPERVISOR = 2;
 ROLE_STUDENT = 3;
 
 NO_EXPERTISE_YET_ID = 5;
+CREDITS_BACHELOR = 15;
+CREDITS_MASTER = 30;
 /**
  * Regisers a user to the DB.
  *
@@ -427,11 +429,12 @@ function getProject(user_id, year) {
  * @param {projectDetails} project_details 
  */
 function registerProject(project_details) {
+    console.log(project_details);
     return new Promise(async function (resolve, reject) {
+        let client;
         try {
-            const client = await pool.getConnection()
+            client = await pool.getConnection()
             const examiner_id = 1
-            const supervisor_id = 1
             let company_id;
             let project_id;
             await client.query("BEGIN");
@@ -447,7 +450,7 @@ function registerProject(project_details) {
                         company_id = res[0].insertId;
                     })
                     .catch(err => {
-                        client.query("ROLLBACK");
+                        client.query("ROLLBACK"); reject(err);
                         console.error(err);
                         reject(err);
                     });
@@ -470,11 +473,24 @@ function registerProject(project_details) {
                     }
                     client
                         .query(addExaminerQuery.text, addExaminerQuery.values)
+                        
+                    if(project_details.supervisor_id){
+                        const addSupervisorQuery = {
+                            text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
+                                "VALUES (?,?,?)",
+                            values: [ROLE_SUPERVISOR, project_id, project_details.supervisor_id]
+                        }
+                        client
+                            .query(addSupervisorQuery.text, addSupervisorQuery.values);
+                    }    
                 })
                 .catch(err => {
                     console.error(err)
-                    client.query("ROLLBACK");
+                    client.query("ROLLBACK"); reject(err);
                 })
+
+
+
             let addStudentQuery = "";
             let addStudentToProjectQuery = "";
             await project_details.users.forEach(student => {
@@ -497,32 +513,87 @@ function registerProject(project_details) {
                             .query(addStudentToProjectQuery.text, addStudentToProjectQuery.values)
                             .catch(err => {
                                 console.error(err)
-                                client.query("ROLLBACK");
+                                client.query("ROLLBACK"); reject(err);
                             })
                     })
                     .catch(err => {
                         console.error(err)
-                        client.query("ROLLBACK");
+                        client.query("ROLLBACK"); reject(err); 
                     })
             })
-            addSupervisorToProjectQuery = {
-                text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
-                    "VALUES (?,?,?)",
-                values: [ROLE_SUPERVISOR, project_id, supervisor_id]
+            projectType ="";
+            if(project_details.credits == CREDITS_BACHELOR){
+                projectType = "bachelor_hours_";
+            }else if(project_details.credits == CREDITS_MASTER){
+                projectType = "master_hours_";
+            }else{
+                throw new Error("Missing credits");
             }
-            await client
-                .query(addSupervisorToProjectQuery.text, addSupervisorToProjectQuery.values)
-                .then(res => {
-                    client.query("COMMIT");
-                    resolve(200);
+
+            if(project_details.supervisor_id){
+                
+                projectTypeSupervisor = projectType + "supervisor";
+                let updateSupervisorWork = {
+                    text: "UPDATE Work_year "+
+                    "SET available_hours_supervisor = available_hours_supervisor - "+
+                    "(SELECT "+ projectTypeSupervisor +" * factor_"+project_details.number_of_students + 
+                    " FROM Budget_year  WHERE Budget_year.year = Work_year.year) WHERE person_id = ?",
+                    values: [project_details.supervisor_id]
+                }
+                client.query(updateSupervisorWork.text,updateSupervisorWork.values)
+                .then({
+
                 })
-                .catch(err => {
-                    console.error(err)
-                    client.query("ROLLBACK");
+                .catch(err =>{
+                    console.error(err);
+                    client.query("ROLLBACK"); 
+                    if(err.errno == 1264){
+                        client.release();
+                        reject(new Error(dbError.errorCodes.NO_TIME_AVAILABLE.code));
+                    }
                 })
-        } catch (e) {
+        }
+        projectTypeExaminer = projectType + "examiner";
+        let updateExaminerWork = {
+            text: "UPDATE Work_year "+
+            "SET available_hours_examiner = available_hours_examiner - "+
+            "(SELECT "+ projectTypeExaminer +" * factor_"+project_details.number_of_students + 
+            " FROM Budget_year WHERE Budget_year.year = Work_year.year) WHERE Work_year.person_id = ?",
+            values: [examiner_id]
+        }
+        client.query(updateExaminerWork.text,updateExaminerWork.values)
+        .then(res =>{
+            client.query("COMMIT");
+            resolve(200);
+        })
+        .catch(err =>{
+
+            console.error(err)
             client.query("ROLLBACK");
-            console.error(e);
+            if(err.errno == 1264){
+                client.release();
+                reject(new Error(dbError.errorCodes.NO_TIME_AVAILABLE.code));
+            }
+        })
+
+            // addSupervisorToProjectQuery = {
+            //     text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
+            //         "VALUES (?,?,?)",
+            //     values: [ROLE_SUPERVISOR, project_id, supervisor_id]
+            // }
+            // await client
+            //     .query(addSupervisorToProjectQuery.text, addSupervisorToProjectQuery.values)
+            //     .then(res => {
+            //         client.query("COMMIT");
+            //         resolve(200);
+            //     })
+            //     .catch(err => {
+            //         console.error(err)
+            //         client.query("ROLLBACK"); reject(err);
+            //     })
+         } catch (e) {
+             client.query("ROLLBACK"); reject(err);
+             console.error(e);
             reject(e);
         } finally {
             client.release();

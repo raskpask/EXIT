@@ -103,8 +103,8 @@ function checkUnicode(string) {
     }
     return true;
 }
-function checkPhoneNumber(string) {
-    return string.replace(/\s/g, '').match(/^[0-9()-+]+$/);
+function checkPhoneNumber(string){
+    return string.replace(/\s/g, '').match(/^[0-9()\-+]+$/);
 }
 
 function validateProject(request) {
@@ -135,9 +135,9 @@ function validateProject(request) {
             return false;
         }
 
-        if (project.hasOwnProperty("companyName")) {
-            if (!project.companyPhone.replace(/\s/g, '').match(/^[0-9()-+]+$/)) {
-                console.log("invalid phone number");
+        if(project.hasOwnProperty("companyName")){
+            if(!checkPhoneNumber(project.companyPhoneNumber)){
+                console.log("invalid phone number" );
                 return false;
             }
             if (project.companyName.length < 1 || project.companyAddress.length < 1) {

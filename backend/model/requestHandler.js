@@ -132,6 +132,7 @@ function extractRegisterProjectDetails(req) {
         let company_address = null;
         let company_phone_number = null;
         let students= [];
+        let supervisor_id = null;
 
         //if(Boolean(req.body)){
         let project = req.body;//JSON.parse(req.body);
@@ -145,14 +146,18 @@ function extractRegisterProjectDetails(req) {
         credits = project.credits;
         start_date = project.startDate;
         end_date = project.endDate;
-        if (project.companyName !== '') {
+
+        if(project.supervisorID){
+            supervisor_id = project.supervisorID
+        }
+        if (project.companyName) {
             company_name = project.companyName;
             company_address = project.companyAddress;
-            company_phone_number = project.companyPhone;
+            company_phone_number = project.companyPhoneNumber;
         }
         //}
 
-        pd = new ProjectDetails(project_id, number_of_students, project_title, project_description, credits, start_date, end_date, in_progress, out_of_date, all_info_specified, company, company_contact, company_name, company_address, company_phone_number,students);
+        pd = new ProjectDetails(project_id, number_of_students, project_title, project_description, credits, start_date, end_date, in_progress, out_of_date, all_info_specified, company, company_contact, company_name, company_address, company_phone_number,students,supervisor_id);
         // console.log(pd);
         return pd;
     } else {
