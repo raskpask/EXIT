@@ -69,7 +69,7 @@ function getUser(user_id, user_type_id) {
             getUserQuery = {
                 text: "SELCET * " +
                 "FROM User WHERE user_type_id = ?",
-                values: [user_type_id]
+                values: [parseInt(user_type_id)]
             }
         } else {
             getUserQuery = {
