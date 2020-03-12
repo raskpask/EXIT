@@ -187,6 +187,6 @@ module.exports = {
     registerInput,
     applyInput,
     validateProject,
-    isValidNumber
-
+    isValidNumber,
+    isValidType
 }
