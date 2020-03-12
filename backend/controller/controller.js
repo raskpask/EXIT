@@ -100,7 +100,7 @@ async function getWorkYear(req) {
 }
 async function postWorkYear(req) {
     try {
-        return await userDAO.postWorkYear(req.body.year,requestHandler.extractWorkYear(req));
+        return await userDAO.postWorkYear(req.body.budgetYear,requestHandler.extractWorkYear(req));
     }
     catch (error) {
         throw error
