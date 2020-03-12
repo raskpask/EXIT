@@ -2,6 +2,8 @@ const express = require('express');
 const favicon = require('express-favicon');
 const dotenv = require('dotenv');
 dotenv.config();
+const http = require('http');
+const https = require('https');
 const path = require('path');
 const port = process.env.PORT || 80;
 const app = express();
@@ -27,4 +29,8 @@ apiEndpoint.router(app);
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
-app.listen(port);
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
+httpServer.listen(80);
+httpsServer.listen(443);
+// app.listen(port);

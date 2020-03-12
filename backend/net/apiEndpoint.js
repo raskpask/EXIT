@@ -10,15 +10,6 @@ const dbErrors = require('../error/dbErrors');
  */
 function router(router) {
 
-    router.get('/api/login', async (req, res) => {
-        console.log("Login()")
-        sp.create_login_request_url(idp, {}, function(err, login_url, request_id) {
-            if (err != null){
-              return res.send(500);
-            }
-            res.redirect(login_url);
-          });
-    });
     router.post('/api/user', async (req, res) => {
         try {
             const statusCode = await controller.registerUser(req);
