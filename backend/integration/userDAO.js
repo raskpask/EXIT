@@ -68,7 +68,7 @@ function getUser(user_id, user_type_id) {
         if (user_type_id) {
             getUserQuery = {
                 text: "SELECT * " +
-                "FROM User WHERE user_type_id = ?",
+                    "FROM User WHERE user_type_id = ?",
                 values: [parseInt(user_type_id)]
             }
         } else {
@@ -85,11 +85,10 @@ function getUser(user_id, user_type_id) {
                     client.end();
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
                 }
-                // const rawUser = res[0];
                 client.end()
-                console.log(res)
-                // var foundUser = new User(rawUser.user_type_id, rawUser.email, rawUser.first_name, rawUser.last_name, rawUser.kth_username, rawUser.phone_number, rawUser.user_id);
                 resolve(res);
+                // const rawUser = res[0];
+                // var foundUser = new User(rawUser.user_type_id, rawUser.email, rawUser.first_name, rawUser.last_name, rawUser.kth_username, rawUser.phone_number, rawUser.user_id);
             })
             .catch(err => {
                 client.end()
@@ -192,34 +191,31 @@ function getWorkYear(user_id, year) {
             });
     });
 }
-function updateWorkYear(user_id, year, data) {
+function updateWorkYear(year, examiners) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
-        const updateWorkYearQuery = {
-            text: "UPDATE Work_year " +
-                "SET work_hours_examiner = ?,work_hours_supervisor = ?, available_hours_examiner = ?, available_hours_supervisor = ? " +
-                "WHERE person_id=? AND year = ?",
-            values: [data.work_hours_examiner, data.work_hours_supervisor, data.available_hours_examiner, data.available_hours_supervisor, user_id, year]
+        let updateWorkYearQuery;
+        examiners.forEach((examiner, i, arr){
+            updateWorkYearQuery = {
+                text: "UPDATE Work_year " +
+                    "SET work_hours_examiner = ?,work_hours_supervisor = ?, available_hours_examiner = ?, available_hours_supervisor = ? " +
+                    "WHERE person_id=? AND year = ?",
+                values: [examiner.work_hours_examiner, examiner.work_hours_supervisor, examiner.available_hours_examiner, examiner.available_hours_supervisor, user_id, year]
+            }
+            client
+                .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
+                .then(res => {
+                    if (res == undefined) {
+                        client.end();
+                        reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
+                    }
+                })
+                .catch(err => {
+                    client.end()
+                    console.error(err);
+                    reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
+                });
         }
-        client
-            .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
-            .then(res => {
-                if (res == undefined) {
-                    client.end();
-                    reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
-                }
-                client.end()
-                console.log(res)
-                //if (res.affectedRows == 1) {
-                resolve()
-                //}
-                reject()
-            })
-            .catch(err => {
-                client.end()
-                console.error(err);
-                reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
-            });
     });
 }
 function getAvailableExaminers(year) {
