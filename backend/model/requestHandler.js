@@ -169,7 +169,7 @@ function extractUserID(req) {
     return ID;
 }
 function extractUserType(req){
-    console.log(req.body)
+    console.log(req)
     const userType = req.body.userRoleId
     validation.isValidType(userType)
     return userType
