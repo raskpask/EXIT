@@ -68,7 +68,7 @@ function getUser(user_id, user_type_id) {
         if (user_type_id) {
             getUserQuery = {
                 text: "SELECT * " +
-                "FROM User WHERE user_type_id = 3",
+                "FROM User WHERE user_type_id = ?",
                 values: [parseInt(user_type_id)]
             }
         } else {
@@ -87,6 +87,7 @@ function getUser(user_id, user_type_id) {
                 }
                 // const rawUser = res[0];
                 client.end()
+                console.log(res)
                 // var foundUser = new User(rawUser.user_type_id, rawUser.email, rawUser.first_name, rawUser.last_name, rawUser.kth_username, rawUser.phone_number, rawUser.user_id);
                 resolve(res);
             })
