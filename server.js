@@ -16,7 +16,6 @@ const options = {
   key: key,
   cert: cert
 };
-console.log(options)
 
 app.use(bodyParser.urlencoded({
   extended: true

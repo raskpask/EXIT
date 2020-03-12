@@ -51,7 +51,7 @@ function router(router) {
             // Note:  In practice these should be saved in the user session, not globally.
             name_id = saml_response.user.name_id;
             session_index = saml_response.user.session_index;
-            console.log(saml_response.user.attributes[0])
+            console.log(saml_response.user.attributes)
             res.redirect('/')
         });
     });
