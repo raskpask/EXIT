@@ -29,8 +29,8 @@ apiEndpoint.router(app);
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
-const httpServer = http.createServer(app);
-const httpsServer = https.createServer(credentials, app);
-httpServer.listen(80);
-httpsServer.listen(443);
-// app.listen(port);
+// const httpServer = http.createServer(app);
+// const httpsServer = https.createServer(credentials, app);
+// httpServer.listen(80);
+// httpsServer.listen(443);
+app.listen(443);
