@@ -216,6 +216,8 @@ function updateWorkYear(year, examiners) {
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
                 });
         });
+        client.end()
+        resolve()
     });
 }
 function getAvailableExaminers(year) {
