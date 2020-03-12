@@ -104,7 +104,7 @@ function checkUnicode(string) {
     return true;
 }
 function checkPhoneNumber(string){
-    return string.replace(/\s/g, '').match(/^[0-9()-+]+$/);
+    return string.replace(/\s/g, '').match(/^[0-9()\-+]+$/);
 }
 
 function validateProject(request){
@@ -136,8 +136,8 @@ function validateProject(request){
         }
 
         if(project.hasOwnProperty("companyName")){
-            if(!project.companyPhone.replace(/\s/g, '').match(/^[0-9()-+]+$/)){
-                console.log("invalid phone number");
+            if(!checkPhoneNumber(project.companyPhoneNumber)){
+                console.log("invalid phone number" );
                 return false;
             }
             if(project.companyName.length<1||project.companyAddress.length<1){
