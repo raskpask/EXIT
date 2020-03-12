@@ -200,7 +200,7 @@ function updateWorkYear(year, examiners) {
                 text: "UPDATE Work_year " +
                     "SET work_hours_examiner = ?,work_hours_supervisor = ?, available_hours_examiner = ?, available_hours_supervisor = ? " +
                     "WHERE person_id=? AND year = ?",
-                values: [examiner.work_hours_examiner, examiner.work_hours_supervisor, examiner.available_hours_examiner, examiner.available_hours_supervisor, user_id, year]
+                values: [examiner.work_hours_examiner, examiner.work_hours_supervisor, examiner.available_hours_examiner, examiner.available_hours_supervisor, examiner.user_id, year]
             }
             client
                 .query(updateWorkYearQuery.text, updateWorkYearQuery.values)
