@@ -168,6 +168,11 @@ function extractUserID(req) {
     validation.isValidNumber(ID);
     return ID;
 }
+function extractUserType(req){
+    const userType = req.body.userRoleId
+    validation.isValidType(userType)
+    return userType
+}
 /**
  * Gets the project ID from a request
  * @param {String} req 
@@ -221,5 +226,6 @@ module.exports = {
     extractUserID,
     extractExpertiseName,
     extractExpertiseID,
-    extractWorkYear
+    extractWorkYear,
+    extractUserType
 }

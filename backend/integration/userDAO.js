@@ -61,13 +61,22 @@ function registerUser(user) {
  * @param {int} user_id - Authorization token 
  * @returns Instance of user.
  */
-function getUser(user_id) {
+function getUser(user_id, user_type_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
-        const getUserQuery = {
-            text: "SELECT * " +
-                "FROM User WHERE user_id=?",
-            values: [user_id]
+        let getUserQuery;
+        if (user_type_id) {
+            getUserQuery = {
+                text: "SELCET * " +
+                "FROM User WHERE user_type_id = ?",
+                values: [user_type_id]
+            }
+        } else {
+            getUserQuery = {
+                text: "SELECT * " +
+                    "FROM User WHERE user_id=?",
+                values: [user_id]
+            }
         }
         client
             .query(getUserQuery.text, getUserQuery.values)
@@ -79,7 +88,7 @@ function getUser(user_id) {
                 const rawUser = res[0];
                 client.end()
                 var foundUser = new User(rawUser.user_type_id, rawUser.email, rawUser.first_name, rawUser.last_name, rawUser.kth_username, rawUser.phone_number, rawUser.user_id);
-                resolve(foundUser);
+                resolve(res);
             })
             .catch(err => {
                 client.end()
@@ -482,7 +491,7 @@ function updateProject(supervisor_id, project_id) {
             text: "UPDATE Student_project " +
                 "SET Student_project.user_id = supervisor_id, project_role_id = ? " +
                 "WHERE  degree_project_id = ? AND project_role_id = ? ",
-            values: [supervisor_id,ROLE_SUPERVISOR, project_id, ROLE_SUPERVISOR]
+            values: [supervisor_id, ROLE_SUPERVISOR, project_id, ROLE_SUPERVISOR]
         }
         client
             .query(updateSupervisor.text, updateSupervisor.values)
@@ -738,8 +747,8 @@ function deleteBudgetYear(budget_year) {
         client.end()
     })
 }
-function getAvailableSupervisors(year){
-    return new Promise(async function (resolve,reject){
+function getAvailableSupervisors(year) {
+    return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const getAvailableSupervisorsQuery = {
             text: "SELECT User.first_name,User.last_name,User.email,Area_of_expertise.expertise_name, User.user_id, Work_year.available_hours_supervisor " +
@@ -766,7 +775,7 @@ function getAvailableSupervisors(year){
                 reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
             });
     });
-    
+
 }
 function updateProjectInTime() {
     return new Promise(async function (resolve, reject) {

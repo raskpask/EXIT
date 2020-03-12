@@ -51,7 +51,7 @@ async function deAuthenticateUser(req) {
  */
 async function getUser(req) {
     try {
-        return await userDAO.getUser(requestHandler.extractUserID(req));
+        return await userDAO.getUser(requestHandler.extractUserID(req),requestHandler.extractUserType(req));
     }
     catch (error) {
         throw error
