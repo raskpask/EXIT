@@ -174,7 +174,9 @@ function isValidType(userType) {
 }
 function isValidNumber(ID) {
     if (isNaN(ID) || ID < 0) {
-        console.log(ID)
+        if(ID === undefined){
+            return true
+        }
         throw new Error(dbError.errorCodes.BAD_REQUEST_ERROR.code);
     }
     return true;
