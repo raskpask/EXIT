@@ -38,8 +38,10 @@ class AddBudgetYear extends Component {
     createBudgetYear() {
         const budgetYear = {
             budgetYear: this.state.budgetYear,
-            masterHours: this.state.masterHours,
-            bachleorHours: this.state.bachleorHours,
+            masterHoursExaminer: this.state.masterHoursExaminer,
+            masterHoursSupervisor: this.state.masterHoursSupervisor,
+            bachleorHoursExaminer: this.state.bachleorHoursExaminer,
+            bachleorHoursSupervisor: this.state.bachleorHoursSupervisor,
             totalTutoringHours: this.state.totalTutoringHours,
             factor1: this.state.factor1,
             factor2: this.state.factor2,
@@ -52,8 +54,10 @@ class AddBudgetYear extends Component {
     resetBudgetYear() {
         this.setState({
             budgetYear: "",
-            masterHours: "",
-            bachleorHours: "",
+            masterHoursExaimer: "",
+            masterHoursSupervisor: "",
+            bachleorHoursExaminer: "13",
+            bachleorHoursSupervisor: "13",
             totalTutoringHours: "",
             factor1: "",
             factor2: "",
@@ -137,7 +141,6 @@ class AddBudgetYear extends Component {
                     <Col>
                         <Form.Label>{this.props.info.specifiedBudgetYears.factor1}</Form.Label>
                         <Form.Control
-                            required
                             type="number"
                             value={this.state.factor1}
                             placeholder={this.props.info.addBudgetYear.factor1Placeholder}
@@ -147,7 +150,6 @@ class AddBudgetYear extends Component {
                     <Col>
                         <Form.Label>{this.props.info.specifiedBudgetYears.factor2}</Form.Label>
                         <Form.Control
-                            required
                             type="number"
                             value={this.state.factor2}
                             placeholder={this.props.info.addBudgetYear.factor2Placeholder}
@@ -158,7 +160,6 @@ class AddBudgetYear extends Component {
                     <Col>
                         <Form.Label>{this.props.info.specifiedBudgetYears.factor3}</Form.Label>
                         <Form.Control
-                            required
                             type="number"
                             value={this.state.factor3}
                             placeholder={this.props.info.addBudgetYear.factor3Placeholder}
@@ -177,7 +178,6 @@ class AddBudgetYear extends Component {
                     <Col>
                         <Form.Label>{this.props.info.specifiedBudgetYears.factor5}</Form.Label>
                         <Form.Control
-                            required
                             type="number"
                             value={this.state.factor5}
                             placeholder={this.props.info.addBudgetYear.factor5Placeholder}

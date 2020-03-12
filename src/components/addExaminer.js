@@ -11,21 +11,19 @@ class AddExaminer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: ""
+            username: "",
         }
     }
-
     addUser = (e) => {
         e.preventDefault();
-        const email = this.state.username + "@kth.se"
         axios
-            .post('/api/user', { email: email })
+            .post('/api/user', { kth_username: this.state.username })
             .then(res => {
-                toast(this.props.info.addDirectorOfStudies.added)
+                toast(this.props.info.addExaminer.added)
             })
             .catch(err => {
                 console.log(err)
-                toast(this.props.info.addDirectorOfStudies.fail)
+                toast(this.props.info.addExaminer.fail)
             })
     }
     renderAdd() {

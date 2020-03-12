@@ -9,18 +9,7 @@ class SpecifiedBudgetYears extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            budgetYears: [
-                {
-                    budgetYear: "",
-                    masterHours: "",
-                    bachleorHours: "",
-                    factor2: "",
-                    factor3: "",
-                    factor4: "",
-                    factor5: "",
-                    factor6: ""
-                }
-            ]
+            budgetYears: []
         }
     }
     componentDidMount() {
@@ -47,8 +36,10 @@ class SpecifiedBudgetYears extends Component {
                 <thead>
                     <tr>
                         <th>{this.props.info.specifiedBudgetYears.budgetYear}</th>
-                        <th>{this.props.info.specifiedBudgetYears.masterHours}</th>
-                        <th>{this.props.info.specifiedBudgetYears.bachleorHours}</th>
+                        <th>{this.props.info.specifiedBudgetYears.masterHoursExaminer}</th>
+                        <th>{this.props.info.specifiedBudgetYears.masterHoursSupervisor}</th>
+                        <th>{this.props.info.specifiedBudgetYears.bachleorHoursExaminer}</th>
+                        <th>{this.props.info.specifiedBudgetYears.bachleorHoursSupervisor}</th>
                         <th>{this.props.info.specifiedBudgetYears.totalTutoringHours}</th>
                         <th>{this.props.info.specifiedBudgetYears.factor1}</th>
                         <th>{this.props.info.specifiedBudgetYears.factor2}</th>
@@ -61,8 +52,10 @@ class SpecifiedBudgetYears extends Component {
                     {this.state.budgetYears.map((budgetYear, key) =>
                         < tr key={key} className="pressForInfo" >
                             <td key={"budgetYear: " + key} >{budgetYear.year}</td>
-                            <td key={"masterHours: " + key} > {budgetYear.master_hours}</td>
-                            <td key={"bachleorHours: " + key} > {budgetYear.bachelor_hours}</td>
+                            <td key={"masterHours: " + key} > {budgetYear.master_hours_examiner}</td>
+                            <td key={"masterHours: " + key} > {budgetYear.master_hours_supervisor}</td>
+                            <td key={"bachleorHours: " + key} > {budgetYear.bachelor_hours_examiner}</td>
+                            <td key={"bachleorHours: " + key} > {budgetYear.bachelor_hours_supervisor}</td>
                             <td key={"totalTutoringHours: " + key} > {budgetYear.total_tutoring_hours}</td>
                             <td key={"factor2: " + key} > {budgetYear.factor_1}</td>
                             <td key={"factor3: " + key} > {budgetYear.factor_2}</td>

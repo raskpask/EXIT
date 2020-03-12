@@ -47,7 +47,9 @@ function getLanguage() {
             student: "Student",
             supervisor: "Supervisor",
             examiner: "Examiner",
-            projectRole: "Project role"
+            projectRole: "Project role",
+            pickSupervisor: "Pick supervisor",
+            supervisorPlaceholder: "Press the button to see supervisors"
 
         },
         addDegreeProject: {
@@ -79,8 +81,12 @@ function getLanguage() {
             studentNamePlaceholder: "Enter full name of the student",
             kthUsername: "KTH username",
             kthUsernamePlaceholder: "Enter KTH username.",
-            supervisor: "Supervisor",
-            supervisorPlaceholder: "Enter the KTH username of the supervisor.",
+            supervisor: "Supervisor (change start date to change available supervisors)",
+            supervisorPlaceholder: "Enter start date to see available supervisors",
+            added: "The project was added to your quota",
+            fail: "Error, The project was not added to your quota",
+            getFail: "Error could not fetch the supervisors",
+            pickSupervisor: "Pick supervisor"
         },
         specifiedBudgetYears: {
             title: "Specified budget years",
@@ -122,10 +128,10 @@ function getLanguage() {
             addExaminer: "Add examiner"
         },
         addExaminer: {
-            title: "Add examiner",
-            paragraph0: "Please insert the username of the name of the person you want to add as a examiner. Do not include \"@kth.se\".",
+            title: "Add examiner or supervisor",
+            paragraph0: "Please insert the username of the name of the person you want to add as a examiner. The username is the same as the email but without \"@kth.se\".",
             kthUsername: "KTH username",
-            kthUsernamePlaceholder: "Enter the KTH username of the examiner you want to add",
+            kthUsernamePlaceholder: "Enter the KTH username of the examiner or supervisor you want to add",
             added: "The user was added as examiner.",
             fail: "Something went wrong the user was not added as a examiner."
         },
@@ -208,12 +214,13 @@ function getLanguage() {
         },
         addDirectorOfStudies: {
             title: "Add director of studies",
-            paragraph0: "Please insert the username of the name of the person you want to add as a director of studies. Do not include \"@kth.se\".",
+            paragraph0: "Please insert the username of the name of the person you want to add as a director of studies. The username is the same as the email but without \"@kth.se\".",
             usernamePlaceholder: "Enter the username of the user you want to make as director of studies.",
             username: "Username",
             submit: "Submit",
             added: "The user was added as director of studies",
-            fail: "Something went wrong and the user was not add as director of studies"
+            fail: "Something went wrong and the user was not add as director of studies",
+            getFail:"Something went wrong could not fetch examiners"
         },
         validationError: {
             emptyField: {
@@ -359,8 +366,8 @@ function getLanguage() {
         general: {
             loading: "Loading...",
             error: "oops something went wrong!",
-            true: "True",
-            false: "False",
+            yes: "Yes",
+            no: "No",
             email: "Email",
             name: "Name"
         }

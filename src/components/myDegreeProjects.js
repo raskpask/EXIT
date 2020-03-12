@@ -11,17 +11,7 @@ class MyDegreeProjects extends Component {
         super(props);
         this.state = {
             showUser: [],
-            projects: [
-                {   
-                    project_id: "",
-                    credits: "",
-                    title: "",
-                    numer_of_students: "",
-                    start_date: "",
-                    end_date: "",
-                    out_of_date: "",
-                }
-            ]
+            projects: []
         }
     }
     componentDidMount() {
@@ -62,7 +52,7 @@ class MyDegreeProjects extends Component {
                             <td key={"numOfStudents: " + key} > {project.number_of_students}</td>
                             <td key={"startDate: " + key} > {project.start_date.split('T')[0]}</td>
                             <td key={"endDate: " + key} > {project.end_date.split('T')[0]}</td>
-                            <td key={"withinTimeLimit: " + key} > {project.out_of_date === 1 ? this.props.info.general.false : this.props.info.general.true }</td>
+                            <td key={"withinTimeLimit: " + key} > {project.out_of_date === 1 ? this.props.info.general.no : this.props.info.general.yes }</td>
                             <td key={"moreInfo: " + key} > {this.renderFullProject(project)}</td>
                         </tr>
                     )}

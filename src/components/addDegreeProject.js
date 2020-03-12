@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Button, Col, Row } from 'react-bootstrap';
 import DatePicker from "react-datepicker";
+import { Typeahead } from 'react-bootstrap-typeahead';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Access from './fragments/access';
@@ -14,6 +16,8 @@ class AddDegreeProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            year: new Date().getFullYear(),
+            supervisors: [],
             students: [
                 {
                     name: "",
@@ -21,6 +25,7 @@ class AddDegreeProject extends Component {
                 },
             ],
             supervisor: "",
+            supervisor_id: "",
             projectTitle: "",
             numberOfStudents: 1,
             projectDescription: "",
@@ -32,6 +37,9 @@ class AddDegreeProject extends Component {
             companyPhone: "",
         }
     }
+    componentDidMount() {
+        this.getSupervisors()
+    }
     addProject = (e) => {
         e.preventDefault();
         const project = this.createProject()
@@ -39,14 +47,33 @@ class AddDegreeProject extends Component {
         axios
             .post('/api/project', project)
             .then(res => {
-                toast(this.props.info.addDirectorOfStudies.added)
+                toast(this.props.info.addDegreeProject.added)
                 this.resetValues()
             })
             .catch(err => {
                 console.log(err)
-                toast(this.props.info.addDirectorOfStudies.fail)
+                toast(this.props.info.addDegreeProject.fail)
             })
 
+    }
+    getSupervisors = () => {
+        axios
+            .get('/api/availableSupervisors', {
+                params: {
+                    year: this.state.year
+                }
+            })
+            .then(res => {
+                if (res.status === 200 && res.data !== '') {
+                    this.setState({ supervisors: res.data })
+                } else {
+                    toast(this.props.info.addDegreeProject.getFail)
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                toast(this.props.info.addDegreeProject.getFail)
+            })
     }
     resetValues() {
         this.setState({
@@ -77,6 +104,7 @@ class AddDegreeProject extends Component {
             students: this.state.students,
             projectDescription: this.state.projectDescription,
             credits: this.state.credits,
+            supervisor_id: this.state.supervisor_id,
             startDate: startDates[2] + '-' + startDates[0] + '-' + startDates[1],
             endDate: endDates[2] + '-' + endDates[0] + '-' + endDates[1],
             companyName: this.state.companyName,
@@ -92,6 +120,11 @@ class AddDegreeProject extends Component {
             studentsTemp[index].email = value
         }
         this.setState({ students: studentsTemp })
+    }
+    async handleChangeStartDate(date) {
+        console.log(date.getFullYear())
+        await this.setState({ startDate: date, year: date.getFullYear() })
+        this.getSupervisors()
     }
     addStudent() {
         let studentsTemp = this.state.students
@@ -123,6 +156,62 @@ class AddDegreeProject extends Component {
                                 onChange={event => this.setState({ projectTitle: event.target.value })}
                             />
                         </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Form.Group>
+                            <Form.Label>{this.props.info.addDegreeProject.startDate}</Form.Label>
+                            <Form>
+                                <DatePicker
+                                    className="dateBox"
+                                    selected={this.state.startDate}
+                                    onChange={date => this.handleChangeStartDate(date)}
+                                    dateFormat="yyyy/MM/dd"
+                                    placeholderText={this.props.info.addDegreeProject.startDatePlaceholder}
+                                    todayButton={this.props.info.addDegreeProject.today}
+                                />
+                            </Form>
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Group>
+                            <Form.Label>{this.props.info.addDegreeProject.endDate}</Form.Label>
+                            <Form>
+                                <DatePicker
+                                    className="dateBox"
+                                    selected={this.state.endDate}
+                                    onChange={date => this.setState({ endDate: date })}
+                                    dateFormat="yyyy/MM/dd"
+                                    placeholderText={this.props.info.addDegreeProject.endDatePlaceholder}
+                                />
+                            </Form>
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={4}>
+                        <Form.Group>
+                            <Form.Label>{this.props.info.addDegreeProject.credits}</Form.Label>
+                            <Form.Control
+                                required
+                                type="number"
+                                value={this.state.credits}
+                                placeholder={this.props.info.addDegreeProject.credits}
+                                onChange={event => this.setState({ credits: event.target.value })}
+                            />
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Label>{this.props.info.addDegreeProject.supervisor}</Form.Label>
+                        <Typeahead
+                            id="changeSupervisor"
+                            labelKey={(option) => `${option.first_name} ${option.last_name} (${option.email})`}//{"" +option.first_name +option.last_name +" "+option.email +""}}
+                            placeholder={this.props.info.addDegreeProject.supervisorPlaceholder}
+                            selected={this.state.supervisor}
+                            onChange={event => this.setState({ supervisor_id: event[0].user_id })}
+                            options={this.state.supervisors}
+                        />
                     </Col>
                 </Row>
                 {this.state.students.map((student, key) =>
@@ -163,62 +252,6 @@ class AddDegreeProject extends Component {
                         <Button variant="danger" disabled={this.state.numberOfStudents === 1} onClick={() => this.removeStudent()}>{this.props.info.addDegreeProject.removeStudent}</Button>
                     </Col>
                     <Col></Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Form.Group>
-                            <Form.Label>{this.props.info.addDegreeProject.credits}</Form.Label>
-                            <Form.Control
-                                required
-                                type="number"
-                                value={this.state.credits}
-                                placeholder={this.props.info.addDegreeProject.credits}
-                                onChange={event => this.setState({ credits: event.target.value })}
-                            />
-                        </Form.Group>
-                    </Col>
-                    <Col>
-                        <Form.Group>
-                            <Form.Label>{this.props.info.addDegreeProject.supervisor}</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={this.state.supervisor}
-                                placeholder={this.props.info.addDegreeProject.supervisorPlaceholder}
-                                onChange={event => this.setState({ supervisor: event.target.value })}
-                            />
-                        </Form.Group>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Form.Group>
-                            <Form.Label>{this.props.info.addDegreeProject.startDate}</Form.Label>
-                            <Form>
-                                <DatePicker
-                                    className="dateBox"
-                                    selected={this.state.startDate}
-                                    onChange={date => this.setState({ startDate: date })}
-                                    dateFormat="yyyy/MM/dd"
-                                    placeholderText={this.props.info.addDegreeProject.startDatePlaceholder}
-                                    todayButton={this.props.info.addDegreeProject.today}
-                                />
-                            </Form>
-                        </Form.Group>
-                    </Col>
-                    <Col>
-                        <Form.Group>
-                            <Form.Label>{this.props.info.addDegreeProject.endDate}</Form.Label>
-                            <Form>
-                                <DatePicker
-                                    className="dateBox"
-                                    selected={this.state.endDate}
-                                    onChange={date => this.setState({ endDate: date })}
-                                    dateFormat="yyyy/MM/dd"
-                                    placeholderText={this.props.info.addDegreeProject.endDatePlaceholder}
-                                />
-                            </Form>
-                        </Form.Group>
-                    </Col>
                 </Row>
                 <Form.Group>
                     <Form.Label>{this.props.info.addDegreeProject.projectDescription}</Form.Label>
