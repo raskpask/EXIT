@@ -7,9 +7,16 @@ const https = require('https');
 const path = require('path');
 const port = process.env.PORT || 80;
 const app = express();
-// const cors = require('cors');
-// app.use(cors());
 const bodyParser = require('body-parser');
+const fs = require('fs');
+
+var key = fs.readFileSync(__dirname + '/cert/selfsigned.key');
+var cert = fs.readFileSync(__dirname + '/cert/selfsigned.crt');
+var options = {
+  key: key,
+  cert: cert
+};
+
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -33,4 +40,6 @@ app.get('/*', function (req, res) {
 // const httpsServer = https.createServer(credentials, app);
 // httpServer.listen(80);
 // httpsServer.listen(443);
-app.listen(443);
+const server = https.createServer(options, app);
+server.listen(port)
+// app.listen(port);
