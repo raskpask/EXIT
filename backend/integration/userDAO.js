@@ -199,8 +199,8 @@ function postWorkYear(year, examiners) {
         examiners.forEach((examiner, i, arr) => {
             postWorkYearQuery = {
                 text: "INSERT INTO Work_year " +
-                    "(work_hours_examiner,work_hours_supervisor,available_hours_examiner,available_hours_supervisor,person_id,year" +
-                    "WHERE person_id=? AND year = ?",
+                    "(work_hours_examiner,work_hours_supervisor,available_hours_examiner,available_hours_supervisor,person_id,year) " +
+                    "VALUES (?,?,?,?,?,?)",
                 values: [examiner.examinerHours, examiner.supervisorHours, examiner.examinerHours, examiner.supervisorHours, examiner.user_id, year]
             }
             client
