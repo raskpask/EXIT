@@ -215,7 +215,7 @@ function updateWorkYear(year, examiners) {
                     console.error(err);
                     reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
                 });
-        }
+        });
     });
 }
 function getAvailableExaminers(year) {
