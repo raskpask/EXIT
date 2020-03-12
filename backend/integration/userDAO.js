@@ -67,9 +67,9 @@ function getUser(user_id, user_type_id) {
         let getUserQuery;
         if (user_type_id) {
             getUserQuery = {
-                text: "SELCET * " +
+                text: "SELECT * " +
                 "FROM User WHERE user_type_id = 3",
-                // values: [parseInt(user_type_id)]
+                values: [parseInt(user_type_id)]
             }
         } else {
             getUserQuery = {
