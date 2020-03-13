@@ -93,11 +93,11 @@ function router(router) {
             session_index = saml_response.user.session_index;
             console.log(saml_response.user.attributes)
             const res = JSON.stringify(saml_response.user.attributes)
-            const nameAndUsername = res.split('urn:oid:2.5.4.3:')[1].split(',')[0].split("'")[1].split(' ')
+            const nameAndUsername = res.split("'urn:oid:2.5.4.3':")[1].split(',')[0].split("'")[1].split(' ')
             const first_name = nameAndUsername[0]
             const last_name = nameAndUsername[1]
             const username = nameAndUsername[2].split('(')[1].split(')')[0]
-            const role = res.split('urn:iod:1.3.6.1.4.1.5923.1.1.1.1:')[1].split(',')[0].split("'")[1]
+            const role = res.split("'urn:iod:1.3.6.1.4.1.5923.1.1.1.1':")[1].split(',')[0].split("'")[1]
             console.log(first_name)
             console.log(last_name)
             console.log(username)
