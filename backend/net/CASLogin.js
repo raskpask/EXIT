@@ -44,7 +44,7 @@ function router(router) {
         var options = { request_body: req.body };
         sp.post_assert(idp, options, function (err, saml_response) {
             if (err != null)
-                return res.send(500);
+                return res.sendStatus(500);
 
             // Save name_id and session_index for logout
             // Note:  In practice these should be saved in the user session, not globally.
@@ -53,6 +53,7 @@ function router(router) {
             console.log(saml_response.user.attributes)
             console.log(JSON.stringify(saml_response.user.attributes))
             res.redirect('/')
+            
         });
     });
 
