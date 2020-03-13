@@ -2,6 +2,11 @@ const userDAO = require('../integration/userDAO');
 const requestHandler = require('../model/requestHandler');
 const authToken = require('../model/authToken');
 const dbError = require('../error/dbErrors')
+const ADMIN_PRIVELEGE = 1
+const DICRECTOR_PRIVILEGE = 2
+const EXAMINER_PRIVILEGE = 3
+const STUDENT_PRIVILEGE = 4
+
 /**
  * Registers a user in the DB.
  *
@@ -71,7 +76,7 @@ async function getUser(req) {
  */
 async function getProject(req) {
     try {
-        authorizeUser(requestHandler.extractUserDataFromCookie(req))
+        authorizeUser(requestHandler.extractUserDataFromCookie(req),EXAMINER_PRIVILEGE)
         return await userDAO.getProject(1,2020);//requestHandler.extractProjectID(req));
     }
     catch (error) {
@@ -197,8 +202,8 @@ async function updateUser(req){
 async function login(session_id, first_name, last_name, kth_username, role){
     return await userDAO.login(session_id, first_name, last_name, kth_username, role);
 }
-async function authorizeUser(user_info){
-    return await userDAO.authorizeUser(user_info.session_id, user_info.kth_username, user_info.role_id);
+async function authorizeUser(user_info,privilege_level){
+    return await userDAO.authorizeUser(user_info.session_id, user_info.kth_username, privilege_level);
 }
 
 module.exports = {
