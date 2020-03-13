@@ -925,7 +925,6 @@ function login(session_id, first_name, last_name, kth_username, role) {
         client
             .query(updateUser.text, updateUser.values)
             .then(res => {
-                console.log(res)
                 if (res.affectedRows === 1) {
                     resolve()
                 }
@@ -948,8 +947,8 @@ function authorizeUser(session_id, kth_username, role_id) {
         client
             .query(getUserType.text, getUserType.values)
             .then(res => {
-                console.log(res)
-                if (parseInt(res[0]) <= role_id) {
+                console.log(parseInt(res[0])
+                if (parseInt(res[0]) >= role_id) {
                     resolve()
                 }
             })
