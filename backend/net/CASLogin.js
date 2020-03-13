@@ -89,6 +89,7 @@ function router(router) {
             
             // Save name_id and session_index for logout
             // Note:  In practice these should be saved in the user session, not globally.
+            console.log(saml_response)
             const name_id = saml_response.user.name_id;
             const session_index = saml_response.user.session_index;
             const attributes = JSON.stringify(saml_response.user.attributes)
