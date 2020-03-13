@@ -19,13 +19,6 @@ class Header extends Component {
         window.location.href = "/";
         this.props.app.forceUpdate()
     }
-    login = async () => {
-        try {
-            await axios.get('/login')
-        } catch(err){
-            console.error(err)
-        }
-    }
     logout = async () => {
         try {
             const response = await axios.delete('/api/authentication')
@@ -45,24 +38,24 @@ class Header extends Component {
         return true
     }
     chooseUserLevel() {
-        return this.renderDirector()
+        // return this.renderDirector()
 
-        // let privilegeLevel = document.cookie.split('privilegeLevel=')[1];
+        let privilegeLevel = document.cookie.split('role_id=')[1];
 
-        // if (Boolean(privilegeLevel)) {
-        //     privilegeLevel = privilegeLevel.split(';')[0];
-        // }
-        // if (privilegeLevel === '1') {
-        //     return this.renderAdmin()
-        // } else if (privilegeLevel === '2') {
-        //     return this.renderDirector()
-        // } else if (privilegeLevel === '3') {
-        //     return this.renderExaminer()
-        // } else if (privilegeLevel === '4') {
-        //     return this.renderStudent()
-        // } else {
-        //     return this.renderLogin()
-        // }
+        if (Boolean(privilegeLevel)) {
+            privilegeLevel = privilegeLevel.split(';')[0];
+        }
+        if (privilegeLevel === '1') {
+            return this.renderAdmin()
+        } else if (privilegeLevel === '2') {
+            return this.renderDirector()
+        } else if (privilegeLevel === '3') {
+            return this.renderExaminer()
+        } else if (privilegeLevel === '4') {
+            return this.renderStudent()
+        } else {
+            return this.renderLogin()
+        }
     }
     renderBrand() {
         return (
@@ -79,7 +72,7 @@ class Header extends Component {
             <React.Fragment>
                 <Nav className="mr-auto">
                     {this.renderBrand()}
-                    <Nav.Link className="fontColor" onClick={() => this.login()}>{this.props.info.header.login}</Nav.Link>
+                    <Nav.Link className="fontColor"  href="/login" >{this.props.info.header.login}</Nav.Link>
                     <Nav.Link className="fontColor" href="/help">{this.props.info.header.help}</Nav.Link>
                 </Nav>
             </React.Fragment>
@@ -90,7 +83,7 @@ class Header extends Component {
             <React.Fragment>
                 <Nav className="mr-auto">
                     {this.renderBrand()}
-                    <Nav.Link className="fontColor" onClick={() => this.logout()}>{this.props.info.header.logout}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/logout">{this.props.info.header.logout}</Nav.Link>
                     <Nav.Link className="fontColor" href="/availableExaminers">{this.props.info.header.availableExaminsers}</Nav.Link>
                     <Nav.Link className="fontColor" href="/help">{this.props.info.header.help}</Nav.Link>
                 </Nav>
@@ -102,7 +95,7 @@ class Header extends Component {
             <React.Fragment>
                 <Nav className="mr-auto">
                     {this.renderBrand()}
-                    <Nav.Link className="fontColor" onClick={() => this.logout()}>{this.props.info.header.logout}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/logout">{this.props.info.header.logout}</Nav.Link>
                     <Nav.Link className="fontColor" href="/profile">{this.props.info.header.profile}</Nav.Link>
                     <Nav.Link className="fontColor" href="/availableExaminers">{this.props.info.header.availableExaminsers}</Nav.Link>
                     <Nav.Link className="fontColor" href="/addDegreeProject">{this.props.info.header.addDegreeProject}</Nav.Link>
@@ -117,7 +110,7 @@ class Header extends Component {
             <React.Fragment>
                 <Nav className="mr-auto">
                     {this.renderBrand()}
-                    <Nav.Link className="fontColor" onClick={() => this.logout()}>{this.props.info.header.logout}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/logout">{this.props.info.header.logout}</Nav.Link>
                     <Nav.Link className="fontColor" href="/addBudgetYear">{this.props.info.header.addBudgetYear}</Nav.Link>
                     <Nav.Link className="fontColor" href="/specifiedBudgetYears">{this.props.info.header.specifiedBudgetYears}</Nav.Link>
                     <Nav.Link className="fontColor" href="/addExaminer">{this.props.info.header.addExaminer}</Nav.Link>
@@ -133,7 +126,7 @@ class Header extends Component {
             <React.Fragment>
                 <Nav className="mr-auto">
                     {this.renderBrand()}
-                    <Nav.Link className="fontColor" onClick={() => this.logout()}>{this.props.info.header.logout}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/logout">{this.props.info.header.logout}</Nav.Link>
                     <Nav.Link className="fontColor" href="/addDirectorOfStudies">{this.props.info.header.addDirectorOfStudies}</Nav.Link>
                     <Nav.Link className="fontColor" href="/directorsOfStudies">{this.props.info.header.directorsOfStudies}</Nav.Link>
                     <Nav.Link className="fontColor" href="/help">{this.props.info.header.help}</Nav.Link>
@@ -146,7 +139,7 @@ class Header extends Component {
         return (
             <Nav className="ml-auto">
                 <Nav.Link className="userText" href="/user"> {this.props.info.header.profile}</Nav.Link>
-                <Nav.Link onClick={() => this.logout()}>{this.props.info.header.logout}</Nav.Link>
+                <Nav.Link href="/logout">{this.props.info.header.logout}</Nav.Link>
                 {this.renderlanguage()}
             </Nav>
         )

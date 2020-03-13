@@ -23,12 +23,15 @@ class DirectorsOfStudies extends Component {
         this.getDirectors()
     }
     getDirectors = () => {
-
-        const response = axios
-            .get('/api/user')
+        axios
+            .get('/api/user', {
+                params: {
+                    userRoleId: 2
+                }
+            })
             .then(res => {
                 if (res.status === 200) {
-                    this.setState({ directors: response.data })
+                    this.setState({ directors: res.data })
                 }
             })
             .catch(err => {

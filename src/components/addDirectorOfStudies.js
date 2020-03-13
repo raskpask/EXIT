@@ -14,9 +14,8 @@ class AddDirectorOfStudies extends Component {
     }
     addDirector = (e) => {
         e.preventDefault();
-        const email = this.state.username + "@kth.se"
         axios
-            .post('/api/user', { email: email })
+            .post('/api/user', { kth_username: this.state.username })
             .then(res => {
                 toast(this.props.info.addDirectorOfStudies.added)
                 this.setState({username: ""})

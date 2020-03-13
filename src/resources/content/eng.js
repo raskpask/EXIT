@@ -128,10 +128,10 @@ function getLanguage() {
             addExaminer: "Add examiner"
         },
         addExaminer: {
-            title: "Add examiner",
-            paragraph0: "Please insert the username of the name of the person you want to add as a examiner. Do not include \"@kth.se\".",
+            title: "Add examiner or supervisor",
+            paragraph0: "Please insert the username of the name of the person you want to add as a examiner. The username is the same as the email but without \"@kth.se\".",
             kthUsername: "KTH username",
-            kthUsernamePlaceholder: "Enter the KTH username of the examiner you want to add",
+            kthUsernamePlaceholder: "Enter the KTH username of the examiner or supervisor you want to add",
             added: "The user was added as examiner.",
             fail: "Something went wrong the user was not added as a examiner."
         },
@@ -214,7 +214,7 @@ function getLanguage() {
         },
         addDirectorOfStudies: {
             title: "Add director of studies",
-            paragraph0: "Please insert the username of the name of the person you want to add as a director of studies. Do not include \"@kth.se\".",
+            paragraph0: "Please insert the username of the name of the person you want to add as a director of studies. The username is the same as the email but without \"@kth.se\".",
             usernamePlaceholder: "Enter the username of the user you want to make as director of studies.",
             username: "Username",
             submit: "Submit",
