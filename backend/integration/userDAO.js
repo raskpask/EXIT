@@ -912,6 +912,25 @@ function updateProjectInTime() {
         client.end()
     })
 }
+function login() {
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection()
+        let updateInTime = {
+            text: "UPDATE Degree_project " +
+                "SET out_of_date = 1" +
+                "WHERE in_progress = 1 AND end_date < GETDATE()"
+        }
+        client
+            .query(updateInTime.text)
+            .then(res => {
+                resolve()
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        client.end()
+    })
+}
 module.exports = {
     registerUser,
     getUser,

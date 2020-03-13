@@ -86,7 +86,7 @@ function router(router) {
                 console.error(err)
                 return res.sendStatus(500);
             }
-            
+            console.log(req.headers)
             // Save name_id and session_index for logout
             // Note:  In practice these should be saved in the user session, not globally.
             console.log(saml_response)
