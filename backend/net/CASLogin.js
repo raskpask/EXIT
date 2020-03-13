@@ -94,8 +94,9 @@ function router(router) {
             // const session_index = saml_response.user.session_index;
             res.cookie('name_id', saml_response.user.name_id);
             res.cookie('session_index', saml_response.user.session_index);
-
-            const session_id = req.headers.cookie.split('SSO_SESSION_START=')[1].split(';')[0]
+            if(req.headers.cookie.split('SSO_SESSION_START=')[1]){
+                const session_id = req.headers.cookie.split('SSO_SESSION_START=')[1].split(';')[0]
+            }
             const attributes = JSON.stringify(saml_response.user.attributes)
             const nameAndUsername = attributes.split('"urn:oid:2.5.4.3":["')[1].split('"')[0].split(' ')
             const first_name = nameAndUsername[0]
