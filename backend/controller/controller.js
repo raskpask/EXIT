@@ -267,6 +267,9 @@ function deleteUser(req){
 function updateUser(req){
     return userDAO.updateUser(requestHandler.extractUser(req));
 }
+function login(session_id, first_name, last_name, kth_username, role){
+    return userDAO.login(session_id, first_name, last_name, kth_username, role);
+}
 
 module.exports = {
     registerUser,
@@ -298,5 +301,6 @@ module.exports = {
     postWorkYear,
     updateWorkYear,
     getAvailableExaminers,
-    getAvailableSupervisors
+    getAvailableSupervisors,
+    login
 }

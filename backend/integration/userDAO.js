@@ -45,23 +45,23 @@ function registerUser(user) {
                     client.end()
                     reject(new Error(dbError.errorCodes.INSERTING_USER_ERROR.code))
                 } else if (res.rows[0].username == user.username) {
-                    const addExpertiseQuery =  {
+                    const addExpertiseQuery = {
                         text: "INSERT INTO Expertise (user_id,expertise_id) VALUES (?,?)",
-                        values: [user.user_id,NO_EXPERTISE_YET_ID]
+                        values: [user.user_id, NO_EXPERTISE_YET_ID]
                     }
                     client
-                    .query(addExpertiseQuery.text.addExpertiseQuery.values)
-                    .then(res=>{
-                        client.query("COMMIT")
-                        client.end()
-                        resolve(200)
-                    })
-                    .catch(err=>{
-                        client.query("ROLLBACK")
-                        client.end()
-                        console.error(err)
-                        reject(new Error(dbError.errorCodes.INSERTING_USER_ERROR.code))
-                    })
+                        .query(addExpertiseQuery.text.addExpertiseQuery.values)
+                        .then(res => {
+                            client.query("COMMIT")
+                            client.end()
+                            resolve(200)
+                        })
+                        .catch(err => {
+                            client.query("ROLLBACK")
+                            client.end()
+                            console.error(err)
+                            reject(new Error(dbError.errorCodes.INSERTING_USER_ERROR.code))
+                        })
                 }
             })
             .catch(err => {
@@ -473,8 +473,8 @@ function registerProject(project_details) {
                     }
                     client
                         .query(addExaminerQuery.text, addExaminerQuery.values)
-                        
-                    if(project_details.supervisor_id){
+
+                    if (project_details.supervisor_id) {
                         const addSupervisorQuery = {
                             text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
                                 "VALUES (?,?,?)",
@@ -482,7 +482,7 @@ function registerProject(project_details) {
                         }
                         client
                             .query(addSupervisorQuery.text, addSupervisorQuery.values);
-                    }    
+                    }
                 })
                 .catch(err => {
                     console.error(err)
@@ -518,63 +518,63 @@ function registerProject(project_details) {
                     })
                     .catch(err => {
                         console.error(err)
-                        client.query("ROLLBACK"); reject(err); 
+                        client.query("ROLLBACK"); reject(err);
                     })
             })
-            projectType ="";
-            if(project_details.credits == CREDITS_BACHELOR){
+            projectType = "";
+            if (project_details.credits == CREDITS_BACHELOR) {
                 projectType = "bachelor_hours_";
-            }else if(project_details.credits == CREDITS_MASTER){
+            } else if (project_details.credits == CREDITS_MASTER) {
                 projectType = "master_hours_";
-            }else{
+            } else {
                 throw new Error("Missing credits");
             }
 
-            if(project_details.supervisor_id){
-                
+            if (project_details.supervisor_id) {
+
                 projectTypeSupervisor = projectType + "supervisor";
                 let updateSupervisorWork = {
-                    text: "UPDATE Work_year "+
-                    "SET available_hours_supervisor = available_hours_supervisor - "+
-                    "(SELECT "+ projectTypeSupervisor +" * factor_"+project_details.number_of_students + 
-                    " FROM Budget_year  WHERE Budget_year.year = Work_year.year) WHERE person_id = ?",
+                    text: "UPDATE Work_year " +
+                        "SET available_hours_supervisor = available_hours_supervisor - " +
+                        "(SELECT " + projectTypeSupervisor + " * factor_" + project_details.number_of_students +
+                        " FROM Budget_year  WHERE Budget_year.year = Work_year.year) WHERE person_id = ?",
                     values: [project_details.supervisor_id]
                 }
-                client.query(updateSupervisorWork.text,updateSupervisorWork.values)
-                .then({
+                client.query(updateSupervisorWork.text, updateSupervisorWork.values)
+                    .then({
 
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        client.query("ROLLBACK");
+                        if (err.errno == 1264) {
+                            client.release();
+                            reject(new Error(dbError.errorCodes.NO_TIME_AVAILABLE.code));
+                        }
+                    })
+            }
+            projectTypeExaminer = projectType + "examiner";
+            let updateExaminerWork = {
+                text: "UPDATE Work_year " +
+                    "SET available_hours_examiner = available_hours_examiner - " +
+                    "(SELECT " + projectTypeExaminer + " * factor_" + project_details.number_of_students +
+                    " FROM Budget_year WHERE Budget_year.year = Work_year.year) WHERE Work_year.person_id = ?",
+                values: [examiner_id]
+            }
+            client.query(updateExaminerWork.text, updateExaminerWork.values)
+                .then(res => {
+                    client.query("COMMIT");
+                    resolve(200);
                 })
-                .catch(err =>{
-                    console.error(err);
-                    client.query("ROLLBACK"); 
-                    if(err.errno == 1264){
+                .catch(err => {
+
+                    console.error(err)
+                    client.query("ROLLBACK");
+                    if (err.errno == 1264) {
                         client.release();
                         reject(new Error(dbError.errorCodes.NO_TIME_AVAILABLE.code));
                     }
                 })
-        }
-        projectTypeExaminer = projectType + "examiner";
-        let updateExaminerWork = {
-            text: "UPDATE Work_year "+
-            "SET available_hours_examiner = available_hours_examiner - "+
-            "(SELECT "+ projectTypeExaminer +" * factor_"+project_details.number_of_students + 
-            " FROM Budget_year WHERE Budget_year.year = Work_year.year) WHERE Work_year.person_id = ?",
-            values: [examiner_id]
-        }
-        client.query(updateExaminerWork.text,updateExaminerWork.values)
-        .then(res =>{
-            client.query("COMMIT");
-            resolve(200);
-        })
-        .catch(err =>{
-
-            console.error(err)
-            client.query("ROLLBACK");
-            if(err.errno == 1264){
-                client.release();
-                reject(new Error(dbError.errorCodes.NO_TIME_AVAILABLE.code));
-            }
-        })
 
             // addSupervisorToProjectQuery = {
             //     text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
@@ -591,9 +591,9 @@ function registerProject(project_details) {
             //         console.error(err)
             //         client.query("ROLLBACK"); reject(err);
             //     })
-         } catch (e) {
-             client.query("ROLLBACK"); reject(err);
-             console.error(e);
+        } catch (e) {
+            client.query("ROLLBACK"); reject(err);
+            console.error(e);
             reject(e);
         } finally {
             client.release();
@@ -912,18 +912,27 @@ function updateProjectInTime() {
         client.end()
     })
 }
-function login() {
+function login(session_id, first_name, last_name, kth_username, role) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
-        let updateInTime = {
-            text: "UPDATE Degree_project " +
-                "SET out_of_date = 1" +
-                "WHERE in_progress = 1 AND end_date < GETDATE()"
+        let role_id
+        const email = kth_username + '@kth.se'
+        if (role === 'student') {
+            role_id = 4;
+        }
+        let updateUser = {
+            text: "UPDATE User " +
+                "SET user_type_id = ?, email = ?, first_name = ?, last_name = ?,kth_username = ?,session_id = ? " +
+                "WHERE user_id = (SELECT user_id FROM User WHERE kth_username = ?)",
+            values: [role_id, email, first_name, last_name, kth_username, session_id, kth_username]
         }
         client
-            .query(updateInTime.text)
+            .query(updateUser.text, updateUser.values)
             .then(res => {
-                resolve()
+                console.log(res)
+                if (res.affectedRows === 1) {
+                    resolve()
+                }
             })
             .catch(err => {
                 console.error(err)
@@ -956,4 +965,5 @@ module.exports = {
     getAvailableExaminers,
     getAvailableSupervisors,
     updateProjectInTime,
+    login,
 }

@@ -1,6 +1,8 @@
-var saml2 = require('saml2-js');
+const saml2 = require('saml2-js');
+const controller = require('../controller/controller');
 const fs = require('fs');
-let path = __dirname.split("\\").join("/");
+
+const path = __dirname.split("\\").join("/");
 const private_key = path + "/key-file.pem"
 const cert = path + "/certificate.pem"
 const cert1 = path + "/cert1.crt"
@@ -86,7 +88,6 @@ function router(router) {
                 console.error(err)
                 return res.sendStatus(500);
             }
-            console.log(req.headers)
             // Save name_id and session_index for logout
             // Note:  In practice these should be saved in the user session, not globally.
             // const name_id = saml_response.user.name_id;
@@ -101,12 +102,7 @@ function router(router) {
             const last_name = nameAndUsername[1]
             const username = nameAndUsername[2].split('(')[1].split(')')[0]
             const role = attributes.split('"urn:oid:1.3.6.1.4.1.5923.1.1.1.1":["')[1].split('"')[0]
-            console.log(session_id)
-            console.log(first_name)
-            console.log(last_name)
-            console.log(username)
-            console.log(role)
-            
+            controller.login(session_id,first_name,last_name,username,role)
             res.redirect('/')
         });
     });
