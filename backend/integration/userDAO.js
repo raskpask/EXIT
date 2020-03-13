@@ -915,16 +915,12 @@ function updateProjectInTime() {
 function login(session_id, first_name, last_name, kth_username, role) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
-        let role_id
         const email = kth_username + '@kth.se'
-        if (role === 'student') {
-            role_id = 4;
-        }
         let updateUser = {
             text: "UPDATE User " +
                 "SET user_type_id = ?, email = ?, first_name = ?, last_name = ?,kth_username = ?,session_id = ? " +
                 "WHERE user_id = (SELECT user_id FROM User WHERE kth_username = ?)",
-            values: [role_id, email, first_name, last_name, kth_username, session_id, kth_username]
+            values: [role, email, first_name, last_name, kth_username, session_id, kth_username]
         }
         client
             .query(updateUser.text, updateUser.values)
