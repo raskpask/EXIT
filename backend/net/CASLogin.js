@@ -5,10 +5,10 @@ const private_key = path+"/key-file.pem"
 const cert = path+"/certificate.pem"
 // const cert = require("/Users/molin/Desktop/EXIT/backend/net/md-signer2.crt")
 const sp_options = {
-    entity_id: "http://exit.ict.kth.se/",
+    entity_id: "https://exit.ict.kth.se/",
     private_key: fs.readFileSync(private_key,"utf-8").toString(),
     certificate: fs.readFileSync(cert,"utf-8").toString(),
-    assert_endpoint: "http://exit.ict.kth.se/assert",
+    assert_endpoint: "https://exit.ict.kth.se/assert",
 }
 const idp_options = {
     sso_login_url: "https://samltest-5.sys.kth.se/idp/profile/SAML2/Redirect/SSO",
