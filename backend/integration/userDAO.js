@@ -955,8 +955,7 @@ function authorizeUser(session_id, kth_username, role_id) {
                 }
             })
             .catch(err => {
-                console.error(err)
-                
+                console.error(err)  
             })
         client.end()
     })

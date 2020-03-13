@@ -76,7 +76,7 @@ async function getUser(req) {
  */
 async function getProject(req) {
     try {
-        authorizeUser(requestHandler.extractUserDataFromCookie(req),EXAMINER_PRIVILEGE)
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req),EXAMINER_PRIVILEGE)
         return await userDAO.getProject(1,2020);//requestHandler.extractProjectID(req));
     }
     catch (error) {
