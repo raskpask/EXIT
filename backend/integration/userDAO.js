@@ -948,7 +948,7 @@ function authorizeUser(session_id, kth_username, role_id) {
             .query(getUserType.text, getUserType.values)
             .then(res => {
                 console.log(res[0].user_type_id)
-                if (parseInt(res[0].user_type_id) >= role_id) {
+                if (parseInt(res[0].user_type_id) <= role_id) {
                     resolve()
                 }
             })
