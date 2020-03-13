@@ -93,6 +93,7 @@ function router(router) {
             session_index = saml_response.user.session_index;
             console.log(saml_response.user.attributes)
             const res = JSON.stringify(saml_response.user.attributes)
+            console.log(res)
             const nameAndUsername = res.split(':')[3].split(',')[0].split("'")[1].split(' ')
             const first_name = nameAndUsername[0]
             const last_name = nameAndUsername[1]
