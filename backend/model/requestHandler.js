@@ -12,13 +12,16 @@ const BudgetYear = require('./budgetYear.js');
  * @param {String} req - Request from the client
  * @returns JSON of credentials.
  */
-function extractCredentials(req) {
-    const body = req.body;
-    const credentials = {
-        username: body.username,
-        password: body.password
+function extractUserDataFromCookie(req) {
+    const session_id = req.headers.cookie.split('SSO_SESSION_START=')[1].split(';')[0]
+    const role_id = req.headers.cookie.split('role_id=')[1].split(';')[0]
+    const kth_username = req.headers.cookie.split('username=')[1].split(';')[0]
+    const user_info = {
+        session_id: session_id,
+        role_id: role_id,
+        kth_username: kth_username
     }
-    return credentials
+    return user_info
 }
 
 /**
@@ -215,7 +218,7 @@ function extractBudgetYear(req) {
 module.exports = {
     extractProjectID,
     extractUserID,
-    extractCredentials,
+    extractUserDataFromCookie,
     extractUser,
     extractToken,
     extractUsername,

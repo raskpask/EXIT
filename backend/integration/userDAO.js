@@ -932,10 +932,35 @@ function login(session_id, first_name, last_name, kth_username, role) {
             })
             .catch(err => {
                 console.error(err)
+                reject(new Error(dbError.errorCodes.LOGIN_ERROR.code))
             })
         client.end()
     })
 }
+function authorizeUser(session_id, kth_username, role_id) {
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection()
+        let getUserType = {
+            text: "SELECT user_type_id FROM User " +
+                "WHERE kth_username = ? AND session_id = ?",
+            values: [kth_username, session_id]
+        }
+        client
+            .query(getUserType.text, getUserType.values)
+            .then(res => {
+                console.log(res)
+                if (parseInt(res[0]) <= role_id) {
+                    resolve()
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                reject(new Error(dbError.errorCodes.NO_ACCESS_ERROR.code))
+            })
+        client.end()
+    })
+}
+
 module.exports = {
     registerUser,
     getUser,
@@ -962,4 +987,5 @@ module.exports = {
     getAvailableSupervisors,
     updateProjectInTime,
     login,
+    authorizeUser
 }

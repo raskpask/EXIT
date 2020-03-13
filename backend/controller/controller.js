@@ -71,6 +71,7 @@ async function getUser(req) {
  */
 async function getProject(req) {
     try {
+        authorizeUser(requestHandler.extractUserDataFromCookie(req))
         return await userDAO.getProject(1,2020);//requestHandler.extractProjectID(req));
     }
     catch (error) {
@@ -156,119 +157,48 @@ async function updateUser(req) {
     const updateUser = requestHandler.extractUser(req);
     return await userDAO.updateUser(updateUser, requestHandler.extractToken(req));
 }
-/**
- * Fetch an application
- *
- * @param {String} req - The request of the client.
- * @returns Promise with list of all matching applications
- */
-async function getApplication(req) {
-    try {
-        const token = requestHandler.extractToken(req);
-        const application = await requestHandler.extractApplication(req)
-        const lang = await requestHandler.extractLang(req);
-        let privilegeLevel = await userDAO.getPrivilegeLevel(token);
-        if (privilegeLevel == "no access") {
-            throw new Error(dbError.errorCodes.NO_ACCESS_ERROR);
-        }
-        return await userDAO.getApplication(privilegeLevel, application, lang);
-    } catch (error) {
-        throw error
-    }
-}
-/**
- * Creates a application. 
- *
- * @param {String} req - The request of the client.
- * @returns Promise with 200.
- */
-async function createApplication(req) {
-    const token = await requestHandler.extractToken(req);
-    const application = await requestHandler.extractCreateApplication(req);
-    const user = await userDAO.getUser(token);
-    return await userDAO.createApplication(application, user);
-}
-/**
- * Update the application status and last edited.
- *
- * @param {String} req - The request of the client.
- * @returns {Promise} - with code 200.
- */
-async function updateApplicationStatus(req) {
-    const token = requestHandler.extractToken(req)
-    let privilegeLevel = await userDAO.getPrivilegeLevel(token);
-    if (privilegeLevel == "no access" || privilegeLevel.role_id > 1) {
-        throw new Error(dbError.errorCodes.NO_ACCESS_ERROR.code);
-    }
-    return await userDAO.updateApplicationStatus(req.body.status, req.body.id, req.body.lastEdited);
-}
-/**
- * Fetches the competences of the user.
- *
- * @param {String} req - The request of the client.
- * @returns Promise with list competences.
- */
-async function getCompetence(req) {
-    const lang = requestHandler.extractLang(req);
-    return await userDAO.getCompetence(lang);
-}
-/**
- * Fetches the token of the User
- *
- * @param {String} req - The request of the client.
- * @returns String with token.
- */
-function getToken(req) {
-    return requestHandler.extractToken(req);
-}
 
-/**
- * Extracts language cookie from header.
- *
- * @param {String} req - Request from client
- * @returns String of language
- */
-function extractLangCookie(req) {
-    return requestHandler.extractLang(req);
+async function getExpertise(req){
+    return await userDAO.getExpertise(requestHandler.extractUserID(req))
 }
-function getExpertise(req){
-    return userDAO.getExpertise(requestHandler.extractUserID(req))
+async function postExpertise(req){
+    return await userDAO.postExpertise(requestHandler.extractExpertiseName(req))
 }
-function postExpertise(req){
-    return userDAO.postExpertise(requestHandler.extractExpertiseName(req))
-}
-function updateExpertise(req){
+async function updateExpertise(req){
     // console.log(req.body)
-    return userDAO.updateExpertise(requestHandler.extractExpertiseName(req),requestHandler.extractExpertiseID(req))
+    return await userDAO.updateExpertise(requestHandler.extractExpertiseName(req),requestHandler.extractExpertiseID(req))
 }
-function deleteExpertise(req){
-    return userDAO.deleteExpertise(requestHandler.extractExpertiseID(req))
+async function deleteExpertise(req){
+    return await userDAO.deleteExpertise(requestHandler.extractExpertiseID(req))
 }
-function getBudgetYear(req){
-    return userDAO.getBudgetYear()
+async function getBudgetYear(req){
+    return await userDAO.getBudgetYear()
 }
-function postBudgetYear(req){
+async function postBudgetYear(req){
     try{
-    return userDAO.postBudgetYear(requestHandler.extractBudgetYear(req))
+    return await userDAO.postBudgetYear(requestHandler.extractBudgetYear(req))
     }catch(error){
         throw error;
     }
 }
-function updateBudgetYear(req){
-    return userDAO.updateBudgetYear(requestHandler.extractBudgetYear(req))
+async function updateBudgetYear(req){
+    return await userDAO.updateBudgetYear(requestHandler.extractBudgetYear(req))
 }
-function deleteBudgetYear(req){
-    return userDAO.deleteBudgetYear(requestHandler.extractBudgetYear(req))
+async function deleteBudgetYear(req){
+    return await userDAO.deleteBudgetYear(requestHandler.extractBudgetYear(req))
 }
 
-function deleteUser(req){
-    return userDAO.deleteUser(requestHandler.extractUserID(req));
+async function deleteUser(req){
+    return await userDAO.deleteUser(requestHandler.extractUserID(req));
 }
-function updateUser(req){
-    return userDAO.updateUser(requestHandler.extractUser(req));
+async function updateUser(req){
+    return await userDAO.updateUser(requestHandler.extractUser(req));
 }
-function login(session_id, first_name, last_name, kth_username, role){
-    return userDAO.login(session_id, first_name, last_name, kth_username, role);
+async function login(session_id, first_name, last_name, kth_username, role){
+    return await userDAO.login(session_id, first_name, last_name, kth_username, role);
+}
+async function authorizeUser(user_info){
+    return await userDAO.authorizeUser(user_info.session_id, user_info.kth_username, user_info.role_id);
 }
 
 module.exports = {
@@ -278,14 +208,8 @@ module.exports = {
     getUser,
     updateUser,
     deleteUser,
-    getApplication,
-    createApplication,
-    updateApplicationStatus,
     deAuthenticateUser,
-    getCompetence,
     checkIfUsernameIsAvailable,
-    getToken,
-    extractLangCookie,
     getProject,
     updateProject,
     deleteProject,
