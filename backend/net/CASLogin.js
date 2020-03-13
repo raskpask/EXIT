@@ -15,7 +15,7 @@ const sp_options = {
 const idp_options = {
     sso_login_url: "https://saml-5.sys.kth.se/idp/profile/SAML2/Redirect/SSO",
     sso_logout_url: "https://saml-5.sys.kth.se/",
-    certificates: [cert1,cert2]
+    certificates: [cert1]
 };
 const sp = new saml2.ServiceProvider(sp_options);
 const idp = new saml2.IdentityProvider(idp_options);
