@@ -95,7 +95,7 @@ function router(router) {
             res.cookie('name_id', saml_response.user.name_id);
             res.cookie('session_index', saml_response.user.session_index);
             let session_id = 1
-            if(req.headers.cookie.split('SSO_SESSION_START=')[1]){
+            if(req.headers.cookie){
                 session_id = req.headers.cookie.split('SSO_SESSION_START=')[1].split(';')[0]
             }
 
