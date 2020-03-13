@@ -950,11 +950,13 @@ function authorizeUser(session_id, kth_username, role_id) {
                 console.log(res[0].user_type_id)
                 if (parseInt(res[0].user_type_id) <= role_id) {
                     resolve()
+                } else {
+                    reject(new Error(dbError.errorCodes.NO_ACCESS_ERROR.code))
                 }
             })
             .catch(err => {
                 console.error(err)
-                reject(new Error(dbError.errorCodes.NO_ACCESS_ERROR.code))
+                
             })
         client.end()
     })
