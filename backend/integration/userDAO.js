@@ -43,6 +43,7 @@ function registerUser(username, user_type_id) {
             .query(query.text, query.values)
             .then(res => {
                 console.log(res)
+                client.end()
                 resolve()
             })
             .catch(err => {

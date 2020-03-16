@@ -17,7 +17,6 @@ function router(router) {
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }
-        res.send();
     });
 
     router.put('/api/user', async (req, res) => {
@@ -28,7 +27,6 @@ function router(router) {
             dbErrors.respondError(error.message, res)
             console.error(error.message);
         }
-        res.send();
     });
 
     router.get('/api/user', async (req, res) => {
