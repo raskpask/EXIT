@@ -706,6 +706,7 @@ function updateExpertise(expertise_name, user_id) {
             text: "SELECT expertise_id FROM Expertise WHERE user_id = ?",
             values: [user_id]
         }
+        client.query("BEGIN")
         client
             .query(checkExpertiseQuery.text, checkExpertiseQuery.values)
             .then(res => {
@@ -727,15 +728,33 @@ function updateExpertise(expertise_name, user_id) {
                     .query(updateExpertiseQuery.text, updateExpertiseQuery.values)
                     .then(res => {
                         console.log(res)
+                        if (res.insertId) {
+                            const updateExpertiseIdQuery = {
+                                text: "UPDATE Expertise " +
+                                    "SET expertise_id = ? " +
+                                    "WHERE user_id = ? ",
+                                values: [res.insertId, user_id]
+                            }
+                            client
+                                .query(updateExpertiseIdQuery.text, updateExpertiseIdQuery.values)
+                                .catch(err=>{
+                                    console.error(err)
+                                    client.query("ROLLBACK")
+                                    reject(new Error(dbError.errorCodes.UPDATE_USER_ERROR.code))
+                                })
+                        }
+                        client.query("COMMIT")
                         resolve()
                     })
-                    .catch(err=>{
+                    .catch(err => {
                         console.error(err)
+                        client.query("ROLLBACK")
                         reject(new Error(dbError.errorCodes.UPDATE_USER_ERROR.code))
                     })
             })
             .catch(err => {
                 console.error(err)
+                client.query("ROLLBACK")
                 reject(new Error(dbError.errorCodes.UPDATE_USER_ERROR.code))
             })
         client.end()
