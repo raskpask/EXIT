@@ -181,13 +181,11 @@ function getWorkYear(user_id, year) {
                 "WHERE person_id=? AND year = ?",
             values: [user_id, year]
         }
+        console.log(getWorkYearQuery)
         client
             .query(getWorkYearQuery.text, getWorkYearQuery.values)
             .then(res => {
-                if (res == undefined) {
-                    client.end();
-                    reject(new Error(dbError.errorCodes.NO_USER_ERROR.code));
-                }
+                console.log(res)
                 client.end()
                 resolve({
                     work_year: {
@@ -331,15 +329,11 @@ function getUserID(username) {
             text: "SELECT user_id FROM User WHERE kth_username= ?",
             values: [username]
         }
-        console.log(username)
         client
             .query(getUserQuery.text, getUserQuery.values)
             .then(res => {
-                if (res !== undefined) {
-                    console.log(res)
                     client.end()
                     resolve(res[0].user_id);
-                }
             })
             .catch(err => {
                 client.end()
