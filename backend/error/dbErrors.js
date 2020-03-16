@@ -95,7 +95,8 @@ errorCodes = {
     INVALID_SESSION: {
         code: 'INVALID_SESSION',
         message: 'The session is no longer valid'
-    NO_TIME_AVAILABLE_ERROR:{
+    },
+    NO_TIME_AVAILABLE_ERROR: {
         code: 'NO_TIME_AVAILABLE_ERROR',
         message: 'The teacher does not have enough time left in the budget'
     },
