@@ -205,12 +205,9 @@ async function authorizeUser(user_info, privilege_level) {
 module.exports = {
     registerUser,
     registerProject,
-    authenticateUser,
     getUser,
     updateUser,
     deleteUser,
-    deAuthenticateUser,
-    checkIfUsernameIsAvailable,
     getProject,
     updateProject,
     deleteProject,
