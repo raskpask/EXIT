@@ -41,10 +41,7 @@ function registerUser(user) {
         client
             .query(query)
             .then(res => {
-                if (notVaildResponse(res)) {
-                    client.end()
-                    reject(new Error(dbError.errorCodes.INSERTING_USER_ERROR.code))
-                } else if (res.rows[0].username == user.username) {
+                if (res.rows[0].username == user.username) {
                     const addExpertiseQuery = {
                         text: "INSERT INTO Expertise (user_id,expertise_id) VALUES (?,?)",
                         values: [user.user_id, NO_EXPERTISE_YET_ID]
@@ -131,10 +128,7 @@ function updateUser(user) {
         client
             .query(query)
             .then(res => {//., (err, res) => {
-                if (notVaildResponse(res)) {
-                    client.end()
-                    reject(new Error(dbError.errorCodes.INSERTING_USER_ERROR.code))
-                } else if (res.rows[0].username == user.username) {
+                if (res.rows[0].username == user.username) {
                     client.end()
                     resolve(200)
                 }
@@ -313,10 +307,6 @@ function getUsername(user_id) {
         client
             .query(getUserQuery.text, getUserQuery.values)
             .then(res => {//, (err, res) => {
-                if (notVaildResponse(res)) {
-                    client.end();
-                    reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
-                }
                 if (res !== undefined) {
                     //const rawUser = res.rows[0].person.split('(')[1].split(',');
                     client.end()
@@ -338,19 +328,15 @@ function getUserID(username) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const getUserQuery = {
-            text: "SELECT user_id FROM User WHERE kth_username=?",
+            text: "SELECT user_id FROM User WHERE kth_username= ?",
             values: [username]
         }
         console.log(username)
         client
             .query(getUserQuery.text, getUserQuery.values)
             .then(res => {
-                if (notVaildResponse(res)) {
-                    client.end();
-                    reject(new Error(dbError.errorCodes.GET_USER_ERROR.code));
-                }
-                if (res != undefined) {
-                    //const rawUser = res.rows[0].person.split('(')[1].split(',');
+                if (res !== undefined) {
+                    console.log(res)
                     client.end()
                     resolve(res[0].user_id);
                 }
