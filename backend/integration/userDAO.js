@@ -42,6 +42,11 @@ function registerUser(username, user_type_id) {
         client.query("BEGIN")
         client
             .query(query.text, query.values)
+            .then(res=>{
+                client.query("COMMIT")
+                client.end()
+                resolve()
+            })
             .catch(err => {
                 client.end()
                 if (err.code === '23505') {
@@ -53,6 +58,12 @@ function registerUser(username, user_type_id) {
                     }
                     client
                     .query(updateUser.text, updateUser.values)
+                    .then(res=>{
+                        client.query("COMMIT")
+                        client.end()
+                        resolve()
+                        console.log("ok")
+                    })
                     .catch(err => {
                         console.error(err)
                         reject(new Error(dbError.errorCodes.USER_ERROR.code))
@@ -63,10 +74,7 @@ function registerUser(username, user_type_id) {
                 reject(new Error(dbError.errorCodes.USER_ERROR.code))
                 client.query("ROLLBACK")
             });
-        console.log("ok")
-        client.query("COMMIT")
-        client.end()
-        resolve()
+
     });
 }
 /**
