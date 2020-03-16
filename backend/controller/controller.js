@@ -20,6 +20,7 @@ async function registerUser(req) {
         const username = requestHandler.extractUsername(req)
         return await userDAO.registerUser(username, changeToUserType)
     } else {
+        console.log("No access")
         new Error(dbError.errorCodes.NO_ACCESS_ERROR.code)
     }
 }
