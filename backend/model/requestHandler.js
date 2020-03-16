@@ -218,10 +218,10 @@ function extractYear(req){
 }
 function extractUsername(req){
     cookieHeader = req.headers.cookie;
-    console.log(cookieHeader)
-    if (cookieHeader === undefined) {
-        throw new Error(dbError.errorCodes.NO_TOKEN_ERROR.code)
-    }
+    // console.log(cookieHeader)
+    // if (cookieHeader === undefined) {
+    //     throw new Error(dbError.errorCodes.NO_TOKEN_ERROR.code)
+    // }
     return cookieHeader.split('username=')[1].split(';')[0];
 }
 module.exports = {
