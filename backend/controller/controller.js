@@ -15,12 +15,12 @@ const STUDENT_PRIVILEGE = 4
  */
 async function registerUser(req) {
     const user_role_id = await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
-    const username = requestHandler.extractUsername(req)
     const changeToUserType = requestHandler.extractUserTypeId(req)
     if (user_role_id < changeToUserType) {
+        const username = requestHandler.extractUsername(req)
         return await userDAO.registerUser(username, changeToUserType)
     } else {
-        return new Error(dbError.errorCodes.NO_ACCESS_ERROR.code)
+        new Error(dbError.errorCodes.NO_ACCESS_ERROR.code)
     }
 }
 /**
