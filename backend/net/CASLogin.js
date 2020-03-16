@@ -81,9 +81,9 @@ function router(router) {
     });
 
     // Assert endpoint for when login completes
-    router.post("/assert", async function (req, res) {
+    router.post("/assert", function (req, res) {
         var options = { request_body: req.body };
-        sp.post_assert(idp, options, function (err, saml_response) {
+        sp.post_assert(idp, options, async function (err, saml_response) {
             if (err != null) {
                 console.error(err)
                 return res.sendStatus(500);
