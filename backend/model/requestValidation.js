@@ -180,6 +180,9 @@ function isValidNumber(ID) {
     }
     return true;
 }
+function isNotUndefined(req){
+
+}
 
 
 module.exports = {
@@ -187,5 +190,6 @@ module.exports = {
     applyInput,
     validateProject,
     isValidNumber,
-    isValidType
+    isValidType,
+    isNotUndefined
 }
