@@ -12,7 +12,7 @@ function router(router) {
 
     router.post('/api/user', async (req, res) => {
         try {
-            await controller.registerUser(req);
+            console.log(await controller.registerUser(req))
             res.status();
         } catch (error) {
             dbErrors.respondError(error.message, res)
