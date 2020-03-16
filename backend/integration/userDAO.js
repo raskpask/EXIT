@@ -726,6 +726,7 @@ function updateExpertise(expertise_name, user_id) {
                 client
                     .query(updateExpertiseQuery.text, updateExpertiseQuery.values)
                     .then(res => {
+                        console.log(res)
                         resolve()
                     })
                     .catch(err=>{
