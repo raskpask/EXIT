@@ -966,13 +966,15 @@ function authorizeUser(session_id, kth_username, role_id) {
                 "WHERE kth_username = ? AND session_id = ?",
             values: [kth_username, session_id]
         }
-        console.log(getUserType)
         client
             .query(getUserType.text, getUserType.values)
             .then(res => {
-                console.log(res.length)
-                if (parseInt(res[0].user_type_id) <= role_id) {
-                    resolve()
+                if(res.length < 1) {
+                    reject(new Error(dbError.errorCodes.INVALID_SESSION.code))
+                }
+                const user_type_id = parseInt(res[0].user_type_id)
+                if (user_type_id <= role_id) {
+                    resolve(user_type_id)
                 } else {
                     reject(new Error(dbError.errorCodes.NO_ACCESS_ERROR.code))
                 }

@@ -92,9 +92,13 @@ errorCodes = {
         code: 'DELETE_ERROR',
         message: 'Probem with deleting'
     },
-    NO_TIME_AVAILABLE:{
+    NO_TIME_AVAILABLE: {
         code: 'NO_TIME_AVAILABLE',
         message: 'The teacher does not have enough time left in the budget'
+    },
+    INVALID_SESSION: {
+        code: 'INVALID_SESSION',
+        message: 'The session is no longer valid'
     }
 
 
@@ -200,7 +204,11 @@ function respondError(error, res) {
             res.status(400);
             res.send(errorCodes.DELETE_ERROR.code);
             break;
-            
+        case errorCodes.INVALID_SESSION.code:
+            res.status(401);
+            res.send(errorCodes.INVALID_SESSION.code);
+            break;
+
         default:
             res.status(500);
             res.send('Something went wrong on the server');

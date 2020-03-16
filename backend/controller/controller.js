@@ -14,8 +14,14 @@ const STUDENT_PRIVILEGE = 4
  * @returns Promise with 200
  */
 async function registerUser(req) {
-    await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
-    return await userDAO.registerUser(requestHandler.extractUsername(req),requestHandler.extractUserTypeId(req))
+    const user_role_id = await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
+    const username = requestHandler.extractUsername(req)
+    const changeToUserType = requestHandler.extractUserTypeId(req)
+    if (user_role_id < changeToUserType) {
+        return await userDAO.registerUser(username, changeToUserType)
+    } else {
+        return new Error(dbError.errorCodes.NO_ACCESS_ERROR.code)
+    }
 }
 /**
  * 
@@ -153,7 +159,7 @@ async function postExpertise(req) {
 async function updateExpertise(req) {
     await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     const user_id = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req));
-    return await userDAO.updateExpertise(requestHandler.extractExpertiseName(req),user_id)
+    return await userDAO.updateExpertise(requestHandler.extractExpertiseName(req), user_id)
 }
 async function deleteExpertise(req) {
     await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
@@ -190,9 +196,9 @@ async function updateUser(req) {
 async function getProfile(req) {
     await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     const userId = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req));
-    const workYear = await userDAO.getWorkYear(userId,requestHandler.extractYear(req))
+    const workYear = await userDAO.getWorkYear(userId, requestHandler.extractYear(req))
     const expertise = await userDAO.getExpertise(userId);
-    return {workYear,expertise}
+    return { workYear, expertise }
 }
 async function login(session_id, first_name, last_name, kth_username, role) {
     return await userDAO.login(session_id, first_name, last_name, kth_username, role);
