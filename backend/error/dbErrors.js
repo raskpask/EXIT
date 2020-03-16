@@ -80,6 +80,35 @@ errorCodes = {
         code: 'APPLICATION_EDITED_ERROR',
         message: 'The application was updated after the user checked the status'
     },
+    BAD_REQUEST_ERROR: {
+        code: 'BAD_REQUEST_ERROR',
+        message: 'There are errors in the sent data'
+    },
+    DUPLICATE_BUDGET_YEAR_ERROR: {
+        code: 'DUPLICATE_BUDGET_YEAR_ERROR',
+        message: 'This budget year already exists'
+    },
+    DELETE_ERROR: {
+        code: 'DELETE_ERROR',
+        message: 'Probem with deleting'
+    },
+    INVALID_SESSION: {
+        code: 'INVALID_SESSION',
+        message: 'The session is no longer valid'
+    },
+    NO_TIME_AVAILABLE_ERROR: {
+        code: 'NO_TIME_AVAILABLE_ERROR',
+        message: 'The teacher does not have enough time left in the budget'
+    },
+    NO_CREDITS_ERROR:{
+        code: 'NO_CREDITS_ERROR',
+        message: 'Credits missing from project'
+    },
+    CREATE_PROJECT_ERROR:{
+        code: 'CREATE_PROJECT_ERROR',
+        message: 'There was an error whlie creating the project'
+    }
+
 
 }
 /**
@@ -91,17 +120,37 @@ errorCodes = {
 function respondError(error, res) {
     console.error(error)
     switch (error) {
+        case errorCodes.BAD_REQUEST_ERROR.code:
+            res.status(403);
+            res.send(errorCodes.BAD_REQUEST_ERROR.code);
+            break;
+        case errorCodes.CREATE_PROJECT_ERROR.code:
+            res.status(500);
+            res.send(errorCodes.CREATE_PROJECT_ERROR.code);
+            break;
+        case errorCodes.NO_CREDITS_ERROR.code:
+            res.status(403);
+            res.send(errorCodes.NO_CREDITS_ERROR.code);
+            break;
+        case errorCodes.DUPLICATE_BUDGET_YEAR_ERROR.code:
+            res.status(400);
+            res.send(errorCodes.DUPLICATE_BUDGET_YEAR_ERROR.code);
+            break;
+        case errorCodes.NO_TIME_AVAILABLE_ERROR.code:
+            res.status(403);
+            res.send(errorCodes.NO_TIME_AVAILABLE_ERROR.code);
+            break;
         case errorCodes.CONNECTION_ERROR.code:
             res.status(503);
-            res.send(CONNECTION_ERROR.code);
+            res.send(errorCodes.CONNECTION_ERROR.code);
             break;
         case errorCodes.INSERTING_USER_ERROR.code:
             res.status(503);
-            res.send(INSERTING_USER_ERROR.code);
+            res.send(errorCodes.INSERTING_USER_ERROR.code);
             break;
         case errorCodes.UNKNOWN_ERROR.code:
             res.status(500);
-            res.send(UNKNOWN_ERROR.code);
+            res.send(errorCodes.UNKNOWN_ERROR.code);
             break;
         case errorCodes.USER_ERROR.code:
             res.status(503);
@@ -167,7 +216,15 @@ function respondError(error, res) {
             res.status(400);
             res.send(errorCodes.CREATE_APPLICATION_ERROR.code);
             break;
-            
+        case errorCodes.DELETE_ERROR.code:
+            res.status(400);
+            res.send(errorCodes.DELETE_ERROR.code);
+            break;
+        case errorCodes.INVALID_SESSION.code:
+            res.status(401);
+            res.send(errorCodes.INVALID_SESSION.code);
+            break;
+
         default:
             res.status(500);
             res.send('Something went wrong on the server');

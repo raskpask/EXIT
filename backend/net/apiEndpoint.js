@@ -1,6 +1,7 @@
 const controller = require('../controller/controller');
 const dbErrors = require('../error/dbErrors');
 
+
 /**
  * Routes all api requests. 
  * All client requests will be send here and and the right functions here will send a request to the controller.
@@ -8,122 +9,194 @@ const dbErrors = require('../error/dbErrors');
  * @param {App} router - The express application.
  */
 function router(router) {
+
     router.post('/api/user', async (req, res) => {
         try {
-            const statusCode = await controller.registerUser(req);
-            res.status(statusCode);
+            await controller.registerUser(req)
+            res.send();
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }
-        res.send();
     });
 
     router.put('/api/user', async (req, res) => {
         try {
-            const statusCode = await controller.updateUser(req);
-            res.status(statusCode);
+            await controller.updateUser(req);
+            res.send();
         } catch (error) {
             dbErrors.respondError(error.message, res)
             console.error(error.message);
         }
-        res.send();
     });
 
     router.get('/api/user', async (req, res) => {
         try {
-            const user = await controller.getUser(req);
-            res.cookie('privilegeLevel', user.privilegeLevel, { expires: new Date(Date.now() + 1800000) });
-            res.cookie('authToken', controller.getToken(req), { expires: new Date(Date.now() + 1800000) });
-            res.send(JSON.stringify({ user: user }));
+            res.send(await controller.getUser(req));
         } catch (error) {
             dbErrors.respondError(error.message, res)
             console.error(error)
         }
     });
-
-    router.get('/api/username', async (req, res) => {
+    router.delete('/api/user', async (req, res) => {
         try {
-            res.send(await controller.checkIfUsernameIsAvailable(req));
-        } catch (e) {
-            dbErrors.respondError(e.message, res)
-            console.error(e);
-            res.sendStatus(500);
-        }
-    });
-
-
-    router.post('/api/authentication', async (req, res) => {
-        try {
-            const user = await controller.authenticateUser(req);
-            const lang = await controller.extractLangCookie(req);
-            res.cookie('lang',lang);
-            res.cookie('authToken', user.token, { expires: new Date(Date.now() + 1800000) });
-            res.cookie('privilegeLevel', user.privilegeLevel, { expires: new Date(Date.now() + 1800000) });
+            // const statusCode = await controller.registerUser(req);
+            res.status(500);
         } catch (error) {
             dbErrors.respondError(error.message, res)
-            console.error(error);
-            res.status(401);
         }
-        res.send()
+        res.send();
     });
-
-    router.delete('/api/authentication', async (req, res) => {
+    
+    router.get('/api/project', async (req, res) => {
         try {
-            await controller.deAuthenticateUser(req);
-            res.clearCookie('authToken');
-            res.clearCookie('privilegeLevel')
+            const project = await controller.getProject(req);
+            // res.status(statusCode);
+            res.send(project);
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+        //res.send();
+    });
+    router.post('/api/project', async (req, res) => {
+        try {
+            const statusCode = await controller.registerProject(req);
+            //res.status(statusCode);
             res.send();
         } catch (error) {
             dbErrors.respondError(error.message, res)
+        }
+        
+    });
+    router.put('/api/project', async (req, res) => {
+        try {
+            await controller.updateProject(req);
+            res.send()
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+    });
+    router.delete('/api/project', async (req, res) => {
+        try {
+            const project = await controller.deleteProject(req);
+            // res.status(statusCode);
+            res.send(project);
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+        //res.send();
+    });
+    router.get('/api/workYear', async (req, res) => {
+        try {
+            res.send(await controller.getWorkYear(req))
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+        res.send();
+    });
+    router.post('/api/workYear', async (req, res) => {
+        try {
+            res.send(await controller.postWorkYear(req))
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+        res.send();
+    });
+    router.put('/api/workYear', async (req, res) => {
+        try {
+            res.send(await controller.updateWorkYear(req))
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+        res.send();
+    });
+    router.get('/api/availableExaminers', async (req, res) => {
+        try {
+            res.send(await controller.getAvailableExaminers(req))
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+        res.send();
+    });
+    router.get('/api/availableSupervisors', async (req, res) => {
+        try {
+            res.send(await controller.getAvailableSupervisors(req))
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+        res.send();
+    });
+    router.get('/api/expertise', async (req, res) => {
+        try {
+            res.send(await controller.getExpertise(req))
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+    });
+    router.post('/api/expertise', async (req, res) => {
+        try {
+            await controller.postExpertise(req)
+            res.send()
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+    });
+    router.put('/api/expertise', async (req, res) => {
+        try {
+            await controller.updateExpertise(req)
+            res.send()
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+    });
+    router.delete('/api/expertise', async (req, res) => {
+        try {
+            await controller.deleteExpertise(req)
+            res.send()
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+    });
+    router.get('/api/budgetYear', async (req, res) => {
+        try {
+            res.send(await controller.getBudgetYear(req))
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+    });
+    router.post('/api/budgetYear', async (req, res) => {
+        try {
+            await controller.postBudgetYear(req)
+            res.send()
+        } catch (error) {
             console.error(error)
-            res.status(401);
-        }
-    })
-
-    router.get('/api/application', async (req, res) => {
-        try {
-            const application = await controller.getApplication(req);
-            if (application == "no access") {
-                res.sendStatus(401)
-            } else {
-                res.send(JSON.stringify(application));
-            }
-        } catch (error) {
-            dbErrors.respondError(error.message, res)
-            console.error(error);
+            dbErrors.respondError(error.message,res)
         }
     });
-
-    router.post('/api/application', async (req, res) => {
+    router.put('/api/budgetYear', async (req, res) => {
         try {
-            const application = await controller.createApplication(req);
-            res.send("Application was created");
+            await controller.updateBudgetYear(req)
+            res.send()
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }
     });
-
-    router.put('/api/application', async (req, res) => {
+    router.delete('/api/budgetYear', async (req, res) => {
         try {
-            const application = await controller.updateApplicationStatus(req);
-            if (application === 200) {
-                res.send()
-            }
+            await controller.deleteBudgetYear(req)
+            res.send()
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+    });
+    router.get('/api/profile', async (req, res) => {
+        try {
+            res.send(await controller.getProfile(req))
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }
     });
 
-    router.get('/api/competence', async (req, res) => {
-        try {
-            res.send(JSON.stringify(await controller.getCompetence(req)));
-        } catch (error) {
-            dbErrors.respondError(error.message, res)
-            console.error(error)
-        }
-    })
 }
-
 module.exports = {
     router,
 }

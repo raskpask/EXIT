@@ -49,7 +49,8 @@ function getLanguage() {
             profile: "Min profil",
             swe: "SWE",
             eng: "ENG",
-            loginError: "Fel lösenord/användarnamn"
+            loginError: "Fel lösenord/användarnamn",
+            kth: "KTH EECS Electrum EXIT"
 
         },
         validationError: {

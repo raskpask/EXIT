@@ -1,29 +1,17 @@
 import React, { Component } from 'react';
 
-import '../resources/css/register.css';
+import '../resources/css/home.css';
 
 class Home extends Component {
 
-    renderHome() {
-        return (
-            <div>
-                <p>{this.props.info.home.message}</p>
-                <p>{this.props.info.home.tel}</p>
-                <p>{this.props.info.home.mail}</p>
-            </div>
-        )
-    }
-    loggedIn(){
-        if (document.cookie.split('authToken=')[1] === undefined) {
-            return false
-        }
-        return true
-    }
     render() {
         return (
-            <div>
-                {this.loggedIn() ? " ": this.renderHome()}
-            </div >
+            <div className="container">
+            <h1>{this.props.info.home.title}</h1>
+            <p>{this.props.info.home.paragraph0}</p>
+            <p>{this.props.info.home.paragraph1}</p>
+            <p>{this.props.info.home.paragraph2}</p>
+        </div>
         );
     };
 }
