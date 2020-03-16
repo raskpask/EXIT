@@ -89,7 +89,7 @@ function getUser(user_id, user_type_id) {
         let getUserQuery;
         if (user_type_id) {
             getUserQuery = {
-                text: "SELECT * " +
+                text: "SELECT user_type_id,email,first_name,last_name,kth_username,phone_number,user_id " +
                     "FROM User WHERE user_type_id = ?",
                 values: [parseInt(user_type_id)]
             }
@@ -940,9 +940,9 @@ function login(session_id, first_name, last_name, kth_username, role) {
         const email = kth_username + '@kth.se'
         let updateUser = {
             text: "UPDATE User " +
-                "SET user_type_id = ?, email = ?, first_name = ?, last_name = ?,kth_username = ?,session_id = ? " +
+                "SET email = ?, first_name = ?, last_name = ?,kth_username = ?,session_id = ? " +
                 "WHERE user_id = (SELECT user_id FROM User WHERE kth_username = ?)",
-            values: [role, email, first_name, last_name, kth_username, session_id, kth_username]
+            values: [email, first_name, last_name, kth_username, session_id, kth_username]
         }
         client
             .query(updateUser.text, updateUser.values)

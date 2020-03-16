@@ -12,8 +12,8 @@ function router(router) {
 
     router.post('/api/user', async (req, res) => {
         try {
-            res.send(await controller.registerUser(req))
-            // res.status();
+            await controller.registerUser(req)
+            res.send();
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }
@@ -22,7 +22,7 @@ function router(router) {
     router.put('/api/user', async (req, res) => {
         try {
             await controller.updateUser(req);
-            res.status();
+            res.send();
         } catch (error) {
             dbErrors.respondError(error.message, res)
             console.error(error.message);
