@@ -49,6 +49,7 @@ function registerUser(username, user_type_id) {
             })
             .catch(err => {
                 client.end()
+                console.log(err.code)
                 if (err.code === '23505') {
                     reject(new Error(dbError.errorCodes.DUPLICATE_USER_ERROR.code))
                 } else if (err.code === 'ER_DUP_ENTRY') {
