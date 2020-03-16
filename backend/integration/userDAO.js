@@ -24,6 +24,8 @@ ROLE_STUDENT = 3;
 NO_EXPERTISE_YET_ID = 5;
 CREDITS_BACHELOR = 15;
 CREDITS_MASTER = 30;
+
+
 /**
  * Regisers a user to the DB.
  *
@@ -330,8 +332,8 @@ function getUserID(username) {
         client
             .query(getUserQuery.text, getUserQuery.values)
             .then(res => {
-                    client.end()
-                    resolve(res[0].user_id);
+                client.end()
+                resolve(res[0].user_id);
             })
             .catch(err => {
                 client.end()
@@ -700,21 +702,40 @@ function postExpertise(expertise_name) {
 function updateExpertise(expertise_name, user_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
-        let updateExpertise = {
-            text: "UPDATE Area_of_expertise " +
-                "SET expertise_name = ? " +
-                "WHERE expertise_id = (SELECT expertise_id FROM Expertise WHERE user_id = ?) ",
-            values: [expertise_name, user_id]
+        const checkExpertiseQuery = {
+            text: "SELECT expertise_id FROM Expertise WHERE user_id = ?",
+            values: [user_id]
         }
         client
-            .query(updateExpertise.text, updateExpertise.values)
+            .query(checkExpertiseQuery.text, checkExpertiseQuery.values)
             .then(res => {
-                //if (res.affectedRows == 1) {
-                resolve()
-                //}
+                let updateExpertiseQuery
+                if (res[0].expertise_id === NO_EXPERTISE_YET_ID) {
+                    updateExpertiseQuery = {
+                        text: "INSERT INTO Area_of_expertise (expertise_name) VALUES (?)",
+                        values: [expertise_name]
+                    }
+                } else {
+                    updateExpertiseQuery = {
+                        text: "UPDATE Area_of_expertise " +
+                            "SET expertise_name = ? " +
+                            "WHERE expertise_id = (SELECT expertise_id FROM Expertise WHERE user_id = ?) ",
+                        values: [expertise_name, user_id]
+                    }
+                }
+                client
+                    .query(updateExpertiseQuery.text, updateExpertiseQuery.values)
+                    .then(res => {
+                        resolve()
+                    })
+                    .catch(err=>{
+                        console.error(err)
+                        reject(new Error(dbError.errorCodes.UPDATE_USER_ERROR.code))
+                    })
             })
             .catch(err => {
                 console.error(err)
+                reject(new Error(dbError.errorCodes.UPDATE_USER_ERROR.code))
             })
         client.end()
     })
@@ -933,7 +954,7 @@ function authorizeUser(session_id, kth_username, role_id) {
                 }
             })
             .catch(err => {
-                console.error(err)  
+                console.error(err)
             })
         client.end()
     })
