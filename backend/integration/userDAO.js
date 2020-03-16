@@ -39,9 +39,8 @@ function registerUser(username,user_type_id) {
             text: "INSERT INTO User (user_type_id,email,kth_username) VALUES(?,?,?)",
             values: [user_type_id, username+'@kth.se', username]
         }
-        
         client
-            .query(query)
+            .query(query.text,query.values)
             .then(res => {
                resolve()
             })
