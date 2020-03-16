@@ -382,7 +382,7 @@ function registerProject(project_details) {
         try {
             client = await pool.getConnection()
             const examiner_id = 1
-            let company_id;
+            let company_id = null;
             let project_id;
             await client.query("BEGIN");
             if (project_details.company_name) {
@@ -397,7 +397,7 @@ function registerProject(project_details) {
                         company_id = res[0].insertId;
                     })
                     .catch(err => {
-                        client.query("ROLLBACK"); reject(err);
+                        client.query("ROLLBACK");
                         console.error(err);
                         reject(err);
                     });
@@ -440,8 +440,6 @@ function registerProject(project_details) {
                     reject(err);
                     throw(err);
                 })
-
-
             
             let addStudentQuery = "";
             let addStudentToProjectQuery = "";
@@ -465,22 +463,54 @@ function registerProject(project_details) {
                             .query(addStudentToProjectQuery.text, addStudentToProjectQuery.values)
                             .catch(err => {
                                 console.error(err)
-                                client.query("ROLLBACK"); 
+                                //client.query("ROLLBACK"); 
                                 // reject(err);
                                 //throw(err);
-                                resolve(500)
+                               reject( new Error(dbError.errorCodes.CREATE_PROJECT_ERROR.code));
                             })
                     })
                     .catch(err => {
                         console.error(err)
-                        client.query("ROLLBACK"); 
+                        //client.query("ROLLBACK"); 
                         // reject(err); 
                          //throw(err);
-                         resolve(500)
+                        //reject(new Error(dbError.errorCodes.CREATE_PROJECT_ERROR.code))
+                        throw new Error(dbError.errorCodes.CREATE_PROJECT_ERROR.code);
                     })
             })
+            let projectType = "";
+            if(project_details.credits==15){
+                projectType = "bachelor_hours_";
+            }else if(project_details.credits == 30){
+                projectType = "master_hours_";
+            }else{
+                reject(new error(dbError.errorCodes.NO_CREDITS_ERROR.code));
+            }
 
+            if(project_details.supervisor_id){
+                projectTypeSupervisor = projectType + "supervisor";
+                let updateSupervisorWork = {
+                    text: "UPDATE Work_year "+
+                    "SET available_hours_supervisor = available_hours_supervisor - "+
+                    "(SELECT "+ projectTypeSupervisor +" * factor_"+project_details.number_of_students + 
+                    " FROM Budget_year WHERE Budget_year.year = Work_year.year) WHERE Work_year.person_id = ?",
+                    values: [project_details.supervisor_id]
+                }
+                client.query(updateSupervisorWork.text,updateSupervisorWork.values)
+                .then(res =>{
 
+                })
+                .catch(err =>{
+
+                    console.error(err)
+                    client.query("ROLLBACK");
+                    if(err.errno == 1264){
+                        client.release();
+                        reject(new Error(dbError.errorCodes.NO_TIME_AVAILABLE_ERROR.code));
+                    }
+                    reject(500);
+            })
+            }
             projectTypeExaminer = projectType + "examiner";
             let updateExaminerWork = {
                 text: "UPDATE Work_year "+
@@ -489,7 +519,7 @@ function registerProject(project_details) {
                 " FROM Budget_year WHERE Budget_year.year = Work_year.year) WHERE Work_year.person_id = ?",
                 values: [examiner_id]
             }
-            client.query(updateExaminerWork.text,updateExaminerWork.values)
+            await client.query(updateExaminerWork.text,updateExaminerWork.values)
             .then(res =>{
                 client.query("COMMIT");
                 resolve(200);
@@ -497,12 +527,13 @@ function registerProject(project_details) {
             .catch(err =>{
 
                 console.error(err)
-                client.query("ROLLBACK");
+                //client.query("ROLLBACK");
                 if(err.errno == 1264){
                     client.release();
-                    reject(new Error(dbError.errorCodes.NO_TIME_AVAILABLE.code));
+                    //reject(
+                        throw new Error(dbError.errorCodes.NO_TIME_AVAILABLE_ERROR.code);//);
                 }
-                reject(500);
+                //reject(500);
             })
 
             // addSupervisorToProjectQuery = {

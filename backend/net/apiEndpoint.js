@@ -72,10 +72,11 @@ function router(router) {
         try {
             const statusCode = await controller.registerProject(req);
             //res.status(statusCode);
+            res.send();
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }
-        res.send();
+        
     });
     router.put('/api/project', async (req, res) => {
         try {
