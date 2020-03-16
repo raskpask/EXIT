@@ -171,7 +171,8 @@ async function postExpertise(req) {
 }
 async function updateExpertise(req) {
     // console.log(req.body)
-    return await userDAO.updateExpertise(requestHandler.extractExpertiseName(req), requestHandler.extractExpertiseID(req))
+    const user_id = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req));
+    return await userDAO.updateExpertise(requestHandler.extractExpertiseName(req),24)
 }
 async function deleteExpertise(req) {
     return await userDAO.deleteExpertise(requestHandler.extractExpertiseID(req))

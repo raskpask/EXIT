@@ -697,14 +697,14 @@ function postExpertise(expertise_name) {
         client.end()
     })
 }
-function updateExpertise(expertise_name, expertise_id) {
+function updateExpertise(expertise_name, user_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
         let updateExpertise = {
             text: "UPDATE Area_of_expertise " +
                 "SET expertise_name = ? " +
-                "WHERE expertise_id = ? ",
-            values: [expertise_name, expertise_id]
+                "WHERE expertise_id = (SELECT expertise_id FROM Expertise WHERE user_id = ?) ",
+            values: [expertise_name, user_id]
         }
         client
             .query(updateExpertise.text, updateExpertise.values)

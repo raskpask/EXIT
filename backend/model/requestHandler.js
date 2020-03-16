@@ -195,7 +195,7 @@ function extractExpertiseID(req) {
     return req.body.expertiseID;
 }
 function extractExpertiseName(req) {
-    return req.body.expertiseName;
+    return req.body.expertise;
 }
 function extractBudgetYear(req) {
     const budgetYear = req.body;
