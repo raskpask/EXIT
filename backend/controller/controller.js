@@ -202,8 +202,9 @@ async function updateUser(req) {
 async function getProfile(req) {
     const userId = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req));
     const workYear = await userDAO.getWorkYear(userId,requestHandler.extractYear(req))
-    const expertise = await userDAO.getExpertise(userId);
-    return {workYear: workYear, expertise: expertise}
+    // const expertise = await userDAO.getExpertise(userId);
+    const expertise = await userDAO.getExpertise(24);
+    return {workYear,expertise}
 }
 async function login(session_id, first_name, last_name, kth_username, role) {
     return await userDAO.login(session_id, first_name, last_name, kth_username, role);

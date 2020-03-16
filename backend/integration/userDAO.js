@@ -181,11 +181,9 @@ function getWorkYear(user_id, year) {
                 "WHERE person_id=? AND year = ?",
             values: [user_id, year]
         }
-        console.log(getWorkYearQuery)
         client
             .query(getWorkYearQuery.text, getWorkYearQuery.values)
             .then(res => {
-                console.log(res)
                 client.end()
                 resolve({
                     work_year: {
