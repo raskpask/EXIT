@@ -57,11 +57,13 @@ function registerUser(username, user_type_id) {
                         .catch(err => {
                             console.error(err)
                             reject(new Error(dbError.errorCodes.USER_ERROR.code))
+                            client.query("ROLLBACK")
                         })
                 }
                 reject(new Error(dbError.errorCodes.USER_ERROR.code))
+                client.query("ROLLBACK")
             });
-
+        console.log("ok")
         client.query("COMMIT")
         client.end()
         resolve()
