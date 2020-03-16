@@ -170,8 +170,8 @@ async function postExpertise(req) {
     return await userDAO.postExpertise(requestHandler.extractExpertiseName(req))
 }
 async function updateExpertise(req) {
-    // const user_id = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req));
-    return await userDAO.updateExpertise(requestHandler.extractExpertiseName(req),24)
+    const user_id = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req));
+    return await userDAO.updateExpertise(requestHandler.extractExpertiseName(req),user_id)
 }
 async function deleteExpertise(req) {
     return await userDAO.deleteExpertise(requestHandler.extractExpertiseID(req))
@@ -200,11 +200,11 @@ async function updateUser(req) {
     return await userDAO.updateUser(requestHandler.extractUser(req));
 }
 async function getProfile(req) {
-    // const userId = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req));
-    // const workYear = await userDAO.getWorkYear(userId,requestHandler.extractYear(req))
-    // const expertise = await userDAO.getExpertise(userId);
-    const workYear = await userDAO.getWorkYear(24,requestHandler.extractYear(req))
-    const expertise = await userDAO.getExpertise(24);
+    const userId = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req));
+    const workYear = await userDAO.getWorkYear(userId,requestHandler.extractYear(req))
+    const expertise = await userDAO.getExpertise(userId);
+    // const workYear = await userDAO.getWorkYear(24,requestHandler.extractYear(req))
+    // const expertise = await userDAO.getExpertise(24);
     return {workYear,expertise}
 }
 async function login(session_id, first_name, last_name, kth_username, role) {
