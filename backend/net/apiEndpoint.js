@@ -12,8 +12,8 @@ function router(router) {
 
     router.post('/api/user', async (req, res) => {
         try {
-            const statusCode = await controller.registerUser(req);
-            res.status(statusCode);
+            await controller.registerUser(req);
+            res.status();
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }
@@ -22,8 +22,8 @@ function router(router) {
 
     router.put('/api/user', async (req, res) => {
         try {
-            const statusCode = await controller.updateUser(req);
-            res.status(statusCode);
+            await controller.updateUser(req);
+            res.status();
         } catch (error) {
             dbErrors.respondError(error.message, res)
             console.error(error.message);
