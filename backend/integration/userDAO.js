@@ -39,21 +39,32 @@ function registerUser(username, user_type_id) {
             text: "INSERT INTO User (user_type_id,email,kth_username) VALUES(?,?,?)",
             values: [user_type_id, username + '@kth.se', username]
         }
+        client.query("BEGIN")
         client
             .query(query.text, query.values)
-            .then(res => {
-                console.log(res)
-                client.end()
-                resolve()
-            })
             .catch(err => {
                 client.end()
                 console.error(err)
                 if (err.code === '23505') {
                     reject(new Error(dbError.errorCodes.DUPLICATE_USER_ERROR.code))
+                } else if (err.code === 'ER_DUP_ENTRY') {
+                    const updateUser = {
+                        text: "UPDATE User SET user_type_id = ? WHERE kth_username = ?",
+                        values: [user_type_id, username]
+                    }
+                    client
+                        .query(updateUser.text, updateUser.values)
+                        .catch(err => {
+                            console.error(err)
+                            reject(new Error(dbError.errorCodes.USER_ERROR.code))
+                        })
                 }
                 reject(new Error(dbError.errorCodes.USER_ERROR.code))
             });
+
+        client.query("COMMIT")
+        client.end()
+        resolve()
     });
 }
 /**
