@@ -22,14 +22,14 @@ async function registerUser(req) {
  * @param {String} req 
  */
 async function registerProject(req) {
-    try{
+    try {
         const projectDetails = requestHandler.extractRegisterProjectDetails(req);
         return await userDAO.registerProject(projectDetails);
-    }catch (error) {
+    } catch (error) {
         console.log(error + " IN THE CONTROLLER");
         throw error
     }
-    
+
 }
 /**
  * Authenticate a user. Checks if the client used the right credentials and generate a cookie to set it to the user.
@@ -62,7 +62,7 @@ async function deAuthenticateUser(req) {
  */
 async function getUser(req) {
     try {
-        return await userDAO.getUser(requestHandler.extractUserID(req),requestHandler.extractUserType(req));
+        return await userDAO.getUser(requestHandler.extractUserID(req), requestHandler.extractUserType(req));
     }
     catch (error) {
         throw error
@@ -76,8 +76,8 @@ async function getUser(req) {
  */
 async function getProject(req) {
     try {
-        await authorizeUser(requestHandler.extractUserDataFromCookie(req),EXAMINER_PRIVILEGE)
-        return await userDAO.getProject(1,2020);//requestHandler.extractProjectID(req));
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
+        return await userDAO.getProject(1, 2020);//requestHandler.extractProjectID(req));
     }
     catch (error) {
         throw error
@@ -85,7 +85,7 @@ async function getProject(req) {
 }
 async function updateProject(req) {
     try {
-        return await userDAO.updateProject(req.body.supervisor_id,req.body.project_id);
+        return await userDAO.updateProject(req.body.supervisor_id, req.body.project_id);
     }
     catch (error) {
         throw error
@@ -104,7 +104,7 @@ async function deleteProject(req) {
 
 async function getWorkYear(req) {
     try {
-        return await userDAO.getWorkYear(req.body.user_id,req.body.year);
+        return await userDAO.getWorkYear(req.body.user_id, req.body.year);
     }
     catch (error) {
         throw error
@@ -112,7 +112,7 @@ async function getWorkYear(req) {
 }
 async function postWorkYear(req) {
     try {
-        return await userDAO.postWorkYear(req.body.budgetYear,requestHandler.extractWorkYear(req));
+        return await userDAO.postWorkYear(req.body.budgetYear, requestHandler.extractWorkYear(req));
     }
     catch (error) {
         throw error
@@ -120,7 +120,7 @@ async function postWorkYear(req) {
 }
 async function updateWorkYear(req) {
     try {
-        return await userDAO.updateWorkYear(req.body.year,requestHandler.extractWorkYear(req));
+        return await userDAO.updateWorkYear(req.body.year, requestHandler.extractWorkYear(req));
     }
     catch (error) {
         throw error
@@ -163,48 +163,55 @@ async function updateUser(req) {
     return await userDAO.updateUser(updateUser, requestHandler.extractToken(req));
 }
 
-async function getExpertise(req){
+async function getExpertise(req) {
     return await userDAO.getExpertise(requestHandler.extractUserID(req))
 }
-async function postExpertise(req){
+async function postExpertise(req) {
     return await userDAO.postExpertise(requestHandler.extractExpertiseName(req))
 }
-async function updateExpertise(req){
+async function updateExpertise(req) {
     // console.log(req.body)
-    return await userDAO.updateExpertise(requestHandler.extractExpertiseName(req),requestHandler.extractExpertiseID(req))
+    return await userDAO.updateExpertise(requestHandler.extractExpertiseName(req), requestHandler.extractExpertiseID(req))
 }
-async function deleteExpertise(req){
+async function deleteExpertise(req) {
     return await userDAO.deleteExpertise(requestHandler.extractExpertiseID(req))
 }
-async function getBudgetYear(req){
+async function getBudgetYear(req) {
     return await userDAO.getBudgetYear()
 }
-async function postBudgetYear(req){
-    try{
-    return await userDAO.postBudgetYear(requestHandler.extractBudgetYear(req))
-    }catch(error){
+async function postBudgetYear(req) {
+    try {
+        return await userDAO.postBudgetYear(requestHandler.extractBudgetYear(req))
+    } catch (error) {
         throw error;
     }
 }
-async function updateBudgetYear(req){
+async function updateBudgetYear(req) {
     return await userDAO.updateBudgetYear(requestHandler.extractBudgetYear(req))
 }
-async function deleteBudgetYear(req){
+async function deleteBudgetYear(req) {
     return await userDAO.deleteBudgetYear(requestHandler.extractBudgetYear(req))
 }
 
-async function deleteUser(req){
+async function deleteUser(req) {
     return await userDAO.deleteUser(requestHandler.extractUserID(req));
 }
-async function updateUser(req){
+async function updateUser(req) {
     return await userDAO.updateUser(requestHandler.extractUser(req));
 }
-async function login(session_id, first_name, last_name, kth_username, role){
+async function getProfile(req) {
+    const userId = await userDAO.getUserID(requestHandler.extractUsername(req));
+    const workYear = await userDAO.getWorkYear(userId,requestHandler.extractYear(req))
+    const expertise = await userDAO.getExpertise(userId);
+    return {workYear: workYear, expertise: expertise}
+}
+async function login(session_id, first_name, last_name, kth_username, role) {
     return await userDAO.login(session_id, first_name, last_name, kth_username, role);
 }
-async function authorizeUser(user_info,privilege_level){
+async function authorizeUser(user_info, privilege_level) {
     return await userDAO.authorizeUser(user_info.session_id, user_info.kth_username, privilege_level);
 }
+
 
 module.exports = {
     registerUser,
@@ -231,5 +238,6 @@ module.exports = {
     updateWorkYear,
     getAvailableExaminers,
     getAvailableSupervisors,
-    login
+    login,
+    getProfile
 }

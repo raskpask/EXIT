@@ -213,8 +213,20 @@ function extractBudgetYear(req) {
     const factor_5 = budgetYear.factor5
     return new BudgetYear(year, bachelor_hours_examiner, bachelor_hours_supervisor, master_hours_examiner, master_hours_supervisor, total_tutoring_hours, factor_1, factor_2, factor_3, factor_4, factor_5);
 }
+function extractYear(req){
+    return req.body.year
+}
+function extractUsername(req){
+    cookieHeader = req.headers.cookie;
+    if (cookieHeader === undefined) {
+        throw new Error(dbError.errorCodes.NO_TOKEN_ERROR.code)
+    }
+    return cookieHeader.split('username=')[1].split(';')[0];
+}
 module.exports = {
     extractProjectID,
+    extractYear,
+    extractUsername,
     extractUserID,
     extractUserDataFromCookie,
     extractUser,

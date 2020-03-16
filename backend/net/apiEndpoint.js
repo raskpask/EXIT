@@ -189,6 +189,13 @@ function router(router) {
             dbErrors.respondError(error.message, res)
         }
     });
+    router.get('/api/profile', async (req, res) => {
+        try {
+            res.send(await controller.getProfile(req))
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+    });
 
 }
 module.exports = {
