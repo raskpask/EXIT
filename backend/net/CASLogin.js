@@ -105,9 +105,9 @@ function router(router) {
             const last_name = nameAndUsername[1]
             const username = nameAndUsername[2].split('(')[1].split(')')[0]
             const role = getRole(attributes.split('"urn:oid:1.3.6.1.4.1.5923.1.1.1.1":["')[1].split('"')[0])
-            res.cookie('role_id', role)
             res.cookie('username', username)
-            controller.login(session_id, first_name, last_name, username, role)
+            const role_id = controller.login(session_id, first_name, last_name, username, role)
+            res.cookie('role_id', role_id)
             res.redirect('/')
         });
     });

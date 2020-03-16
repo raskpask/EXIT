@@ -961,7 +961,20 @@ function login(session_id, first_name, last_name, kth_username, role) {
             .query(updateUser.text, updateUser.values)
             .then(res => {
                 if (res.affectedRows === 1) {
-                    resolve()
+                    const getRoleId = {
+                        text: "SELECT user_type_id FROM User WHERE kth_username = ?",
+                        values: [kth_username]
+                    }
+                    client
+                    .query(getRoleId.text, getRoleId.values)
+                    .then(res=>{
+                        resolve(res[0].user_type_id)
+                        reject(new Error(dbError.errorCodes.USER_ERROR.code))
+                    })
+                    .catch(err=>{
+                        console.error(err)
+                        reject(new Error(dbError.errorCodes.LOGIN_ERROR.code))
+                    })
                 }
             })
             .catch(err => {
