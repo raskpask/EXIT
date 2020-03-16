@@ -61,8 +61,8 @@ function registerUser(username, user_type_id) {
                     .then(res=>{
                         client.query("COMMIT")
                         client.end()
-                        resolve()
                         console.log("ok")
+                        return resolve()
                     })
                     .catch(err => {
                         console.error(err)
