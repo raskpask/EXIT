@@ -966,6 +966,7 @@ function authorizeUser(session_id, kth_username, role_id) {
                 "WHERE kth_username = ? AND session_id = ?",
             values: [kth_username, session_id]
         }
+        console.log(getUserType)
         client
             .query(getUserType.text, getUserType.values)
             .then(res => {
