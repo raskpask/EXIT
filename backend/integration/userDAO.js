@@ -74,7 +74,7 @@ function registerUser(username, user_type_id) {
                     client.query("ROLLBACK")
                 }
             });
-            resolve(200)
+        resolve(200)
     });
 }
 /**
@@ -419,10 +419,10 @@ function registerProject(project_details) {
         try {
             client = await pool.getConnection()
             const examiner_id = 1
-            let company_id;
+            let company_id = null;
             let project_id;
             await client.query("BEGIN");
-            if (project_details.company_name !== undefined) {
+            if (project_details.company_name) {
                 let addCompanyQuery = {
                     text: "INSERT INTO Company (name,address,phone_number) "
                         + "VALUES (?,?,?); SELECT LAST_INSERT_ID()",
@@ -434,11 +434,13 @@ function registerProject(project_details) {
                         company_id = res[0].insertId;
                     })
                     .catch(err => {
-                        client.query("ROLLBACK"); reject(err);
+                        client.query("ROLLBACK");
                         console.error(err);
                         reject(err);
                     });
             }
+
+
             let addProjectDetailsQuery = {
                 text: "INSERT INTO Degree_project (number_of_students,title,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact)" +
                     "VALUES (?,?,?,?,?,?,?,?,?,?,?);" +
@@ -450,6 +452,7 @@ function registerProject(project_details) {
                 .query(addProjectDetailsQuery.text, addProjectDetailsQuery.values)
                 .then(res => {
                     project_id = res[0].insertId
+                    console.log("The project ID is: " + project_id)
                     const addExaminerQuery = {
                         text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
                             "VALUES (?,?,?)",
@@ -470,10 +473,10 @@ function registerProject(project_details) {
                 })
                 .catch(err => {
                     console.error(err)
-                    client.query("ROLLBACK"); reject(err);
+                    client.query("ROLLBACK");
+                    reject(err);
+                    throw (err);
                 })
-
-
 
             let addStudentQuery = "";
             let addStudentToProjectQuery = "";
@@ -497,44 +500,52 @@ function registerProject(project_details) {
                             .query(addStudentToProjectQuery.text, addStudentToProjectQuery.values)
                             .catch(err => {
                                 console.error(err)
-                                client.query("ROLLBACK"); reject(err);
+                                //client.query("ROLLBACK"); 
+                                // reject(err);
+                                //throw(err);
+                                reject(new Error(dbError.errorCodes.CREATE_PROJECT_ERROR.code));
                             })
                     })
                     .catch(err => {
                         console.error(err)
-                        client.query("ROLLBACK"); reject(err);
+                        //client.query("ROLLBACK"); 
+                        // reject(err); 
+                        //throw(err);
+                        //reject(new Error(dbError.errorCodes.CREATE_PROJECT_ERROR.code))
+                        throw new Error(dbError.errorCodes.CREATE_PROJECT_ERROR.code);
                     })
             })
-            projectType = "";
-            if (project_details.credits == CREDITS_BACHELOR) {
+            let projectType = "";
+            if (project_details.credits == 15) {
                 projectType = "bachelor_hours_";
-            } else if (project_details.credits == CREDITS_MASTER) {
+            } else if (project_details.credits == 30) {
                 projectType = "master_hours_";
             } else {
-                throw new Error("Missing credits");
+                reject(new error(dbError.errorCodes.NO_CREDITS_ERROR.code));
             }
 
             if (project_details.supervisor_id) {
-
                 projectTypeSupervisor = projectType + "supervisor";
                 let updateSupervisorWork = {
                     text: "UPDATE Work_year " +
                         "SET available_hours_supervisor = available_hours_supervisor - " +
                         "(SELECT " + projectTypeSupervisor + " * factor_" + project_details.number_of_students +
-                        " FROM Budget_year  WHERE Budget_year.year = Work_year.year) WHERE person_id = ?",
+                        " FROM Budget_year WHERE Budget_year.year = Work_year.year) WHERE Work_year.person_id = ?",
                     values: [project_details.supervisor_id]
                 }
                 client.query(updateSupervisorWork.text, updateSupervisorWork.values)
-                    .then({
+                    .then(res => {
 
                     })
                     .catch(err => {
-                        console.error(err);
+
+                        console.error(err)
                         client.query("ROLLBACK");
                         if (err.errno == 1264) {
                             client.release();
-                            reject(new Error(dbError.errorCodes.NO_TIME_AVAILABLE.code));
+                            reject(new Error(dbError.errorCodes.NO_TIME_AVAILABLE_ERROR.code));
                         }
+                        reject(500);
                     })
             }
             projectTypeExaminer = projectType + "examiner";
@@ -545,7 +556,7 @@ function registerProject(project_details) {
                     " FROM Budget_year WHERE Budget_year.year = Work_year.year) WHERE Work_year.person_id = ?",
                 values: [examiner_id]
             }
-            client.query(updateExaminerWork.text, updateExaminerWork.values)
+            await client.query(updateExaminerWork.text, updateExaminerWork.values)
                 .then(res => {
                     client.query("COMMIT");
                     resolve(200);
@@ -553,11 +564,13 @@ function registerProject(project_details) {
                 .catch(err => {
 
                     console.error(err)
-                    client.query("ROLLBACK");
+                    //client.query("ROLLBACK");
                     if (err.errno == 1264) {
                         client.release();
-                        reject(new Error(dbError.errorCodes.NO_TIME_AVAILABLE.code));
+                        //reject(
+                        throw new Error(dbError.errorCodes.NO_TIME_AVAILABLE_ERROR.code);//);
                     }
+                    //reject(500);
                 })
 
             // addSupervisorToProjectQuery = {
@@ -576,7 +589,7 @@ function registerProject(project_details) {
             //         client.query("ROLLBACK"); reject(err);
             //     })
         } catch (e) {
-            client.query("ROLLBACK"); reject(err);
+            client.query("ROLLBACK");
             console.error(e);
             reject(e);
         } finally {
@@ -969,7 +982,7 @@ function authorizeUser(session_id, kth_username, role_id) {
         client
             .query(getUserType.text, getUserType.values)
             .then(res => {
-                if(res.length < 1) {
+                if (res.length < 1) {
                     reject(new Error(dbError.errorCodes.INVALID_SESSION.code))
                 }
                 const user_type_id = parseInt(res[0].user_type_id)

@@ -92,13 +92,20 @@ errorCodes = {
         code: 'DELETE_ERROR',
         message: 'Probem with deleting'
     },
-    NO_TIME_AVAILABLE: {
-        code: 'NO_TIME_AVAILABLE',
-        message: 'The teacher does not have enough time left in the budget'
-    },
     INVALID_SESSION: {
         code: 'INVALID_SESSION',
         message: 'The session is no longer valid'
+    NO_TIME_AVAILABLE_ERROR:{
+        code: 'NO_TIME_AVAILABLE_ERROR',
+        message: 'The teacher does not have enough time left in the budget'
+    },
+    NO_CREDITS_ERROR:{
+        code: 'NO_CREDITS_ERROR',
+        message: 'Credits missing from project'
+    },
+    CREATE_PROJECT_ERROR:{
+        code: 'CREATE_PROJECT_ERROR',
+        message: 'There was an error whlie creating the project'
     }
 
 
@@ -116,13 +123,21 @@ function respondError(error, res) {
             res.status(403);
             res.send(errorCodes.BAD_REQUEST_ERROR.code);
             break;
+        case errorCodes.CREATE_PROJECT_ERROR.code:
+            res.status(500);
+            res.send(errorCodes.CREATE_PROJECT_ERROR.code);
+            break;
+        case errorCodes.NO_CREDITS_ERROR.code:
+            res.status(403);
+            res.send(errorCodes.NO_CREDITS_ERROR.code);
+            break;
         case errorCodes.DUPLICATE_BUDGET_YEAR_ERROR.code:
             res.status(400);
             res.send(errorCodes.DUPLICATE_BUDGET_YEAR_ERROR.code);
             break;
-        case errorCodes.NO_TIME_AVAILABLE.code:
+        case errorCodes.NO_TIME_AVAILABLE_ERROR.code:
             res.status(403);
-            res.send(errorCodes.NO_TIME_AVAILABLE.code);
+            res.send(errorCodes.NO_TIME_AVAILABLE_ERROR.code);
             break;
         case errorCodes.CONNECTION_ERROR.code:
             res.status(503);
