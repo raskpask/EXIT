@@ -64,7 +64,7 @@ const idp = new saml2.IdentityProvider(idp_options);
  *
  * @param {App} router - The express application.
  */
-async function router(router) {
+function router(router) {
     // Endpoint to retrieve metadata
     router.get("/metadata.xml", function (req, res) {
         res.type('application/xml');
@@ -81,7 +81,7 @@ async function router(router) {
     });
 
     // Assert endpoint for when login completes
-    router.post("/assert", function (req, res) {
+    router.post("/assert", async function (req, res) {
         var options = { request_body: req.body };
         sp.post_assert(idp, options, function (err, saml_response) {
             if (err != null) {
