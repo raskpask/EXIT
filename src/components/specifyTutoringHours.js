@@ -116,7 +116,7 @@ class SpecifyTutoringHours extends Component {
                     </Col>
                 </Row>
                 {this.state.pickedExaminers.map((examiner, key) =>
-                    <Row>
+                    <Row key={key}>
                         <Col>
                             <Form.Label>{this.props.info.specifyTutoringHours.username}</Form.Label>
                             <Typeahead

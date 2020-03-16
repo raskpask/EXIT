@@ -53,8 +53,8 @@ class DirectorsOfStudies extends Component {
                 <tbody>
                     {this.state.directors.map((director, key) =>
                         < tr key={key} className="pressForInfo" >
-                            <td key={"lastName: " + key} className="pressForInfo" >{director.lastName}</td>
-                            <td key={"firstName: " + key} > {director.firstName}</td>
+                            <td key={"lastName: " + key} className="pressForInfo" >{director.last_name}</td>
+                            <td key={"firstName: " + key} > {director.first_name}</td>
                             <td key={"email: " + key} > {director.email}</td>
                         </tr>
                     )}

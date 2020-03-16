@@ -35,7 +35,7 @@ class Profile extends Component {
         this.getBudgetYears()
     }
     getProfile = (year) => {
-        const response = axios
+        axios
             .get('/api/profile', {
                 params: {
                     year: year

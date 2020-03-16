@@ -17,9 +17,10 @@ class AddExaminer extends Component {
     addUser = (e) => {
         e.preventDefault();
         axios
-            .post('/api/user', { kth_username: this.state.username })
+            .post('/api/user', { kth_username: this.state.username, user_type_id: 3})
             .then(res => {
                 toast(this.props.info.addExaminer.added)
+                this.setState({username: ""})
             })
             .catch(err => {
                 console.log(err)
