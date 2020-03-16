@@ -968,6 +968,7 @@ function login(session_id, first_name, last_name, kth_username, role) {
                     client
                     .query(getRoleId.text, getRoleId.values)
                     .then(res=>{
+                        console.log(res[0].user_type_id)
                         resolve(res[0].user_type_id)
                         reject(new Error(dbError.errorCodes.USER_ERROR.code))
                     })

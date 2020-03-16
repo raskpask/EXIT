@@ -107,6 +107,7 @@ function router(router) {
             const role = getRole(attributes.split('"urn:oid:1.3.6.1.4.1.5923.1.1.1.1":["')[1].split('"')[0])
             res.cookie('username', username)
             const role_id = controller.login(session_id, first_name, last_name, username, role)
+            console.log(role_id)
             res.cookie('role_id', role_id)
             res.redirect('/')
         });
