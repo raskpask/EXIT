@@ -218,7 +218,7 @@ function extractYear(req){
 }
 function extractUsername(req){
     cookieHeader = req.headers.cookie;
-    console.log(req.headers)
+    console.log(cookieHeader)
     if (cookieHeader === undefined) {
         throw new Error(dbError.errorCodes.NO_TOKEN_ERROR.code)
     }
