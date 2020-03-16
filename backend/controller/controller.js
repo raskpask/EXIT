@@ -14,6 +14,7 @@ const STUDENT_PRIVILEGE = 4
  * @returns Promise with 200
  */
 async function registerUser(req) {
+    await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     return await userDAO.registerUser(requestHandler.extractUsername(req),requestHandler.extractUserTypeId(req))
 }
 /**
@@ -22,6 +23,7 @@ async function registerUser(req) {
  */
 async function registerProject(req) {
     try {
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
         const projectDetails = requestHandler.extractRegisterProjectDetails(req);
         return await userDAO.registerProject(projectDetails);
     } catch (error) {
@@ -30,29 +32,7 @@ async function registerProject(req) {
     }
 
 }
-/**
- * Authenticate a user. Checks if the client used the right credentials and generate a cookie to set it to the user.
- *
- * @param {String} req - The request of the client.
- * @returns Promise with the user
- */
-async function authenticateUser(req) {
-    const credentials = requestHandler.extractCredentials(req);
-    const token = authToken.generate();
-    await userDAO.authenticateUser(credentials);
-    await userDAO.changeAuthToken(credentials, token);
-    return await userDAO.getUser(token);
-}
-/**
- * Logouts a user and removes the token from the DB.
- *
- * @param {String} req - The request of the client.
- * @returns Promise with token.
- */
-async function deAuthenticateUser(req) {
-    const token = requestHandler.extractToken(req);
-    return await userDAO.changeAuthToken(null, token);
-}
+
 /**
  * Fetches a user from the DB.
  *
@@ -61,6 +41,7 @@ async function deAuthenticateUser(req) {
  */
 async function getUser(req) {
     try {
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
         return await userDAO.getUser(requestHandler.extractUserID(req), requestHandler.extractUserType(req));
     }
     catch (error) {
@@ -84,6 +65,7 @@ async function getProject(req) {
 }
 async function updateProject(req) {
     try {
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
         return await userDAO.updateProject(req.body.supervisor_id, req.body.project_id);
     }
     catch (error) {
@@ -92,6 +74,7 @@ async function updateProject(req) {
 }
 async function deleteProject(req) {
     try {
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
         console.log(req)
         return await userDAO.deleteProject(req.body.project_id);
     }
@@ -103,6 +86,7 @@ async function deleteProject(req) {
 
 async function getWorkYear(req) {
     try {
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
         return await userDAO.getWorkYear(req.body.user_id, req.body.year);
     }
     catch (error) {
@@ -111,6 +95,7 @@ async function getWorkYear(req) {
 }
 async function postWorkYear(req) {
     try {
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), DICRECTOR_PRIVILEGE)
         return await userDAO.postWorkYear(req.body.budgetYear, requestHandler.extractWorkYear(req));
     }
     catch (error) {
@@ -119,6 +104,7 @@ async function postWorkYear(req) {
 }
 async function updateWorkYear(req) {
     try {
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), DICRECTOR_PRIVILEGE)
         return await userDAO.updateWorkYear(req.body.year, requestHandler.extractWorkYear(req));
     }
     catch (error) {
@@ -127,6 +113,7 @@ async function updateWorkYear(req) {
 }
 async function getAvailableExaminers(req) {
     try {
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), STUDENT_PRIVILEGE)
         return await userDAO.getAvailableExaminers(req.query.year);
     }
     catch (error) {
@@ -135,6 +122,7 @@ async function getAvailableExaminers(req) {
 }
 async function getAvailableSupervisors(req) {
     try {
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), STUDENT_PRIVILEGE)
         return await userDAO.getAvailableSupervisors(req.query.year);
     }
     catch (error) {
@@ -143,52 +131,52 @@ async function getAvailableSupervisors(req) {
 }
 
 /**
- * Validates if the username is in the DB.
- *
- * @param {String} req - The request of the client.
- * @returns Promise with a string, Username taken or Username not taken.
- */
-async function checkIfUsernameIsAvailable(req) {
-    return await userDAO.checkIfUsernameIsAvailable(requestHandler.extractUsername(req));
-}
-/**
  * Changes the the user in the DB.
  *
  * @param {String} req - The request of the client.
  * @returns Promise with 200.
  */
 async function updateUser(req) {
+    await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     const updateUser = requestHandler.extractUser(req);
     return await userDAO.updateUser(updateUser, requestHandler.extractToken(req));
 }
 
 async function getExpertise(req) {
+    await authorizeUser(requestHandler.extractUserDataFromCookie(req), STUDENT_PRIVILEGE)
     return await userDAO.getExpertise(requestHandler.extractUserID(req))
 }
 async function postExpertise(req) {
+    await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     return await userDAO.postExpertise(requestHandler.extractExpertiseName(req))
 }
 async function updateExpertise(req) {
+    await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     const user_id = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req));
     return await userDAO.updateExpertise(requestHandler.extractExpertiseName(req),user_id)
 }
 async function deleteExpertise(req) {
+    await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     return await userDAO.deleteExpertise(requestHandler.extractExpertiseID(req))
 }
 async function getBudgetYear(req) {
+    await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     return await userDAO.getBudgetYear()
 }
 async function postBudgetYear(req) {
     try {
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), DICRECTOR_PRIVILEGE)
         return await userDAO.postBudgetYear(requestHandler.extractBudgetYear(req))
     } catch (error) {
         throw error;
     }
 }
 async function updateBudgetYear(req) {
+    await authorizeUser(requestHandler.extractUserDataFromCookie(req), DICRECTOR_PRIVILEGE)
     return await userDAO.updateBudgetYear(requestHandler.extractBudgetYear(req))
 }
 async function deleteBudgetYear(req) {
+    await authorizeUser(requestHandler.extractUserDataFromCookie(req), DICRECTOR_PRIVILEGE)
     return await userDAO.deleteBudgetYear(requestHandler.extractBudgetYear(req))
 }
 
@@ -196,14 +184,14 @@ async function deleteUser(req) {
     return await userDAO.deleteUser(requestHandler.extractUserID(req));
 }
 async function updateUser(req) {
+    await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     return await userDAO.updateUser(requestHandler.extractUser(req));
 }
 async function getProfile(req) {
+    await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     const userId = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req));
     const workYear = await userDAO.getWorkYear(userId,requestHandler.extractYear(req))
     const expertise = await userDAO.getExpertise(userId);
-    // const workYear = await userDAO.getWorkYear(24,requestHandler.extractYear(req))
-    // const expertise = await userDAO.getExpertise(24);
     return {workYear,expertise}
 }
 async function login(session_id, first_name, last_name, kth_username, role) {
