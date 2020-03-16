@@ -341,7 +341,7 @@ function getUserID(username) {
             text: "SELECT user_id FROM User WHERE kth_username=?",
             values: [username]
         }
-        console.log(user_id)
+        console.log(username)
         client
             .query(getUserQuery.text, getUserQuery.values)
             .then(res => {
