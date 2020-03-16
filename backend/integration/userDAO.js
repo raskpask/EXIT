@@ -44,7 +44,6 @@ function registerUser(username, user_type_id) {
             .query(query.text, query.values)
             .catch(err => {
                 client.end()
-                console.error(err)
                 if (err.code === '23505') {
                     reject(new Error(dbError.errorCodes.DUPLICATE_USER_ERROR.code))
                 } else if (err.code === 'ER_DUP_ENTRY') {
@@ -53,13 +52,14 @@ function registerUser(username, user_type_id) {
                         values: [user_type_id, username]
                     }
                     client
-                        .query(updateUser.text, updateUser.values)
-                        .catch(err => {
-                            console.error(err)
-                            reject(new Error(dbError.errorCodes.USER_ERROR.code))
-                            client.query("ROLLBACK")
-                        })
+                    .query(updateUser.text, updateUser.values)
+                    .catch(err => {
+                        console.error(err)
+                        reject(new Error(dbError.errorCodes.USER_ERROR.code))
+                        client.query("ROLLBACK")
+                    })
                 }
+                console.error(err)
                 reject(new Error(dbError.errorCodes.USER_ERROR.code))
                 client.query("ROLLBACK")
             });
