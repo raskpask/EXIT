@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Col, Row, Form, Card,  Button } from 'react-bootstrap';
+import React, { Component, Fragment } from 'react';
+import { Col, Row, Form, Card, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Access from './fragments/access';
@@ -10,6 +10,9 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentYear: new Date().getFullYear(),
+            budgetYear: [],
+            year: "",
             edit: false,
             competenceArea: "",
             totalTutoringHours: "",
@@ -17,14 +20,19 @@ class Profile extends Component {
         }
     }
     componentDidMount() {
-        this.getProfile()
+        this.getProfile(this.state.currentYear)
+        this.getBudgetYears()
     }
-    getProfile = () => {
+    getProfile = (year) => {
         const response = axios
-            .get('/api/profile')
+            .get('/api/profile', {
+                params: {
+                    year: year
+                }
+            })
             .then(res => {
                 if (res.status === 200) {
-                    this.setState({ competenceArea: response.data })
+                    this.setState({ competenceArea: response.data,currentYear: year })
                 }
             })
             .catch(err => {
@@ -32,6 +40,19 @@ class Profile extends Component {
                 toast(this.props.info.profile.fail)
             })
 
+    }
+    getBudgetYears = () => {
+        axios
+            .get('/api/budgetYear')
+            .then(res => {
+                if (res.status === 200) {
+                    this.setState({ budgetYear: res.data })
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                toast(this.props.info.availableExaminers.fail)
+            })
     }
     editCompetence() {
         this.setState({ edit: true })
@@ -83,8 +104,11 @@ class Profile extends Component {
                     <Col md={4}>
                         {this.props.info.profile.totalTutoringHours}
                     </Col>
-                    <Col md={8}>
+                    <Col md={4}>
                         {this.state.totalTutoringHours}{this.props.info.profile.hours}
+                    </Col>
+                    <Col className="alignRight">
+                        {this.renderChangeYear()}
                     </Col>
                 </Row>
                 <Row>
@@ -99,6 +123,17 @@ class Profile extends Component {
 
 
             </Card>
+        )
+    }
+    renderChangeYear() {
+        return (
+            <DropdownButton id="dropdown-basic-button" title={this.props.info.availableExaminers.changeYear + ": "+ this.state.currentYear}>
+                {this.state.budgetYear.map((budgetYear, key) =>
+                    <Fragment>
+                        <Dropdown.Item onClick={() => this.getProfile(budgetYear.year)}>{budgetYear.year}</Dropdown.Item>
+                    </Fragment>
+                )}
+            </DropdownButton>
         )
     }
     render() {
