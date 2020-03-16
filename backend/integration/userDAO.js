@@ -42,7 +42,7 @@ function registerUser(username, user_type_id) {
         client.query("BEGIN")
         client
             .query(query.text, query.values)
-            .then(res=>{
+            .then(res => {
                 client.query("COMMIT")
                 client.end()
                 resolve()
@@ -58,22 +58,23 @@ function registerUser(username, user_type_id) {
                         values: [user_type_id, username]
                     }
                     client
-                    .query(updateUser.text, updateUser.values)
-                    .then(res=>{
-                        client.query("COMMIT")
-                        client.end()
-                        console.log("ok")
-                        return resolve()
-                    })
-                    .catch(err => {
-                        console.error(err)
-                        reject(new Error(dbError.errorCodes.USER_ERROR.code))
-                        client.query("ROLLBACK")
-                    })
+                        .query(updateUser.text, updateUser.values)
+                        .then(res => {
+                            client.query("COMMIT")
+                            client.end()
+                            console.log("ok")
+                            return resolve()
+                        })
+                        .catch(err => {
+                            console.error(err)
+                            reject(new Error(dbError.errorCodes.USER_ERROR.code))
+                            client.query("ROLLBACK")
+                        })
+                } else {
+                    console.error(err)
+                    reject(new Error(dbError.errorCodes.USER_ERROR.code))
+                    client.query("ROLLBACK")
                 }
-                console.error(err)
-                reject(new Error(dbError.errorCodes.USER_ERROR.code))
-                client.query("ROLLBACK")
             });
 
     });
