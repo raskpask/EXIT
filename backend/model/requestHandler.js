@@ -216,7 +216,7 @@ function extractBudgetYear(req) {
 function extractYear(req){
     return req.query.year
 }
-function extractUsername(req){
+function extractUsernameFromCookie(req){
     cookieHeader = req.headers.cookie;
     if (cookieHeader === undefined) {
         throw new Error(dbError.errorCodes.NO_TOKEN_ERROR.code)
@@ -231,7 +231,7 @@ module.exports = {
     extractUserDataFromCookie,
     extractUser,
     extractToken,
-    extractUsername,
+    extractUsernameFromCookie,
     extractLang,
     extractRegisterProjectDetails,
     extractBudgetYear,

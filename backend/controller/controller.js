@@ -201,7 +201,7 @@ async function updateUser(req) {
 }
 async function getProfile(req) {
     console.log(req)
-    const userId = await userDAO.getUserID(requestHandler.extractUsername(req));
+    const userId = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req));
     const workYear = await userDAO.getWorkYear(userId,requestHandler.extractYear(req))
     const expertise = await userDAO.getExpertise(userId);
     return {workYear: workYear, expertise: expertise}
