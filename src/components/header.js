@@ -38,24 +38,24 @@ class Header extends Component {
         return true
     }
     chooseUserLevel() {
-        return this.renderExaminer()
+        // return this.renderExaminer()
 
-        // let privilegeLevel = document.cookie.split('role_id=')[1];
+        let privilegeLevel = document.cookie.split('role_id=')[1];
 
-        // if (Boolean(privilegeLevel)) {
-        //     privilegeLevel = privilegeLevel.split(';')[0];
-        // }
-        // if (privilegeLevel === '1') {
-        //     return this.renderAdmin()
-        // } else if (privilegeLevel === '2') {
-        //     return this.renderDirector()
-        // } else if (privilegeLevel === '3') {
-        //     return this.renderExaminer()
-        // } else if (privilegeLevel === '4') {
-        //     return this.renderStudent()
-        // } else {
-        //     return this.renderLogin()
-        // }
+        if (Boolean(privilegeLevel)) {
+            privilegeLevel = privilegeLevel.split(';')[0];
+        }
+        if (privilegeLevel === '1') {
+            return this.renderAdmin()
+        } else if (privilegeLevel === '2') {
+            return this.renderDirector()
+        } else if (privilegeLevel === '3') {
+            return this.renderExaminer()
+        } else if (privilegeLevel === '4') {
+            return this.renderStudent()
+        } else {
+            return this.renderLogin()
+        }
     }
     renderBrand() {
         return (

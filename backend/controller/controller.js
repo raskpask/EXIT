@@ -16,8 +16,6 @@ const STUDENT_PRIVILEGE = 4
 async function registerUser(req) {
     const userRoleId = await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     const changeToUserType = requestHandler.extractUserTypeId(req)
-    console.log(userRoleId)
-    console.log(changeToUserType)
     if (userRoleId < changeToUserType) {
         const username = requestHandler.extractUsername(req)
         return await userDAO.registerUser(username, changeToUserType)
