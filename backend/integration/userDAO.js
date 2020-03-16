@@ -32,26 +32,26 @@ CREDITS_MASTER = 30;
  * @param {user} user - Instance of user
  * @returns Promise with 200
  */
-function registerUser(username,user_type_id) {
+function registerUser(username, user_type_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const query = {
             text: "INSERT INTO User (user_type_id,email,kth_username) VALUES(?,?,?)",
-            values: [user_type_id, username+'@kth.se', username]
+            values: [user_type_id, username + '@kth.se', username]
         }
         client
-            .query(query.text,query.values)
+            .query(query.text, query.values)
             .then(res => {
-               resolve()
+                console.log()
+                resolve()
             })
             .catch(err => {
-                client.query("ROLLBACK")
                 client.end()
-                if (err) {
-                    if (err.code === '23505') {
-                        reject(new Error(dbError.errorCodes.DUPLICATE_USER_ERROR.code))
-                    }
+                console.error(err)
+                if (err.code === '23505') {
+                    reject(new Error(dbError.errorCodes.DUPLICATE_USER_ERROR.code))
                 }
+                reject(new Error(dbError.errorCodes.USER_ERROR.code))
             });
     });
 }
@@ -717,7 +717,7 @@ function updateExpertise(expertise_name, user_id) {
                             }
                             client
                                 .query(updateExpertiseIdQuery.text, updateExpertiseIdQuery.values)
-                                .catch(err=>{
+                                .catch(err => {
                                     console.error(err)
                                     client.query("ROLLBACK")
                                     reject(new Error(dbError.errorCodes.UPDATE_USER_ERROR.code))
