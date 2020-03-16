@@ -214,7 +214,6 @@ function extractBudgetYear(req) {
     return new BudgetYear(year, bachelor_hours_examiner, bachelor_hours_supervisor, master_hours_examiner, master_hours_supervisor, total_tutoring_hours, factor_1, factor_2, factor_3, factor_4, factor_5);
 }
 function extractYear(req){
-    console.log(req)
     return req.query.year
 }
 function extractUsername(req){
