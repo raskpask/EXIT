@@ -29,7 +29,10 @@ function extractUserDataFromCookie(req) {
  * @returns String of username
  */
 function extractUsername(req) {
-    return req.body.username;
+    return req.body.kth_username;
+}
+function extractUserTypeId(req){
+    return req.body.user_type_id
 }
 /**
  * Extracts the user from the client request.
@@ -195,7 +198,7 @@ function extractExpertiseID(req) {
     return req.body.expertiseID;
 }
 function extractExpertiseName(req) {
-    return req.body.expertise;
+    return req.body.expertiseName;
 }
 function extractBudgetYear(req) {
     const budgetYear = req.body;
@@ -239,5 +242,6 @@ module.exports = {
     extractExpertiseName,
     extractExpertiseID,
     extractWorkYear,
-    extractUserType
+    extractUserType,
+    extractUserTypeId
 }

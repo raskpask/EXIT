@@ -14,8 +14,7 @@ const STUDENT_PRIVILEGE = 4
  * @returns Promise with 200
  */
 async function registerUser(req) {
-    const registerUser = requestHandler.extractUser(req);
-    return await userDAO.registerUser(registerUser);
+    return await userDAO.registerUser(requestHandler.extractUsername(req),requestHandler.extractUserTypeId(req));
 }
 /**
  * 

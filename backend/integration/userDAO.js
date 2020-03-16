@@ -32,36 +32,18 @@ CREDITS_MASTER = 30;
  * @param {user} user - Instance of user
  * @returns Promise with 200
  */
-function registerUser(user) {
+function registerUser(username,user_type_id) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         const query = {
-            text: "INSERT INTO User (user_type_id,email,first_name,last_name,kth_username,phone_number) VALUES(?,?,?,?,?)",
-            values: [user.user_type_id, user.email, user.first_name, user.last_name, user.kth_username, user.phone_number]
+            text: "INSERT INTO User (user_type_id,email,kth_username) VALUES(?,?,?)",
+            values: [user_type_id, username+'@kth.se', username]
         }
-        client.query("BEGIN")
+        
         client
             .query(query)
             .then(res => {
-                if (res.rows[0].username == user.username) {
-                    const addExpertiseQuery = {
-                        text: "INSERT INTO Expertise (user_id,expertise_id) VALUES (?,?)",
-                        values: [user.user_id, NO_EXPERTISE_YET_ID]
-                    }
-                    client
-                        .query(addExpertiseQuery.text.addExpertiseQuery.values)
-                        .then(res => {
-                            client.query("COMMIT")
-                            client.end()
-                            resolve(200)
-                        })
-                        .catch(err => {
-                            client.query("ROLLBACK")
-                            client.end()
-                            console.error(err)
-                            reject(new Error(dbError.errorCodes.INSERTING_USER_ERROR.code))
-                        })
-                }
+               resolve()
             })
             .catch(err => {
                 client.query("ROLLBACK")
