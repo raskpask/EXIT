@@ -21,7 +21,7 @@ async function registerUser(req) {
         return await userDAO.registerUser(username, changeToUserType)
     } else {
         console.log("No access")
-        new Error(dbError.errorCodes.NO_ACCESS_ERROR.code)
+        throw new Error(dbError.errorCodes.NO_ACCESS_ERROR.code)
     }
 }
 /**
