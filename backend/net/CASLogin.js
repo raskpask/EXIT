@@ -64,7 +64,7 @@ const idp = new saml2.IdentityProvider(idp_options);
  *
  * @param {App} router - The express application.
  */
-function router(router) {
+async function router(router) {
     // Endpoint to retrieve metadata
     router.get("/metadata.xml", function (req, res) {
         res.type('application/xml');
@@ -106,8 +106,7 @@ function router(router) {
             const username = nameAndUsername[2].split('(')[1].split(')')[0]
             const role = getRole(attributes.split('"urn:oid:1.3.6.1.4.1.5923.1.1.1.1":["')[1].split('"')[0])
             res.cookie('username', username)
-            const role_id = controller.login(session_id, first_name, last_name, username, role)
-            console.log(role_id)
+            const role_id = await controller.login(session_id, first_name, last_name, username, role)
             res.cookie('role_id', role_id)
             res.redirect('/')
         });
