@@ -21,7 +21,7 @@ class Profile extends Component {
     }
     getProfile = () => {
         const response = axios
-            .get('/api/examiner')
+            .get('/api/profile')
             .then(res => {
                 if (res.status === 200) {
                     this.setState({ competenceArea: response.data })
