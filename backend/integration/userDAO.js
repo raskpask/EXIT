@@ -61,7 +61,7 @@ function registerUser(username, user_type_id) {
                         .then(res => {
                             client.query("COMMIT")
                             client.end()
-                            resolve()
+                            resolve(200)
                         })
                         .catch(err => {
                             console.error(err)
@@ -74,8 +74,7 @@ function registerUser(username, user_type_id) {
                     client.query("ROLLBACK")
                 }
             });
-            resolve()
-
+            resolve(200)
     });
 }
 /**
