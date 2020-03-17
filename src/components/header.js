@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import Cookies from 'universal-cookie';
-import { toast } from 'react-toastify';
-import axios from 'axios';
 import '../resources/css/header.css';
 
 class Header extends Component {
@@ -19,26 +17,9 @@ class Header extends Component {
         window.location.href = "/";
         this.props.app.forceUpdate()
     }
-    logout = async () => {
-        try {
-            const response = await axios.delete('/api/authentication')
-            if (response.status === 200) {
-                window.location.href = "/";
-                this.forceUpdate()
-            }
-        } catch (err) {
-            console.error(err)
-            toast(this.props.info.general.error)
-        }
-    }
-    isLoggedIn() {
-        if (!document.cookie.split('authToken=')[1]) {
-            return false
-        }
-        return true
-    }
+
     chooseUserLevel() {
-        // return this.renderDirector()
+        // return this.renderExaminer()
 
         let privilegeLevel = document.cookie.split('role_id=')[1];
 

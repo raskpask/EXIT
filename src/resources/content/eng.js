@@ -23,12 +23,17 @@ function getLanguage() {
                 "Please specify a work area so that students can see what your main work area is.",
             competenceArea: "Area of competence",
             competenceAreaPlaceholder: "Enter you area of competence. You may describe it with words or just write the area.",
-            remainingTutoringHours: "Remaining tutoring hours",
-            totalTutoringHours: "Total amount of tutoring hours",
+            totalExaminerHours: "Amount of tutoring hours as examiner",
+            reamainingExaminerHours: "Remaining tutoring hours as examiner",
+            totalSupervisorHours: "Amount of tutoring hours as supervisor",
+            reamainingSupervisorHours: "Remaining tutoring hours as supervisor",
             hours: " hours.",
             edit: "Edit",
             save: "Save",
-            fail: "Something went wrong, could not load profile."
+            fail: "Something went wrong, could not load profile.",
+            budgetYearFail: "Something went wrong. It could be that the director of studies hasn't added you to that budget year.",
+            saved: "Your Area of competence was saved.",
+            saveFaild: "Something went wrong and you competence could not be saved."
 
         },
         degreeProject: {
@@ -369,7 +374,8 @@ function getLanguage() {
             yes: "Yes",
             no: "No",
             email: "Email",
-            name: "Name"
+            name: "Name",
+            sessionFail: "You have been idle for to long please login again."
         }
     }
     return lang;

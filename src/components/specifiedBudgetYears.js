@@ -4,11 +4,15 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../resources/css/home.css';
 import Access from './fragments/access';
+import redirect from './../model/redirect';
+import dbErrors from '../model/dbErrors';
+import { Redirect } from 'react-router-dom';
 
 class SpecifiedBudgetYears extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            redirect: 0,
             budgetYears: []
         }
     }
@@ -26,8 +30,14 @@ class SpecifiedBudgetYears extends Component {
                 }
             })
             .catch(err => {
-                console.error(err)
-                toast(this.props.info.specifiedBudgetYears.fail)
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.error(err)
+                    toast(this.props.info.specifiedBudgetYears.fail)
+                }
             })
     }
     renderTable() {
@@ -72,6 +82,7 @@ class SpecifiedBudgetYears extends Component {
         return (
             <div className="container">
                 <Access access='2' info={this.props.info.access} />
+                {this.state.redirect ? <Redirect to='/' /> : ""}
                 <h1>{this.props.info.specifiedBudgetYears.title}</h1>
                 <p>{this.props.info.specifiedBudgetYears.paragraph0}</p>
                 <h3>{this.props.info.specifiedBudgetYears.paragraph1}</h3>

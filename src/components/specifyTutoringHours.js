@@ -6,14 +6,18 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import '../resources/css/form.css';
 import Access from './fragments/access';
+import redirect from './../model/redirect';
+import dbErrors from '../model/dbErrors';
+import { Redirect } from 'react-router-dom';
 
 class SpecifyTutoringHours extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            redirect: 0,
             pickedExaminers: [
                 {
-                    user_id:"",
+                    user_id: "",
                     examinerHours: "",
                     supervisorHours: "",
                 }
@@ -37,8 +41,14 @@ class SpecifyTutoringHours extends Component {
                 this.setState({ examiners: res.data })
             })
             .catch(err => {
-                console.log(err)
-                toast(this.props.info.addDirectorOfStudies.getFail)
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.log(err)
+                    toast(this.props.info.addDirectorOfStudies.getFail)
+                }
             })
     }
     specifyTutoringHours = (e) => {
@@ -50,8 +60,14 @@ class SpecifyTutoringHours extends Component {
                 this.resetFields()
             })
             .catch(err => {
-                console.log(err)
-                toast(this.props.info.addDirectorOfStudies.fail)
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.log(err)
+                    toast(this.props.info.addDirectorOfStudies.fail)
+                }
             })
     }
     getTutoringHours() {
@@ -64,8 +80,8 @@ class SpecifyTutoringHours extends Component {
         this.setState({
             pickedExaminers: [
                 {
- 
-                    user_id:"",
+
+                    user_id: "",
                     examinerHours: "",
                     supervisorHours: ""
                 }
@@ -116,7 +132,7 @@ class SpecifyTutoringHours extends Component {
                     </Col>
                 </Row>
                 {this.state.pickedExaminers.map((examiner, key) =>
-                    <Row>
+                    <Row key={key}>
                         <Col>
                             <Form.Label>{this.props.info.specifyTutoringHours.username}</Form.Label>
                             <Typeahead
@@ -125,7 +141,7 @@ class SpecifyTutoringHours extends Component {
                                 placeholder={this.props.info.specifyTutoringHours.usernamePlaceholder}
                                 selected={examiner.username}
                                 // onChange={event => this.setState({ supervisor_id: event[0].user_id })}
-                                onChange={event => this.handleChangeExaminer(event[0],'username',key )}
+                                onChange={event => this.handleChangeExaminer(event[0], 'username', key)}
                                 options={this.state.examiners}
                             />
                         </Col>
@@ -161,6 +177,7 @@ class SpecifyTutoringHours extends Component {
         return (
             <div className="container">
                 <Access access='2' info={this.props.info.access} />
+                {this.state.redirect ? <Redirect to='/' /> : ""}
                 <h1>{this.props.info.specifyTutoringHours.title}</h1>
                 <p>{this.props.info.specifyTutoringHours.paragraph0}</p>
                 {this.renderForm()}
