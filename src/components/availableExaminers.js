@@ -2,7 +2,11 @@ import React, { Component, Fragment } from 'react';
 import { Table, DropdownButton, Dropdown, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+
 import Access from './fragments/access';
+import redirect from './../model/redirect';
+import dbErrors from '../model/dbErrors';
+import { Redirect } from 'react-router-dom';
 
 import '../resources/css/availableExaminers.css';
 
@@ -10,6 +14,7 @@ class AvailableExaminers extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            redirect: 0,
             currentYear: new Date().getFullYear(),
             budgetYear: [
                 {
@@ -45,8 +50,14 @@ class AvailableExaminers extends Component {
                 }
             })
             .catch(err => {
-                console.error(err)
-                toast(this.props.info.availableExaminers.fail)
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.error(err)
+                    toast(this.props.info.availableExaminers.fail)
+                }
             })
 
     }
@@ -59,8 +70,14 @@ class AvailableExaminers extends Component {
                 }
             })
             .catch(err => {
-                console.error(err)
-                toast(this.props.info.availableExaminers.fail)
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.error(err)
+                    toast(this.props.info.availableExaminers.fail)
+                }
             })
     }
     renderDropDownYear() {
@@ -73,7 +90,7 @@ class AvailableExaminers extends Component {
                     <DropdownButton id="dropdown-basic-button" title={this.props.info.availableExaminers.changeYear}>
                         {this.state.budgetYear.map((budgetYear, key) =>
                             <Fragment>
-                                <Dropdown.Item onClick={() => this.getExaminers(budgetYear.year)}>{budgetYear.year}</Dropdown.Item>
+                                <Dropdown.Item key={key} onClick={() => this.getExaminers(budgetYear.year)}>{budgetYear.year}</Dropdown.Item>
                             </Fragment>
                         )}
                     </DropdownButton>
@@ -110,10 +127,10 @@ class AvailableExaminers extends Component {
         return (
             <div className="container">
                 <Access access='4' info={this.props.info.access} />
+                {this.state.redirect ? <Redirect to='/' />: ""}
                 <h1>{this.props.info.availableExaminers.title}</h1>
                 <p>{this.props.info.availableExaminers.subtitle}</p>
                 {this.renderDropDownYear()}
-
                 {this.renderTable()}
             </div>
         );

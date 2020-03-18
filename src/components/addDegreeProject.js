@@ -5,7 +5,11 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+
+import redirect from './../model/redirect';
 import Access from './fragments/access';
+import dbErrors from '../model/dbErrors';
+import { Redirect } from 'react-router-dom';
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -16,6 +20,7 @@ class AddDegreeProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            redirect: 0,
             year: new Date().getFullYear(),
             supervisors: [],
             students: [
@@ -51,8 +56,14 @@ class AddDegreeProject extends Component {
                 this.resetValues()
             })
             .catch(err => {
-                console.log(err)
-                toast(this.props.info.addDegreeProject.fail)
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.log(err)
+                    toast(this.props.info.addDegreeProject.fail)
+                }
             })
 
     }
@@ -71,8 +82,14 @@ class AddDegreeProject extends Component {
                 }
             })
             .catch(err => {
-                console.error(err)
-                toast(this.props.info.addDegreeProject.getFail)
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.error(err)
+                    toast(this.props.info.addDegreeProject.getFail)
+                }
             })
     }
     resetValues() {
@@ -312,6 +329,8 @@ class AddDegreeProject extends Component {
         return (
             <div className="container marginBottom">
                 <Access access='3' info={this.props.info.access} />
+                {this.state.redirect ? <Redirect to='/' /> : ""}
+
                 <h1>{this.props.info.addDegreeProject.title}</h1>
                 <p>{this.props.info.addDegreeProject.paragraph0}</p>
                 {this.renderForm()}

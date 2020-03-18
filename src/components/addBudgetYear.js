@@ -3,12 +3,17 @@ import { Form, Button, Col, Row } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../resources/css/form.css';
+
 import Access from './fragments/access';
+import dbErrors from '../model/dbErrors';
+import { Redirect } from 'react-router-dom';
+import redirect from './../model/redirect';
 
 class AddBudgetYear extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            redirect: 0,
             budgetYear: "",
             masterHoursExaimer: "",
             masterHoursSupervisor: "",
@@ -31,8 +36,14 @@ class AddBudgetYear extends Component {
                 this.resetBudgetYear()
             })
             .catch(err => {
-                console.error(err)
-                toast(this.props.info.addBudgetYear.fail)
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.error(err)
+                    toast(this.props.info.addBudgetYear.fail)
+                }                
             })
     }
     createBudgetYear() {
@@ -197,6 +208,8 @@ class AddBudgetYear extends Component {
         return (
             <div className="container">
                 <Access access='2' info={this.props.info.access} />
+                {this.state.redirect ? <Redirect to='/' />: ""}
+                
                 <h1>{this.props.info.addBudgetYear.title}</h1>
                 <p>{this.props.info.addBudgetYear.paragraph0}</p>
                 {this.renderForm()}

@@ -153,7 +153,8 @@ function getLanguage() {
             examinerHours: "Examiner hours",
             supervisorHours: "Supervisor hours",
             examinerHoursPlaceholder: "Amount of hours to be examiner.",
-            supervisorHoursPlaceholder: "Amount of hours to be supervisor."
+            supervisorHoursPlaceholder: "Amount of hours to be supervisor.",
+            getBudgetYearFail: "Something went wrong could not fetch budget years."
         },
         header: {
             home: "Home",
@@ -374,7 +375,8 @@ function getLanguage() {
             yes: "Yes",
             no: "No",
             email: "Email",
-            name: "Name"
+            name: "Name",
+            sessionFail: "You have been idle for to long please login again."
         }
     }
     return lang;
