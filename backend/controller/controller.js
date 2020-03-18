@@ -166,7 +166,7 @@ async function deleteExpertise(req) {
     return await userDAO.deleteExpertise(requestHandler.extractExpertiseID(req))
 }
 async function getBudgetYear(req) {
-    await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
+    // await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     return await userDAO.getBudgetYear()
 }
 async function postBudgetYear(req) {
