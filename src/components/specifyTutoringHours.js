@@ -62,7 +62,7 @@ class SpecifyTutoringHours extends Component {
             .get('/api/budgetYear')
             .then(res => {
                 if (res.status === 200) {
-                    this.setState({ budgetYear: res.data })
+                    this.setState({ budgetYears: res.data })
                 }
             })
             .catch(err => {
@@ -96,9 +96,10 @@ class SpecifyTutoringHours extends Component {
             })
     }
     getTutoringHours() {
+        console.log(this.state)
         return {
             examiners: this.state.pickedExaminers,
-            budgetYear: this.state.bugetYear
+            budgetYear: this.state.budgetYear
         }
     }
     resetFields() {
@@ -141,6 +142,12 @@ class SpecifyTutoringHours extends Component {
         examinersTemp.pop()
         this.setState({ numberOfExaminers: numberOfExaminersTemp, examiners: examinersTemp })
     }
+    setBudgetYear(budgetYear){
+        if(budgetYear){
+            const year = budgetYear.year
+            this.setState({budgetYear: year})
+        }
+    }
     renderForm() {
         return (
             <Form onSubmit={(e) => this.specifyTutoringHours(e)}>
@@ -151,9 +158,7 @@ class SpecifyTutoringHours extends Component {
                             id="specifyBudgetYear"
                             labelKey={(option) => `${option.year}`}
                             placeholder={this.props.info.specifyTutoringHours.budgetYearPlaceholder}
-                            selected={this.state.budgetYear}
-                            // onChange={event => this.setState({ supervisor_id: event[0].user_id })}
-                            onChange={event => this.setState({budgetYear: event[0].year})}
+                            onChange={event => this.setBudgetYear(event[0])}
                             options={this.state.budgetYears}
                         />
                     </Col>
