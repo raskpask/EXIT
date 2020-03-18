@@ -113,7 +113,6 @@ function validateProject(request) {
         //     return false;
         // }
         project = request.body;
-        console.log(project);
         if (isNaN(project.credits) || isNaN(project.numberOfStudents)) {
             console.log('NaN');
             return false;

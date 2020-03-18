@@ -362,7 +362,6 @@ function getProject(user_id, year) {
             client
                 .query(getUserQuery.text, getUserQuery.values)
                 .then(res => {
-                    console.log(res.length)
                     if (res.length) {
                         let projects = []
                         let getProjectUserQuery;

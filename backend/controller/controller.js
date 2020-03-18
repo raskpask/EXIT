@@ -33,7 +33,6 @@ async function registerProject(req) {
         const projectDetails = requestHandler.extractRegisterProjectDetails(req);
         return await userDAO.registerProject(projectDetails);
     } catch (error) {
-        console.log(error + " IN THE CONTROLLER");
         throw error
     }
 
@@ -62,12 +61,10 @@ async function getUser(req) {
  */
 async function getProject(req) {
     try {
-        // await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
-        const user_id = await userDAO.getUserID('jakmol')
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
+        const user_id = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req))
         const budget_year = requestHandler.extractBudgetYear(req)
-        console.log(user_id)
-        console.log(budget_year)
-        return await userDAO.getProject(user_id,budget_year)//requestHandler.extractUsernameFromCookie(req), requestHandler.extractBudgetYear(req));
+        return await userDAO.getProject(user_id,budget_year)
     }
     catch (error) {
         throw error
@@ -170,7 +167,7 @@ async function deleteExpertise(req) {
     return await userDAO.deleteExpertise(requestHandler.extractExpertiseID(req))
 }
 async function getBudgetYear(req) {
-    // await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
+    await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     return await userDAO.getBudgetYear()
 }
 async function postBudgetYear(req) {
