@@ -512,7 +512,6 @@ function registerProject(project_details, examiner_id) {
                     })
                     .catch(err => {
                         if (err.code === 'ER_DUP_ENTRY') {
-
                             addStudentToProjectQuery = {
                                 text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id) " +
                                     "VALUES (?,(SELECT user_id FROM User WHERE kth_username = ?),?)",
