@@ -416,12 +416,12 @@ function getProject(user_id, year) {
  * Adds a new project to the database. 
  * @param {projectDetails} project_details 
  */
-function registerProject(project_details) {
+function registerProject(project_details,examiner_id) {
     return new Promise(async function (resolve, reject) {
         let client;
         try {
             client = await pool.getConnection()
-            const examiner_id = 1
+            // const examiner_id = 1
             let company_id = null;
             let project_id;
             await client.query("BEGIN");
