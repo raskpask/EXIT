@@ -128,10 +128,10 @@ function router(router) {
             const username = req.headers.cookie.split('username=')[1].split(';')[0]
             await controller.logout(username)
 
-            res.cookie('session_id', ' ', {expires: Date.now()});
-            res.cookie('role_id',' ', {expires: Date.now()});
-            res.cookie('username',' ', {expires: Date.now()});
-            res.cookie('name_id',' ', {expires: Date.now()});
+            res.clearCookie('session_id');
+            res.clearCookie('role_id');
+            res.clearCookie('username');
+            res.clearCookie('name_id');
             res.redirect('/')
 
         } catch (err) {
