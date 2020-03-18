@@ -1,6 +1,7 @@
 const saml2 = require('saml2-js');
 const controller = require('../controller/controller');
 const fs = require('fs');
+const dbErrors = require('../error/dbErrors');
 
 const path = __dirname.split("\\").join("/");
 const private_key = path + "/key-file.pem"
@@ -133,6 +134,7 @@ function router(router) {
             res.cookie.set('name_id', {expires: Date.now()});
 
         } catch (err) {
+            dbErrors.respondError(error.message, res)
             console.error(err)
         }
     });
