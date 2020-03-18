@@ -357,7 +357,7 @@ function getProject(kth_username, year) {
                 text: "SELECT project_id, number_of_students, title, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number " +
                     "FROM (Degree_project LEFT JOIN Company ON Degree_project.company = Company.company_id) " +
                     "WHERE Degree_project.project_id IN (SELECT degree_project_id FROM Student_project WHERE user_id = (SELECT user_id FROM User WHERE kth_username = ?)) AND year(start_date) = ?",
-                values: [user_id, year]
+                values: [kth_username, year]
             }
             client
                 .query(getUserQuery.text, getUserQuery.values)
