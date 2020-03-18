@@ -416,7 +416,7 @@ function getProject(user_id, year) {
  * Adds a new project to the database. 
  * @param {projectDetails} project_details 
  */
-function registerProject(project_details,examiner_id) {
+function registerProject(project_details, examiner_id) {
     return new Promise(async function (resolve, reject) {
         let client;
         try {
@@ -502,7 +502,7 @@ function registerProject(project_details,examiner_id) {
                         client
                             .query(addStudentToProjectQuery.text, addStudentToProjectQuery.values)
                             .catch(err => {
-                                
+
                                 console.error(err)
                                 //client.query("ROLLBACK"); 
                                 // reject(err);
@@ -511,20 +511,21 @@ function registerProject(project_details,examiner_id) {
                             })
                     })
                     .catch(err => {
-                        if(err.code === 'ER_DUP_ENTRY') {
+                        if (err.code === 'ER_DUP_ENTRY') {
                             const user_id = await this.getUserID(student.email)
                             addStudentToProjectQuery = {
                                 text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id) " +
                                     "VALUES (?,?,?)",
                                 values: [ROLE_STUDENT, project_id, user_id]
                             }
-                            
+                            client
+                                .query(addStudentToProjectQuery.text, addStudentToProjectQuery.values)
+                                .catch(err => {
+                                    console.error(err)
+                                    throw new Error(dbError.errorCodes.CREATE_PROJECT_ERROR.code);
+                                })
                         }
                         console.error(err)
-                        //client.query("ROLLBACK"); 
-                        // reject(err); 
-                        //throw(err);
-                        //reject(new Error(dbError.errorCodes.CREATE_PROJECT_ERROR.code))
                         throw new Error(dbError.errorCodes.CREATE_PROJECT_ERROR.code);
                     })
             })
