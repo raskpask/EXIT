@@ -377,6 +377,9 @@ function getLanguage() {
             email: "Email",
             name: "Name",
             sessionFail: "You have been idle for to long please login again."
+        },
+        budgetYear: {
+            getFail: "Something went wrong could not load budget years"
         }
     }
     return lang;

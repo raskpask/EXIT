@@ -46,7 +46,7 @@ class AvailableExaminers extends Component {
             })
             .then(res => {
                 if (res.status === 200) {
-                    this.setState({ examiners: res.data })
+                    this.setState({ examiners: res.data, currentYear: year })
                 }
             })
             .catch(err => {
@@ -76,7 +76,7 @@ class AvailableExaminers extends Component {
                     toast(this.props.info.general.sessionFail)
                 } else {
                     console.error(err)
-                    toast(this.props.info.availableExaminers.fail)
+                    toast(this.props.info.budgetYear.getFail)
                 }
             })
     }
