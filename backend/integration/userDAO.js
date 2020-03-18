@@ -502,6 +502,7 @@ function registerProject(project_details,examiner_id) {
                         client
                             .query(addStudentToProjectQuery.text, addStudentToProjectQuery.values)
                             .catch(err => {
+                                
                                 console.error(err)
                                 //client.query("ROLLBACK"); 
                                 // reject(err);
@@ -510,6 +511,15 @@ function registerProject(project_details,examiner_id) {
                             })
                     })
                     .catch(err => {
+                        if(err.code === 'ER_DUP_ENTRY') {
+                            const user_id = await this.getUserID(student.email)
+                            addStudentToProjectQuery = {
+                                text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id) " +
+                                    "VALUES (?,?,?)",
+                                values: [ROLE_STUDENT, project_id, user_id]
+                            }
+                            
+                        }
                         console.error(err)
                         //client.query("ROLLBACK"); 
                         // reject(err); 
