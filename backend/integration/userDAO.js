@@ -359,41 +359,44 @@ function getProject(user_id, year) {
                     "WHERE Degree_project.project_id IN (SELECT degree_project_id FROM Student_project WHERE user_id = ?) AND year(start_date) = ?",
                 values: [user_id, year]
             }
-            console.log(getUserQuery)
             client
                 .query(getUserQuery.text, getUserQuery.values)
                 .then(res => {
-                    console.log(res)
-                    let projects = []
-                    let getProjectUserQuery;
-                    res.forEach((project, index, arr) => {
-                        getProjectUserQuery = {
-                            text: "SELECT user_type_id,email,first_name,last_name,kth_username,phone_number, User.user_id,Student_project.project_role_id " +
-                                "FROM User INNER JOIN Student_project ON User.user_id = Student_project.user_id " +
-                                "WHERE Student_project.degree_project_id = ?",
-                            values: [project.project_id]
+                    console.log(res.length)
+                    if (res.length) {
+                        let projects = []
+                        let getProjectUserQuery;
+                        res.forEach((project, index, arr) => {
+                            getProjectUserQuery = {
+                                text: "SELECT user_type_id,email,first_name,last_name,kth_username,phone_number, User.user_id,Student_project.project_role_id " +
+                                    "FROM User INNER JOIN Student_project ON User.user_id = Student_project.user_id " +
+                                    "WHERE Student_project.degree_project_id = ?",
+                                values: [project.project_id]
+                            }
+                            client
+                                .query(getProjectUserQuery.text, getProjectUserQuery.values)
+                                .then(res => {
+                                    const users = res
+                                    projects.push(new ProjectDetails(project.project_id, project.number_of_students, project.title, project.project_description, project.credits, project.start_date, project.end_date, project.in_progress, project.out_of_date, project.all_info_specified, project.company, project.company_contact, project.name, project.address, project.phone_number, users))
+                                    if (index === arr.length - 1) {
+                                        resolve(projects)
+                                    }
+                                })
+                                .catch(err => {
+                                    console.error(err)
+                                    client.query("ROLLBACK")
+                                })
+                        })
+                        if (res !== undefined) {
+                            // const rawProject = res[0]//.person.split('(')[1].split(',');
+                            // console.log(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,users))
+                            // new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number)
+                            // console.log(res)
+                            // console.log(projects)
+                            // resolve(projects)
                         }
-                        client
-                            .query(getProjectUserQuery.text, getProjectUserQuery.values)
-                            .then(res => {
-                                const users = res
-                                projects.push(new ProjectDetails(project.project_id, project.number_of_students, project.title, project.project_description, project.credits, project.start_date, project.end_date, project.in_progress, project.out_of_date, project.all_info_specified, project.company, project.company_contact, project.name, project.address, project.phone_number, users))
-                                if (index === arr.length - 1) {
-                                    resolve(projects)
-                                }
-                            })
-                            .catch(err => {
-                                console.error(err)
-                                client.query("ROLLBACK")
-                            })
-                    })
-                    if (res !== undefined) {
-                        // const rawProject = res[0]//.person.split('(')[1].split(',');
-                        // console.log(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,users))
-                        // new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number)
-                        // console.log(res)
-                        // console.log(projects)
-                        // resolve(projects)
+                    } else {
+                        resolve([])
                     }
                 })
                 .catch(err => {
@@ -481,12 +484,12 @@ function registerProject(project_details) {
             let addStudentQuery = "";
             let addStudentToProjectQuery = "";
             await project_details.users.forEach(student => {
-                const email = student.email+'@kth.se'
+                const email = student.email + '@kth.se'
                 addStudentQuery = {
                     text: "INSERT INTO User (user_type_id,first_name,email,kth_username) " +
                         "VALUES (?,?,?,?); " +
                         "SELECT LAST_INSERT_ID()",
-                    values: [TYPE_STUDENT, student.name, email,student.email]
+                    values: [TYPE_STUDENT, student.name, email, student.email]
                 }
                 client
                     .query(addStudentQuery.text, addStudentQuery.values)
