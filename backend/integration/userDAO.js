@@ -483,6 +483,7 @@ function registerProject(project_details) {
             let addStudentQuery = "";
             let addStudentToProjectQuery = "";
             await project_details.users.forEach(student => {
+                console.log(student)
                 addStudentQuery = {
                     text: "INSERT INTO User (user_type_id,first_name,email)" +
                         "VALUES (?,?,?);" +
