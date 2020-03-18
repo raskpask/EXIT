@@ -63,7 +63,7 @@ async function getUser(req) {
 async function getProject(req) {
     try {
         // await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
-        return await userDAO.getProject('jakmol',requestHandler.extractBudgetYear(req))//requestHandler.extractUsernameFromCookie(req), requestHandler.extractBudgetYear(req));
+        return await userDAO.getProject(await userDAO.getUserID('jakmol'),requestHandler.extractBudgetYear(req))//requestHandler.extractUsernameFromCookie(req), requestHandler.extractBudgetYear(req));
     }
     catch (error) {
         throw error
