@@ -220,7 +220,7 @@ function extractYear(req){
     return req.query.year
 }
 function extractBudgetYear(req){
-    return req.query.budget_year
+    return req.query.year
 }
 
 function extractUsernameFromCookie(req){
