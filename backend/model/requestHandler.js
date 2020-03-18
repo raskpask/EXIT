@@ -219,6 +219,10 @@ function extractBudgetYear(req) {
 function extractYear(req){
     return req.query.year
 }
+function extractBudgetYear(req){
+    return req.query.budget_year
+}
+
 function extractUsernameFromCookie(req){
     cookieHeader = req.headers.cookie;
     if (cookieHeader === undefined) {
@@ -228,6 +232,7 @@ function extractUsernameFromCookie(req){
 }
 module.exports = {
     extractProjectID,
+    extractBudgetYear,
     extractYear,
     extractUsername,
     extractUserID,

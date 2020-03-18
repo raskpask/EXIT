@@ -62,8 +62,8 @@ async function getUser(req) {
  */
 async function getProject(req) {
     try {
-        await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
-        return await userDAO.getProject(1, 2020);//requestHandler.extractProjectID(req));
+        // await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
+        return await userDAO.getProject('jakmol',requestHandler.extractBudgetYear(req))//requestHandler.extractUsernameFromCookie(req), requestHandler.extractBudgetYear(req));
     }
     catch (error) {
         throw error
