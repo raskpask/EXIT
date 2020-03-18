@@ -136,7 +136,7 @@ function validateProject(request) {
         }
 
         if(project.hasOwnProperty("companyName")){
-            if(!checkPhoneNumber(project.companyPhoneNumber)){
+            if(!checkPhoneNumber(project.companyPhone)){
                 console.log("invalid phone number" );
                 return false;
             }
