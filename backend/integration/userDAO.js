@@ -989,7 +989,7 @@ function logout(kth_username) {
         const client = await pool.getConnection()
         let updateUser = {
             text: "UPDATE User " +
-                "SET session_id = 'null' " +
+                "SET session_id = 'NO_SESSION' " +
                 "WHERE kth_username = ?",
             values: [kth_username]
         }

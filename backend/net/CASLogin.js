@@ -113,7 +113,7 @@ function router(router) {
     });
 
     // Starting point for logout
-    router.get("/logout", function (req, res) {
+    router.get("/logout", async function (req, res) {
         try {
             // const options = {
             //     name_id: req.headers.cookie.split('name_id=')[1].split(';')[0],
@@ -126,7 +126,7 @@ function router(router) {
             //     res.redirect(logout_url);
             // });
             const username = req.headers.cookie.split('username=')[1].split(';')[0]
-            controller.logout(username)
+            await controller.logout(username)
 
             res.cookie.set('session_id', {expires: Date.now()});
             res.cookie.set('role_id', {expires: Date.now()});
@@ -134,7 +134,7 @@ function router(router) {
             res.cookie.set('name_id', {expires: Date.now()});
 
         } catch (err) {
-            dbErrors.respondError(error.message, res)
+            dbErrors.respondError(err.message, res)
             console.error(err)
         }
     });
