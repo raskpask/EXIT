@@ -1018,12 +1018,13 @@ function authorizeUser(session_id, kth_username, role_id) {
             .then(res => {
                 if (res.length < 1) {
                     reject(new Error(dbError.errorCodes.INVALID_SESSION.code))
-                }
-                const user_type_id = parseInt(res[0].user_type_id)
-                if (user_type_id <= role_id) {
-                    resolve(user_type_id)
                 } else {
-                    reject(new Error(dbError.errorCodes.NO_ACCESS_ERROR.code))
+                    const user_type_id = parseInt(res[0].user_type_id)
+                    if (user_type_id <= role_id) {
+                        resolve(user_type_id)
+                    } else {
+                        reject(new Error(dbError.errorCodes.NO_ACCESS_ERROR.code))
+                    }
                 }
             })
             .catch(err => {

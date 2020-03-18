@@ -13,7 +13,7 @@ const BudgetYear = require('./budgetYear.js');
  * @returns JSON of credentials.
  */
 function extractUserDataFromCookie(req) {
-    const session_id = req.headers.cookie.split('SSO_SESSION_START=')[1].split(';')[0]
+    const session_id = req.headers.cookie.split('session_id=')[1].split(';')[0]
     const kth_username = req.headers.cookie.split('username=')[1].split(';')[0]
     const user_info = {
         session_id: session_id,
