@@ -362,6 +362,7 @@ function getProject(kth_username, year) {
             client
                 .query(getUserQuery.text, getUserQuery.values)
                 .then(res => {
+                    console.log(res)
                     let projects = []
                     let getProjectUserQuery;
                     res.forEach((project, index, arr) => {
