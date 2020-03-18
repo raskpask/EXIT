@@ -357,11 +357,13 @@ function getProject(user_id, year) {
                 text: "SELECT project_id, number_of_students, title, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number " +
                     "FROM (Degree_project LEFT JOIN Company ON Degree_project.company = Company.company_id) " +
                     "WHERE Degree_project.project_id IN (SELECT degree_project_id FROM Student_project WHERE user_id = ?) AND year(start_date) = ?",
-                values: [user_id, year]
+                values: ["'"+user_id+"'", year]
             }
+            console.log(getUserQuery)
             client
                 .query(getUserQuery.text, getUserQuery.values)
                 .then(res => {
+                    console.log(res)
                     let projects = []
                     let getProjectUserQuery;
                     res.forEach((project, index, arr) => {
