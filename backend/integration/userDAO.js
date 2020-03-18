@@ -966,16 +966,37 @@ function login(session_id, first_name, last_name, kth_username, role) {
                         values: [kth_username]
                     }
                     client
-                    .query(getRoleId.text, getRoleId.values)
-                    .then(res=>{
-                        resolve(res[0].user_type_id)
-                        reject(new Error(dbError.errorCodes.USER_ERROR.code))
-                    })
-                    .catch(err=>{
-                        console.error(err)
-                        reject(new Error(dbError.errorCodes.LOGIN_ERROR.code))
-                    })
+                        .query(getRoleId.text, getRoleId.values)
+                        .then(res => {
+                            resolve(res[0].user_type_id)
+                            reject(new Error(dbError.errorCodes.USER_ERROR.code))
+                        })
+                        .catch(err => {
+                            console.error(err)
+                            reject(new Error(dbError.errorCodes.LOGIN_ERROR.code))
+                        })
                 }
+            })
+            .catch(err => {
+                console.error(err)
+                reject(new Error(dbError.errorCodes.LOGIN_ERROR.code))
+            })
+        client.end()
+    })
+}
+function logout(kth_username) {
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection()
+        let updateUser = {
+            text: "UPDATE User " +
+                "SET session_id = null " +
+                "WHERE kth_username = +",
+            values: [kth_username]
+        }
+        client
+            .query(updateUser.text, updateUser.values)
+            .then(res => {
+                resolve()
             })
             .catch(err => {
                 console.error(err)
@@ -1038,5 +1059,6 @@ module.exports = {
     getAvailableSupervisors,
     updateProjectInTime,
     login,
+    logout,
     authorizeUser
 }

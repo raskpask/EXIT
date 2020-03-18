@@ -206,9 +206,12 @@ async function login(session_id, first_name, last_name, kth_username, role) {
 async function authorizeUser(user_info, privilege_level) {
     return await userDAO.authorizeUser(user_info.session_id, user_info.kth_username, privilege_level);
 }
-
+async function logout(kth_username) {
+    return await userDAO.logout(kth_username);
+}
 
 module.exports = {
+    logout,
     registerUser,
     registerProject,
     getUser,

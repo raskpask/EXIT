@@ -93,12 +93,11 @@ function router(router) {
             // const name_id = saml_response.user.name_id;
             // const session_index = saml_response.user.session_index;
             res.cookie('name_id', saml_response.user.name_id);
-            res.cookie('session_index', saml_response.user.session_index);
-            let session_id = 1
-            if(req.headers.cookie){
-                session_id = req.headers.cookie.split('SSO_SESSION_START=')[1].split(';')[0]
-            }
-            console.log(saml_response)
+            res.cookie('session_id', saml_response.user.session_index);
+            const session_id = saml_response.user.session_index
+            // if(req.headers.cookie){
+            //     session_id = req.headers.cookie.split('SSO_SESSION_START=')[1].split(';')[0]
+            // }
             const attributes = JSON.stringify(saml_response.user.attributes)
             const nameAndUsername = attributes.split('"urn:oid:2.5.4.3":["')[1].split('"')[0].split(' ')
             const first_name = nameAndUsername[0]
@@ -125,9 +124,14 @@ function router(router) {
             //         return res.send(500);
             //     res.redirect(logout_url);
             // });
-            const session_id = req.headers.cookie.split('SSO_SESSION_START=')[1].split(';')[0]
             const username = req.headers.cookie.split('username=')[1].split(';')[0]
-            controller.logout(session_id,username)
+            controller.logout(username)
+
+            cookies.set('session_id', {expires: Date.now()});
+            cookies.set('role_id', {expires: Date.now()});
+            cookies.set('username', {expires: Date.now()});
+            cookies.set('name_id', {expires: Date.now()});
+
         } catch (err) {
             console.error(err)
         }
