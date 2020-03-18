@@ -486,7 +486,7 @@ function registerProject(project_details) {
                 const email = student.email+'@kth.se'
                 addStudentQuery = {
                     text: "INSERT INTO User (user_type_id,first_name,email,kth_username)" +
-                        "VALUES (?,?,?);" +
+                        "VALUES (?,?,?,?);" +
                         "SELECT LAST_INSERT_ID()",
                     values: [TYPE_STUDENT, student.name, email,student.email]
                 }
