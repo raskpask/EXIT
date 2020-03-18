@@ -990,7 +990,7 @@ function logout(kth_username) {
         let updateUser = {
             text: "UPDATE User " +
                 "SET session_id = 'null' " +
-                "WHERE kth_username = +",
+                "WHERE kth_username = ?",
             values: [kth_username]
         }
         client
