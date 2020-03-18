@@ -127,10 +127,10 @@ function router(router) {
             const username = req.headers.cookie.split('username=')[1].split(';')[0]
             controller.logout(username)
 
-            cookies.set('session_id', {expires: Date.now()});
-            cookies.set('role_id', {expires: Date.now()});
-            cookies.set('username', {expires: Date.now()});
-            cookies.set('name_id', {expires: Date.now()});
+            res.cookie.set('session_id', {expires: Date.now()});
+            res.cookie.set('role_id', {expires: Date.now()});
+            res.cookie.set('username', {expires: Date.now()});
+            res.cookie.set('name_id', {expires: Date.now()});
 
         } catch (err) {
             console.error(err)
