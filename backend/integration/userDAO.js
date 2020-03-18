@@ -989,7 +989,7 @@ function logout(kth_username) {
         const client = await pool.getConnection()
         let updateUser = {
             text: "UPDATE User " +
-                "SET session_id = null " +
+                "SET session_id = 'null' " +
                 "WHERE kth_username = +",
             values: [kth_username]
         }
@@ -1000,7 +1000,7 @@ function logout(kth_username) {
             })
             .catch(err => {
                 console.error(err)
-                reject(new Error(dbError.errorCodes.LOGIN_ERROR.code))
+                reject(new Error(dbError.errorCodes.LOGOUT_ERROR.code))
             })
         client.end()
     })

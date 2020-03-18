@@ -100,13 +100,17 @@ errorCodes = {
         code: 'NO_TIME_AVAILABLE_ERROR',
         message: 'The teacher does not have enough time left in the budget'
     },
-    NO_CREDITS_ERROR:{
+    NO_CREDITS_ERROR: {
         code: 'NO_CREDITS_ERROR',
         message: 'Credits missing from project'
     },
-    CREATE_PROJECT_ERROR:{
+    CREATE_PROJECT_ERROR: {
         code: 'CREATE_PROJECT_ERROR',
         message: 'There was an error whlie creating the project'
+    },
+    LOGOUT_ERROR: {
+        code: 'LOGOUT_ERROR',
+        message: 'There was an error whlie logging out'
     }
 
 
@@ -224,7 +228,11 @@ function respondError(error, res) {
             res.status(401);
             res.send(errorCodes.INVALID_SESSION.code);
             break;
-
+        case errorCodes.LOGOUT_ERROR.code:
+            res.status(400);
+            res.send(errorCodes.LOGOUT_ERROR.code);
+            break;
+            
         default:
             res.status(500);
             res.send('Something went wrong on the server');
