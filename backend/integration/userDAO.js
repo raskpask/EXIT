@@ -485,8 +485,8 @@ function registerProject(project_details) {
             await project_details.users.forEach(student => {
                 const email = student.email+'@kth.se'
                 addStudentQuery = {
-                    text: "INSERT INTO User (user_type_id,first_name,email,kth_username)" +
-                        "VALUES (?,?,?,?);" +
+                    text: "INSERT INTO User (user_type_id,first_name,email,kth_username) " +
+                        "VALUES (?,?,?,?); " +
                         "SELECT LAST_INSERT_ID()",
                     values: [TYPE_STUDENT, student.name, email,student.email]
                 }
@@ -495,7 +495,7 @@ function registerProject(project_details) {
                     .then(res => {
                         const user_id = res[0].insertId
                         addStudentToProjectQuery = {
-                            text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
+                            text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id) " +
                                 "VALUES (?,?,?)",
                             values: [ROLE_STUDENT, project_id, user_id]
                         }
