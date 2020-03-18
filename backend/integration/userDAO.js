@@ -357,7 +357,7 @@ function getProject(user_id, year) {
                 text: "SELECT project_id, number_of_students, title, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number " +
                     "FROM (Degree_project LEFT JOIN Company ON Degree_project.company = Company.company_id) " +
                     "WHERE Degree_project.project_id IN (SELECT degree_project_id FROM Student_project WHERE user_id = ?) AND year(start_date) = ?",
-                values: ["'"+user_id+"'", year]
+                values: [user_id, year]
             }
             console.log(getUserQuery)
             client
@@ -415,7 +415,6 @@ function getProject(user_id, year) {
  * @param {projectDetails} project_details 
  */
 function registerProject(project_details) {
-    console.log(project_details);
     return new Promise(async function (resolve, reject) {
         let client;
         try {
@@ -454,7 +453,6 @@ function registerProject(project_details) {
                 .query(addProjectDetailsQuery.text, addProjectDetailsQuery.values)
                 .then(res => {
                     project_id = res[0].insertId
-                    console.log("The project ID is: " + project_id)
                     const addExaminerQuery = {
                         text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
                             "VALUES (?,?,?)",
@@ -622,7 +620,6 @@ function updateProject(supervisor_id, project_id) {
                     client
                         .query(addSupervisor.text, addSupervisor.values)
                         .then(res => {
-                            console.log(res)
                             if (res.affectedRows === 0) {
                                 reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
                             }
@@ -708,7 +705,6 @@ function postExpertise(expertise_name) {
             .query(postExpertise.text, postExpertise.values)
             .then(res => {
                 if (res.affectedRows == 1) {
-                    console.log("Added!")
                     resolve()
                 }
             })
