@@ -16,7 +16,7 @@ const sp_options = {
 }
 const idp_options = {
     sso_login_url: "https://saml-5.sys.kth.se/idp/profile/SAML2/Redirect/SSO",
-    sso_logout_url: "https://saml-5.sys.kth.se/idp/profile/SAML2/POST/SSO",
+    sso_logout_url: "https://saml-5.sys.kth.se/idp/profile/SAML2/Redirect/SSO",
     certificates: [
         "MIIDMDCCAhigAwIBAgIVAOmaIGGXK/JbzXedtKY0l3Vp34hRMA0GCSqGSIb3DQEB" +
         "CwUAMBwxGjAYBgNVBAMMEXNhbWwtNS5zeXMua3RoLnNlMB4XDTE3MTAwMjE0MDIw" +
