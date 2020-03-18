@@ -512,11 +512,10 @@ function registerProject(project_details, examiner_id) {
                     })
                     .catch(err => {
                         if (err.code === 'ER_DUP_ENTRY') {
-                            const user_id = await this.getUserID(student.email)
                             addStudentToProjectQuery = {
                                 text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id) " +
-                                    "VALUES (?,?,?)",
-                                values: [ROLE_STUDENT, project_id, user_id]
+                                    "VALUES (?,(SELECT user_id FROM User WHERE kth_username = ?),?)",
+                                values: [ROLE_STUDENT, student.email, user_id]
                             }
                             client
                                 .query(addStudentToProjectQuery.text, addStudentToProjectQuery.values)
