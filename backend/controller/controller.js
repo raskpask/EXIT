@@ -130,7 +130,7 @@ async function getAvailableExaminers(req) {
 }
 async function getAvailableSupervisors(req) {
     try {
-        // await authorizeUser(requestHandler.extractUserDataFromCookie(req), STUDENT_PRIVILEGE)
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), STUDENT_PRIVILEGE)
         return await userDAO.getAvailableSupervisors(req.query.year);
     }
     catch (error) {
