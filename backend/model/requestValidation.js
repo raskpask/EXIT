@@ -109,9 +109,6 @@ function checkPhoneNumber(string){
 
 function validateProject(request) {
     try {
-        // if (Object.keys(request.body).length === 0) {
-        //     return false;
-        // }
         project = request.body;
         if (isNaN(project.credits) || isNaN(project.numberOfStudents)) {
             console.log('NaN');

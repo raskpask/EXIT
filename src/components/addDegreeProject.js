@@ -20,6 +20,16 @@ class AddDegreeProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            projectTypes: [
+                {
+                    name: this.props.info.addDegreeProject.masterProject,
+                    credits: 30
+                },
+                {
+                    name: this.props.info.addDegreeProject.bachleorProject,
+                    credits: 15
+                },
+            ],
             redirect: 0,
             year: new Date().getFullYear(),
             supervisors: [],
@@ -143,6 +153,15 @@ class AddDegreeProject extends Component {
         await this.setState({ startDate: date, year: date.getFullYear() })
         this.getSupervisors()
     }
+    handleChangeForm(value){
+        if(value){
+            if(value.credits){
+                this.setState({ credits: value.credits })
+            } else if(value.user_id){
+                this.setState({ supervisor_id: value.user_id })
+            }
+        }
+    }
     addStudent() {
         let studentsTemp = this.state.students
         let numberOfStudentsTemp = this.state.numberOfStudents
@@ -210,12 +229,12 @@ class AddDegreeProject extends Component {
                     <Col md={4}>
                         <Form.Group>
                             <Form.Label>{this.props.info.addDegreeProject.credits}</Form.Label>
-                            <Form.Control
-                                required
-                                type="number"
-                                value={this.state.credits}
-                                placeholder={this.props.info.addDegreeProject.credits}
-                                onChange={event => this.setState({ credits: event.target.value })}
+                            <Typeahead
+                                id="changeCredit"
+                                labelKey={(option) => `${option.name}`}
+                                placeholder={this.props.info.addDegreeProject.creditsPlaceholder}
+                                onChange={event => this.handleChangeForm(event[0])}
+                                options={this.state.projectTypes}
                             />
                         </Form.Group>
                     </Col>
@@ -226,7 +245,7 @@ class AddDegreeProject extends Component {
                             labelKey={(option) => `${option.first_name} ${option.last_name} (${option.email})`}//{"" +option.first_name +option.last_name +" "+option.email +""}}
                             placeholder={this.props.info.addDegreeProject.supervisorPlaceholder}
                             selected={this.state.supervisor}
-                            onChange={event => this.setState({ supervisor_id: event[0].user_id })}
+                            onChange={event => this.handleChangeForm(event[0])}
                             options={this.state.supervisors}
                         />
                     </Col>
@@ -328,8 +347,8 @@ class AddDegreeProject extends Component {
     render() {
         return (
             <div className="container marginBottom">
-                <Access access='3' info={this.props.info.access} />
-                {this.state.redirect ? <Redirect to='/' /> : ""}
+                {/* <Access access='3' info={this.props.info.access} />
+                {this.state.redirect ? <Redirect to='/' /> : ""} */}
 
                 <h1>{this.props.info.addDegreeProject.title}</h1>
                 <p>{this.props.info.addDegreeProject.paragraph0}</p>

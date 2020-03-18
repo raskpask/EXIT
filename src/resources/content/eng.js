@@ -64,8 +64,8 @@ function getLanguage() {
             numOfStudentsPlaceholder: "Specify number of students for the project.",
             projectDescription: "Project description",
             projectDescriptionPlaceholder: "Please fill in general information about the project.",
-            credits: "Credits",
-            creditsPlaceholder: "Enter the amount of credits for the project.",
+            credits: "Project type",
+            creditsPlaceholder: "Enter the type of the project.",
             startDate: "Start date",
             startDatePlaceholder: "Press to enter start date.",
             endDate: "End date",
@@ -91,7 +91,9 @@ function getLanguage() {
             added: "The project was added to your quota",
             fail: "Error, The project was not added to your quota",
             getFail: "Error could not fetch the supervisors",
-            pickSupervisor: "Pick supervisor"
+            pickSupervisor: "Pick supervisor",
+            bachleorProject: "Bachleor project",
+            masterProject: "Master project"
         },
         specifiedBudgetYears: {
             title: "Specified budget years",
@@ -145,11 +147,12 @@ function getLanguage() {
             paragraph0: "This table shows all available examiners in the system. " +
                 "You can add an examiner to a specific budget year by choosing the budget year, " +
                 "examiner mail and define the number of hours the examiner is supposed to use " +
-                "to tutor degree projects during the selected budget year.",
+                "to tutor degree projects during the selected budget year. "+
+                "If the user has the name 'null null' it hasn't logged in to the site.",
             bugetYear: "Budget Year",
             budgetYearPlaceholder: "Enter the buget year you want to add the examiner/examiners to.",
-            username: "Username",
-            usernamePlaceholder: "KTH username.",
+            username: "User",
+            usernamePlaceholder: "KTH user",
             examinerHours: "Examiner hours",
             supervisorHours: "Supervisor hours",
             examinerHoursPlaceholder: "Amount of hours to be examiner.",
