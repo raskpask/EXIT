@@ -98,7 +98,7 @@ function router(router) {
             if(req.headers.cookie){
                 session_id = req.headers.cookie.split('SSO_SESSION_START=')[1].split(';')[0]
             }
-
+            console.log(saml_response)
             const attributes = JSON.stringify(saml_response.user.attributes)
             const nameAndUsername = attributes.split('"urn:oid:2.5.4.3":["')[1].split('"')[0].split(' ')
             const first_name = nameAndUsername[0]
@@ -115,16 +115,19 @@ function router(router) {
     // Starting point for logout
     router.get("/logout", function (req, res) {
         try {
-            const options = {
-                name_id: req.headers.cookie.split('name_id=')[1].split(';')[0],
-                session_index: req.headers.cookie.split('session_index=')[1].split(';')[0]
-            };
+            // const options = {
+            //     name_id: req.headers.cookie.split('name_id=')[1].split(';')[0],
+            //     session_index: req.headers.cookie.split('session_index=')[1].split(';')[0]
+            // };
 
-            sp.create_logout_request_url(idp, options, function (err, logout_url) {
-                if (err != null)
-                    return res.send(500);
-                res.redirect(logout_url);
-            });
+            // sp.create_logout_request_url(idp, options, function (err, logout_url) {
+            //     if (err != null)
+            //         return res.send(500);
+            //     res.redirect(logout_url);
+            // });
+            const session_id = req.headers.cookie.split('SSO_SESSION_START=')[1].split(';')[0]
+            const username = req.headers.cookie.split('username=')[1].split(';')[0]
+            controller.logout(session_id,username)
         } catch (err) {
             console.error(err)
         }
