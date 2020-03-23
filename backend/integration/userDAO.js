@@ -986,6 +986,20 @@ function login(session_id, first_name, last_name, kth_username, role) {
                             console.error(err)
                             reject(new Error(dbError.errorCodes.LOGIN_ERROR.code))
                         })
+                } else if(res.affectedRows === 0){
+                    const registerStudent = {
+                        text: "INSERT INTO User (user_type_id,email,first_name,last_name,kth_username,session_id) VALUES (?,?,?,?,?,?) ",
+                        values: [ROLE_STUDENT,kth_username+'@kth.se',first_name,last_name,kth_username,session_id]
+                    }
+                    client
+                    .query(registerStudent.text, registerStudent.values)
+                    .then(res => {
+                        resolve()
+                    })
+                    .catch(err => {
+                        console.error(err)
+                        reject(new Error(dbError.errorCodes.LOGIN_ERROR.code))
+                    })
                 }
             })
             .catch(err => {
