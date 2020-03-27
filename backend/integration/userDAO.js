@@ -846,6 +846,7 @@ function postBudgetYear(budget_year) {
             values: [budget_year.year, budget_year.master_hours_examiner, budget_year.master_hours_supervisor, budget_year.bachelor_hours_examiner, budget_year.bachelor_hours_supervisor, budget_year.total_tutoring_hours,
             budget_year.factor_1, budget_year.factor_2, budget_year.factor_3, budget_year.factor_4, budget_year.factor_5]
         }
+        console.log(postBudgetYear)
         client
             .query(postBudgetYear.text, postBudgetYear.values)
             .then(res => {
