@@ -174,6 +174,7 @@ async function getBudgetYear(req) {
 async function postBudgetYear(req) {
     try {
         await authorizeUser(requestHandler.extractUserDataFromCookie(req), DICRECTOR_PRIVILEGE)
+        console.log(req.body)
         return await userDAO.postBudgetYear(requestHandler.extractBudgetYear(req))
     } catch (error) {
         throw error;
