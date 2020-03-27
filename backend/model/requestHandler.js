@@ -219,7 +219,7 @@ function extractBudgetYear(req) {
 function extractYear(req){
     return req.query.year
 }
-function extractBudgetYear(req){
+function extractBudgetYearProject(req){
     return req.query.year
 }
 
@@ -242,7 +242,7 @@ module.exports = {
     extractUsernameFromCookie,
     extractLang,
     extractRegisterProjectDetails,
-    extractBudgetYear,
+    extractBudgetYearProject,
     extractUserID,
     extractExpertiseName,
     extractExpertiseID,

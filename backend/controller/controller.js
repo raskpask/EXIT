@@ -64,7 +64,7 @@ async function getProject(req) {
     try {
         await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
         const user_id = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req))
-        const budget_year = requestHandler.extractBudgetYear(req)
+        const budget_year = requestHandler.extractBudgetYearProject(req)
         return await userDAO.getProject(user_id,budget_year)
     }
     catch (error) {
@@ -174,9 +174,7 @@ async function getBudgetYear(req) {
 async function postBudgetYear(req) {
     try {
         await authorizeUser(requestHandler.extractUserDataFromCookie(req), DICRECTOR_PRIVILEGE)
-        const budgetYear = requestHandler.extractBudgetYear(req)
-        console.log(budgetYear)
-        return await userDAO.postBudgetYear(budgetYear)
+        return await userDAO.postBudgetYear(requestHandler.extractBudgetYear(req))
     } catch (error) {
         throw error;
     }
