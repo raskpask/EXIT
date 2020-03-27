@@ -43,9 +43,22 @@ function registerUser(username, user_type_id) {
         client
             .query(query.text, query.values)
             .then(res => {
-                client.query("COMMIT")
-                client.end()
-                resolve()
+                const setExpertiseQuery = {
+                    text: "INSERT INTO Expertise (user_id,expertise_id) VALUES (?,?)",
+                    values: [res.insertId, 5]
+                }
+                client
+                    .query(setExpertiseQuery.text, setExpertiseQuery.values)
+                    .then(res => {
+                        client.query("COMMIT")
+                        client.end()
+                        resolve()
+                    })
+                    .catch(err => {
+                        console.error(err)
+                        reject(new Error(dbError.errorCodes.USER_ERROR.code))
+                        client.query("ROLLBACK")
+                    })
             })
             .catch(err => {
                 client.end()
@@ -987,20 +1000,20 @@ function login(session_id, first_name, last_name, kth_username, role) {
                             console.error(err)
                             reject(new Error(dbError.errorCodes.LOGIN_ERROR.code))
                         })
-                } else if(res.affectedRows === 0){
+                } else if (res.affectedRows === 0) {
                     const registerStudent = {
                         text: "INSERT INTO User (user_type_id,email,first_name,last_name,kth_username,session_id) VALUES (?,?,?,?,?,?) ",
-                        values: [ROLE_STUDENT,kth_username+'@kth.se',first_name,last_name,kth_username,session_id]
+                        values: [ROLE_STUDENT, kth_username + '@kth.se', first_name, last_name, kth_username, session_id]
                     }
                     client
-                    .query(registerStudent.text, registerStudent.values)
-                    .then(res => {
-                        resolve()
-                    })
-                    .catch(err => {
-                        console.error(err)
-                        reject(new Error(dbError.errorCodes.LOGIN_ERROR.code))
-                    })
+                        .query(registerStudent.text, registerStudent.values)
+                        .then(res => {
+                            resolve()
+                        })
+                        .catch(err => {
+                            console.error(err)
+                            reject(new Error(dbError.errorCodes.LOGIN_ERROR.code))
+                        })
                 }
             })
             .catch(err => {
