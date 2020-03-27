@@ -20,7 +20,9 @@ async function registerUser(req) {
         const username = requestHandler.extractUsername(req)
         if(changeToUserType === 3){
             await userDAO.registerUser(username, changeToUserType)
-            return await userDAO.updateExpertise(await userDAO.getUserID(username))
+            const userId = await userDAO.getUserID(username)
+            console.log()
+            return await userDAO.updateExpertise(userId)
         }
         return await userDAO.registerUser(username, changeToUserType)
     } else {
