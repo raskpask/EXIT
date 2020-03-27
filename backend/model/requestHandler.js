@@ -219,6 +219,7 @@ function extractBudgetYear(req) {
         if(factor === ""){
             factor = 1;
         }
+        console.log(factor)
     }
     )
     return new BudgetYear(year, bachelor_hours_examiner, bachelor_hours_supervisor, master_hours_examiner, master_hours_supervisor, total_tutoring_hours, factors.pop(), factors.pop(), factors.pop(), factors.pop(), factors.pop());
