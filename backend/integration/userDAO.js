@@ -43,6 +43,7 @@ function registerUser(username, user_type_id) {
         client
             .query(query.text, query.values)
             .then(res => {
+                console.log(user_type_id)
                 if(user_type_id === 3){
                 const setExpertiseQuery = {
                     text: "INSERT INTO Expertise (user_id,expertise_id) VALUES (?,?)",
