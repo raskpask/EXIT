@@ -27,7 +27,7 @@ CREDITS_MASTER = 30;
 
 
 /**
- * Regisers a user to the DB.
+ * Registers a user to the DB.
  *
  * @param {user} user - Instance of user
  * @returns Promise with 200

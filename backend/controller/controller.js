@@ -14,10 +14,14 @@ const STUDENT_PRIVILEGE = 4
  * @returns Promise with 200
  */
 async function registerUser(req) {
-    const userRoleId = await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     const changeToUserType = requestHandler.extractUserTypeId(req)
+    const userRoleId = await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     if (userRoleId < changeToUserType) {
         const username = requestHandler.extractUsername(req)
+        if(changeToUserType === 3){
+            await userDAO.registerUser(username, changeToUserType)
+            return await userDAO.updateExpertise(await userDAO.getUserID(username))
+        }
         return await userDAO.registerUser(username, changeToUserType)
     } else {
         throw new Error(dbError.errorCodes.NO_ACCESS_ERROR.code)
