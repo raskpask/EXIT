@@ -43,6 +43,7 @@ function registerUser(username, user_type_id) {
         client
             .query(query.text, query.values)
             .then(res => {
+                if(user_type_id === 3){
                 const setExpertiseQuery = {
                     text: "INSERT INTO Expertise (user_id,expertise_id) VALUES (?,?)",
                     values: [res.insertId, 5]
@@ -59,6 +60,11 @@ function registerUser(username, user_type_id) {
                         reject(new Error(dbError.errorCodes.USER_ERROR.code))
                         client.query("ROLLBACK")
                     })
+                } else{
+                    client.query("COMMIT")
+                    client.end()
+                    resolve()
+                }
             })
             .catch(err => {
                 client.end()
