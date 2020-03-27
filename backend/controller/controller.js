@@ -21,7 +21,7 @@ async function registerUser(req) {
         if(changeToUserType === 3){
             await userDAO.registerUser(username, changeToUserType)
             const userId = await userDAO.getUserID(username)
-            console.log()
+            console.log(userId)
             return await userDAO.updateExpertise(userId)
         }
         return await userDAO.registerUser(username, changeToUserType)
