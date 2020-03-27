@@ -202,25 +202,26 @@ function extractExpertiseName(req) {
 }
 function extractBudgetYear(req) {
     const budgetYear = req.body;
+    console.log(budgetYear)
     const year = budgetYear.budgetYear
     const master_hours_supervisor = budgetYear.masterHoursSupervisor
     const master_hours_examiner = budgetYear.masterHoursExaminer
     const bachelor_hours_supervisor = budgetYear.bachleorHoursSupervisor
     const bachelor_hours_examiner = budgetYear.bachleorHoursExaminer
     const total_tutoring_hours = budgetYear.totalTutoringHours
-    let factors = [];
-    factors.push(budgetYear.factor1)
-    factors.push(budgetYear.factor2)
-    factors.push(budgetYear.factor3)
-    factors.push(budgetYear.factor4)
-    factors.push(budgetYear.factor5)
-    factors.forEach( factor => {
-        if(factor === ""){
-            factor = 1;
-        }
-    })
-    console.log(factors[2])
-    return new BudgetYear(year, bachelor_hours_examiner, bachelor_hours_supervisor, master_hours_examiner, master_hours_supervisor, total_tutoring_hours, factors[0], factors[1], factors[2], factors[3], factors.pop[4]);
+    const factor_1 = checkValue(budgetYear.factor1)
+    const factor_2 = checkValue(budgetYear.factor2)
+    const factor_3 = checkValue(budgetYear.factor3)
+    const factor_4 = checkValue(budgetYear.factor4)
+    const factor_5 = checkValue(budgetYear.factor5)
+    return new BudgetYear(year, bachelor_hours_examiner, bachelor_hours_supervisor, master_hours_examiner, master_hours_supervisor, total_tutoring_hours, factor_1, factor_2, factor_3, factor_4, factor_5);
+}
+function checkValue(factor){
+    if (factor === ''){
+        return 1
+    } else {
+        return factor
+    }
 }
 function extractYear(req){
     return req.query.year
