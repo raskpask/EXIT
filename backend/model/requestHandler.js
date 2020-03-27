@@ -202,7 +202,6 @@ function extractExpertiseName(req) {
 }
 function extractBudgetYear(req) {
     const budgetYear = req.body;
-    console.log(budgetYear)
     const year = budgetYear.budgetYear
     const master_hours_supervisor = budgetYear.masterHoursSupervisor
     const master_hours_examiner = budgetYear.masterHoursExaminer
