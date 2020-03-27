@@ -209,19 +209,18 @@ function extractBudgetYear(req) {
     const bachelor_hours_examiner = budgetYear.bachleorHoursExaminer
     const total_tutoring_hours = budgetYear.totalTutoringHours
     let factors = [];
-    factors.push(budgetYear.factor5)
-    factors.push(budgetYear.factor4)
-    factors.push(budgetYear.factor3)
-    factors.push(budgetYear.factor2)
     factors.push(budgetYear.factor1)
+    factors.push(budgetYear.factor2)
+    factors.push(budgetYear.factor3)
+    factors.push(budgetYear.factor4)
+    factors.push(budgetYear.factor5)
     factors.forEach( factor => {
         if(factor === ""){
             factor = 1;
         }
-        console.log(factor)
-    }
-    )
-    return new BudgetYear(year, bachelor_hours_examiner, bachelor_hours_supervisor, master_hours_examiner, master_hours_supervisor, total_tutoring_hours, factors.pop(), factors.pop(), factors.pop(), factors.pop(), factors.pop());
+    })
+    console.log(factors[2])
+    return new BudgetYear(year, bachelor_hours_examiner, bachelor_hours_supervisor, master_hours_examiner, master_hours_supervisor, total_tutoring_hours, factors[0], factors[1], factors[2], factors[3], factors.pop[4];
 }
 function extractYear(req){
     return req.query.year
