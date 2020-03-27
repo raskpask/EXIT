@@ -220,7 +220,7 @@ function extractBudgetYear(req) {
         }
     })
     console.log(factors[2])
-    return new BudgetYear(year, bachelor_hours_examiner, bachelor_hours_supervisor, master_hours_examiner, master_hours_supervisor, total_tutoring_hours, factors[0], factors[1], factors[2], factors[3], factors.pop[4];
+    return new BudgetYear(year, bachelor_hours_examiner, bachelor_hours_supervisor, master_hours_examiner, master_hours_supervisor, total_tutoring_hours, factors[0], factors[1], factors[2], factors[3], factors.pop[4]);
 }
 function extractYear(req){
     return req.query.year
