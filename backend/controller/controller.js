@@ -15,7 +15,7 @@ const STUDENT_PRIVILEGE = 4
  */
 async function registerUser(req) {
     const changeToUserType = requestHandler.extractUserTypeId(req)
-    // const userRoleId = await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
+    const userRoleId = await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     if (userRoleId < changeToUserType) {
         const username = requestHandler.extractUsername(req)
         return await userDAO.registerUser(username, changeToUserType)
@@ -29,9 +29,9 @@ async function registerUser(req) {
  */
 async function registerProject(req) {
     try {
-        // await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
         const projectDetails = requestHandler.extractRegisterProjectDetails(req);
-        const examiner_id = 24 //await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req))
+        const examiner_id = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req))
         return await userDAO.registerProject(projectDetails,examiner_id);
     } catch (error) {
         throw error
