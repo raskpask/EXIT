@@ -41,7 +41,6 @@ function registerUser(username, user_type_id) {
         }
         client.query("BEGIN")
         client
-            .query(query.text, query.values)
             .then(res => {
                 console.log(user_type_id)
                 if(user_type_id === 3){
@@ -49,11 +48,9 @@ function registerUser(username, user_type_id) {
                     text: "INSERT INTO Expertise (user_id,expertise_id) VALUES (?,?)",
                     values: [res.insertId, 5]
                 }
-                console.log(setExpertiseQuery)
                 client
                     .query(setExpertiseQuery.text, setExpertiseQuery.values)
                     .then(res => {
-                        console.log("expertise added")
                         client.query("COMMIT")
                         client.end()
                         resolve()

@@ -29,7 +29,7 @@ async function registerUser(req) {
  */
 async function registerProject(req) {
     try {
-        await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
+        // await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
         const projectDetails = requestHandler.extractRegisterProjectDetails(req);
         const examiner_id = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req))
         return await userDAO.registerProject(projectDetails,examiner_id);
