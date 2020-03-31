@@ -43,7 +43,6 @@ function registerUser(username, user_type_id) {
         client
             .query(query.text,query.values)
             .then(res => {
-                console.log(user_type_id)
                 if (user_type_id === 3) {
                     const setExpertiseQuery = {
                         text: "INSERT INTO Expertise (user_id,expertise_id) VALUES (?,?)",
@@ -230,7 +229,6 @@ function postWorkYear(year, examiners) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         let postWorkYearQuery;
-        console.log(examiners)
         examiners.forEach((examiner, i, arr) => {
             postWorkYearQuery = {
                 text: "INSERT INTO Work_year " +
@@ -860,7 +858,6 @@ function getBudgetYear(year) {
 function postBudgetYear(budget_year) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
-        console.log(budget_year)
         let postBudgetYear = {
             text: "INSERT INTO Budget_year (year,master_hours_examiner,master_hours_supervisor,bachelor_hours_examiner,bachelor_hours_supervisor,total_tutoring_hours,factor_1,factor_2,factor_3,factor_4,factor_5) " +
                 "VALUES (?,?,?,?,?,?,?,?,?,?,?)",
