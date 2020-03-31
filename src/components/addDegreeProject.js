@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Col, Row } from 'react-bootstrap';
+import { Form, Button, Col, Row, Popover, OverlayTrigger } from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
@@ -153,11 +153,11 @@ class AddDegreeProject extends Component {
         await this.setState({ startDate: date, year: date.getFullYear() })
         this.getSupervisors()
     }
-    handleChangeForm(value){
-        if(value){
-            if(value.credits){
+    handleChangeForm(value) {
+        if (value) {
+            if (value.credits) {
                 this.setState({ credits: value.credits })
-            } else if(value.user_id){
+            } else if (value.user_id) {
                 this.setState({ supervisor_id: value.user_id })
             }
         }
@@ -176,13 +176,43 @@ class AddDegreeProject extends Component {
         studentsTemp.pop({ name: "", email: "" })
         this.setState({ numberOfStudents: numberOfStudentsTemp, students: studentsTemp })
     }
+    renderPopoverInfo(text) {
+        return (
+            <Popover className="popover" id="popover-basic">
+                {text}
+            </Popover>
+        );
+    }
+    renderOverlay(text, infoText, required) {
+        if (required === false) {
+            return (
+                <OverlayTrigger
+                    placement="auto"
+                    delay={{ show: 250, hide: 400 }}
+                    overlay={this.renderPopoverInfo(infoText)}
+                >
+                    <Button variant="text" className="textButton">{text}</Button>
+                </OverlayTrigger>
+            )
+        } else {
+            return (
+                <OverlayTrigger
+                    placement="auto"
+                    delay={{ show: 250, hide: 400 }}
+                    overlay={this.renderPopoverInfo(infoText)}
+                >
+                    <Button variant="text" className="textButton">{text}*</Button>
+                </OverlayTrigger>
+            )
+        }
+    }
     renderForm() {
         return (
             <Form onSubmit={(e) => this.addProject(e)}>
                 <Row>
                     <Col>
                         <Form.Group>
-                            <Form.Label>{this.props.info.addDegreeProject.projectTitle}</Form.Label>
+                            {this.renderOverlay(this.props.info.addDegreeProject.projectTitle, this.props.info.addDegreeProject.projectTitleInfo)}
                             <Form.Control
                                 required
                                 as="input"
@@ -197,7 +227,7 @@ class AddDegreeProject extends Component {
                 <Row>
                     <Col>
                         <Form.Group>
-                            <Form.Label>{this.props.info.addDegreeProject.startDate}</Form.Label>
+                            {this.renderOverlay(this.props.info.addDegreeProject.startDate, this.props.info.addDegreeProject.startDateInfo)}
                             <Form>
                                 <DatePicker
                                     className="dateBox"
@@ -212,7 +242,7 @@ class AddDegreeProject extends Component {
                     </Col>
                     <Col>
                         <Form.Group>
-                            <Form.Label>{this.props.info.addDegreeProject.endDate}</Form.Label>
+                            {this.renderOverlay(this.props.info.addDegreeProject.endDate, this.props.info.addDegreeProject.endDateInfo)}
                             <Form>
                                 <DatePicker
                                     className="dateBox"
@@ -228,7 +258,7 @@ class AddDegreeProject extends Component {
                 <Row>
                     <Col md={4}>
                         <Form.Group>
-                            <Form.Label>{this.props.info.addDegreeProject.credits}</Form.Label>
+                            {this.renderOverlay(this.props.info.addDegreeProject.credits, this.props.info.addDegreeProject.creditsInfo)}
                             <Typeahead
                                 id="changeCredit"
                                 labelKey={(option) => `${option.name}`}
@@ -239,10 +269,10 @@ class AddDegreeProject extends Component {
                         </Form.Group>
                     </Col>
                     <Col>
-                        <Form.Label>{this.props.info.addDegreeProject.supervisor}</Form.Label>
+                        {this.renderOverlay(this.props.info.addDegreeProject.supervisor, this.props.info.addDegreeProject.supervisorInfo)}
                         <Typeahead
                             id="changeSupervisor"
-                            labelKey={(option) => `${option.first_name} ${option.last_name} (${option.email})`}//{"" +option.first_name +option.last_name +" "+option.email +""}}
+                            labelKey={(option) => `${option.first_name} ${option.last_name} (${option.email})`}
                             placeholder={this.props.info.addDegreeProject.supervisorPlaceholder}
                             selected={this.state.supervisor}
                             onChange={event => this.handleChangeForm(event[0])}
@@ -254,7 +284,7 @@ class AddDegreeProject extends Component {
                     <Row>
                         <Col md={8}>
                             <Form.Group>
-                                <Form.Label>{this.props.info.addDegreeProject.studentName}</Form.Label>
+                                {this.renderOverlay(this.props.info.addDegreeProject.studentName, this.props.info.addDegreeProject.studentNameInfo, false)}
                                 <Form.Control
                                     as="input"
                                     type="text"
@@ -266,7 +296,7 @@ class AddDegreeProject extends Component {
                         </Col>
                         <Col>
                             <Form.Group>
-                                <Form.Label>{this.props.info.addDegreeProject.kthUsername}</Form.Label>
+                                {this.renderOverlay(this.props.info.addDegreeProject.kthUsername, this.props.info.addDegreeProject.kthUsernameInfo)}
                                 <Form.Control
                                     required
                                     as="input"
@@ -290,7 +320,7 @@ class AddDegreeProject extends Component {
                     <Col></Col>
                 </Row>
                 <Form.Group>
-                    <Form.Label>{this.props.info.addDegreeProject.projectDescription}</Form.Label>
+                    {this.renderOverlay(this.props.info.addDegreeProject.projectDescription, this.props.info.addDegreeProject.projectDescriptionInfo)}
                     <Form.Control
                         required
                         type="text"
@@ -304,7 +334,7 @@ class AddDegreeProject extends Component {
                 <Row>
                     <Col>
                         <Form.Group>
-                            <Form.Label>{this.props.info.addDegreeProject.companyName}</Form.Label>
+                            {this.renderOverlay(this.props.info.addDegreeProject.companyName, this.props.info.addDegreeProject.companyNameInfo, false)}
                             <Form.Control
                                 type="text"
                                 value={this.state.companyName}
@@ -315,7 +345,7 @@ class AddDegreeProject extends Component {
                     </Col>
                     <Col>
                         <Form.Group>
-                            <Form.Label>{this.props.info.addDegreeProject.companyAddress}</Form.Label>
+                            {this.renderOverlay(this.props.info.addDegreeProject.companyAddress, this.props.info.addDegreeProject.companyAddressInfo, false)}
                             <Form.Control
                                 type="text"
                                 value={this.state.companyAddress}
@@ -326,7 +356,7 @@ class AddDegreeProject extends Component {
                     </Col>
                     <Col>
                         <Form.Group>
-                            <Form.Label>{this.props.info.addDegreeProject.companyPhone}</Form.Label>
+                            {this.renderOverlay(this.props.info.addDegreeProject.companyPhone, this.props.info.addDegreeProject.companyPhoneInfo, false)}
                             <Form.Control
                                 type="number"
                                 value={this.state.companyPhone}

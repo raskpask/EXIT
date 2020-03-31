@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Col, Row } from 'react-bootstrap';
+import { Form, Button, Col, Row,Popover, OverlayTrigger } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../resources/css/form.css';
@@ -36,12 +36,25 @@ class AddDirectorOfStudies extends Component {
                 }
             })
     }
+    renderPopoverInfo(text) {
+        return (
+            <Popover className="popover" id="popover-basic">
+                {text}
+            </Popover>
+        );
+    }
     renderAdd() {
         return (
             <Form onSubmit={(e) => this.addDirector(e)} >
                 <Row>
                     <Col md={8}>
-                        <Form.Label>{this.props.info.addDirectorOfStudies.username}</Form.Label>
+                        <OverlayTrigger
+                            placement="auto"
+                            delay={{ show: 250, hide: 400 }}
+                            overlay={this.renderPopoverInfo(this.props.info.addDirectorOfStudies.usernameInfo)}
+                        >
+                            <Button variant="text" className="textButton">{this.props.info.addDirectorOfStudies.username}*</Button>
+                        </OverlayTrigger>
                         <Form.Control
                             required
                             type="text"
@@ -63,7 +76,7 @@ class AddDirectorOfStudies extends Component {
             <div className="container">
                 <Access access='1' info={this.props.info.access} />
                 {this.state.redirect ? <Redirect to='/' /> : ""}
-                
+
                 <h1>{this.props.info.addDirectorOfStudies.title}</h1>
                 <p>{this.props.info.addDirectorOfStudies.paragraph0}</p>
                 {this.renderAdd()}

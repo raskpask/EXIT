@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Col, Row } from 'react-bootstrap';
+import { Form, Button, Col, Row, OverlayTrigger, Popover } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../resources/css/form.css';
@@ -15,16 +15,14 @@ class AddBudgetYear extends Component {
         this.state = {
             redirect: 0,
             budgetYear: "",
-            masterHoursExaimer: "",
-            masterHoursSupervisor: "",
-            bachleorHoursExaminer: "13",
-            bachleorHoursSupervisor: "13",
-            totalTutoringHours: "",
-            factor1: "",
-            factor2: "",
-            factor3: "",
-            factor4: "",
-            factor5: ""
+            masterHoursExaminer: 20,
+            masterHoursSupervisor: 20,
+            bachleorHoursExaminer: 10,
+            bachleorHoursSupervisor: 10,
+            factor2: 1.5,
+            factor3: 2.25,
+            factor4: 3,
+            factor5: 3.75
         }
     }
     addBudgetYear = (e) => {
@@ -43,7 +41,7 @@ class AddBudgetYear extends Component {
                 } else {
                     console.error(err)
                     toast(this.props.info.addBudgetYear.fail)
-                }                
+                }
             })
     }
     createBudgetYear() {
@@ -53,8 +51,7 @@ class AddBudgetYear extends Component {
             masterHoursSupervisor: this.state.masterHoursSupervisor,
             bachleorHoursExaminer: this.state.bachleorHoursExaminer,
             bachleorHoursSupervisor: this.state.bachleorHoursSupervisor,
-            totalTutoringHours: this.state.totalTutoringHours,
-            factor1: this.state.factor1,
+            factor1: 1,
             factor2: this.state.factor2,
             factor3: this.state.factor3,
             factor4: this.state.factor4,
@@ -69,13 +66,18 @@ class AddBudgetYear extends Component {
             masterHoursSupervisor: "",
             bachleorHoursExaminer: "13",
             bachleorHoursSupervisor: "13",
-            totalTutoringHours: "",
-            factor1: "",
             factor2: "",
             factor3: "",
             factor4: "",
             factor5: ""
         })
+    }
+    renderPopoverInfo(text) {
+        return (
+            <Popover className="popover" id="popover-basic">
+                {text}
+            </Popover>
+        );
     }
     renderForm() {
         return (
@@ -83,7 +85,15 @@ class AddBudgetYear extends Component {
                 <Row>
                     <Col>
                         <Form.Group>
-                            <Form.Label>{this.props.info.specifiedBudgetYears.budgetYear}</Form.Label>
+                            <Form.Label>
+                                <OverlayTrigger
+                                    placement="auto"
+                                    delay={{ show: 250, hide: 400 }}
+                                    overlay={this.renderPopoverInfo(this.props.info.addBudgetYear.budgetYearInfo)}
+                                >
+                                    <Button variant="text" className="textButton">{this.props.info.specifiedBudgetYears.budgetYear}*</Button>
+                                </OverlayTrigger>
+                            </Form.Label>
                             <Form.Control
                                 required
                                 type="number"
@@ -93,20 +103,18 @@ class AddBudgetYear extends Component {
                             />
                         </Form.Group>
                     </Col>
-                    <Col>
-                        <Form.Label>{this.props.info.specifiedBudgetYears.totalTutoringHours}</Form.Label>
-                        <Form.Control
-                            required
-                            type="number"
-                            value={this.state.totalTutoringHours}
-                            placeholder={this.props.info.addBudgetYear.totalTutoringHoursPlaceholder}
-                            onChange={event => this.setState({ totalTutoringHours: event.target.value })}
-                        />
-                    </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <Form.Label>{this.props.info.specifiedBudgetYears.masterHoursExaminer}</Form.Label>
+                        <Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.addBudgetYear.masterHoursExaminerInfo)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.specifiedBudgetYears.masterHoursExaminer}*</Button>
+                            </OverlayTrigger>
+                        </Form.Label>
                         <Form.Control
                             required
                             type="number"
@@ -116,7 +124,15 @@ class AddBudgetYear extends Component {
                         />
                     </Col>
                     <Col>
-                        <Form.Label>{this.props.info.specifiedBudgetYears.masterHoursSupervisor}</Form.Label>
+                        <Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.addBudgetYear.masterHoursSupervisorInfo)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.specifiedBudgetYears.masterHoursSupervisor}*</Button>
+                            </OverlayTrigger>
+                        </Form.Label>
                         <Form.Control
                             required
                             type="number"
@@ -128,7 +144,15 @@ class AddBudgetYear extends Component {
                 </Row>
                 <Row>
                     <Col>
-                        <Form.Label>{this.props.info.specifiedBudgetYears.bachleorHoursExaminer}</Form.Label>
+                        <Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.addBudgetYear.bachleorHoursExaminerInfo)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.specifiedBudgetYears.bachleorHoursExaminer}*</Button>
+                            </OverlayTrigger>
+                        </Form.Label>
                         <Form.Control
                             required
                             type="number"
@@ -138,7 +162,15 @@ class AddBudgetYear extends Component {
                         />
                     </Col>
                     <Col>
-                        <Form.Label>{this.props.info.specifiedBudgetYears.bachleorHoursSupervisor}</Form.Label>
+                        <Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.addBudgetYear.bachleorHoursSupervisorInfo)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.specifiedBudgetYears.bachleorHoursSupervisor}*</Button>
+                            </OverlayTrigger>
+                        </Form.Label>
                         <Form.Control
                             required
                             type="number"
@@ -150,16 +182,15 @@ class AddBudgetYear extends Component {
                 </Row>
                 <Row>
                     <Col>
-                        <Form.Label>{this.props.info.specifiedBudgetYears.factor1}</Form.Label>
-                        <Form.Control
-                            type="number"
-                            value={this.state.factor1}
-                            placeholder={this.props.info.addBudgetYear.factor1Placeholder}
-                            onChange={event => this.setState({ factor1: event.target.value })}
-                        />
-                    </Col>
-                    <Col>
-                        <Form.Label>{this.props.info.specifiedBudgetYears.factor2}</Form.Label>
+                        <Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.addBudgetYear.factor2Info)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.specifiedBudgetYears.factor2}*</Button>
+                            </OverlayTrigger>
+                        </Form.Label>
                         <Form.Control
                             type="number"
                             value={this.state.factor2}
@@ -169,7 +200,15 @@ class AddBudgetYear extends Component {
                     </Col>
 
                     <Col>
-                        <Form.Label>{this.props.info.specifiedBudgetYears.factor3}</Form.Label>
+                        <Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.addBudgetYear.factor3Info)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.specifiedBudgetYears.factor3}*</Button>
+                            </OverlayTrigger>
+                        </Form.Label>
                         <Form.Control
                             type="number"
                             value={this.state.factor3}
@@ -178,7 +217,15 @@ class AddBudgetYear extends Component {
                         />
                     </Col>
                     <Col>
-                        <Form.Label>{this.props.info.specifiedBudgetYears.factor4}</Form.Label>
+                        <Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.addBudgetYear.factor4Info)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.specifiedBudgetYears.factor4}*</Button>
+                            </OverlayTrigger>
+                        </Form.Label>
                         <Form.Control
                             type="number"
                             value={this.state.factor4}
@@ -187,7 +234,15 @@ class AddBudgetYear extends Component {
                         />
                     </Col>
                     <Col>
-                        <Form.Label>{this.props.info.specifiedBudgetYears.factor5}</Form.Label>
+                        <Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.addBudgetYear.factor5Info)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.specifiedBudgetYears.factor5}*</Button>
+                            </OverlayTrigger>
+                        </Form.Label>
                         <Form.Control
                             type="number"
                             value={this.state.factor5}
@@ -209,7 +264,7 @@ class AddBudgetYear extends Component {
             <div className="container">
                 <Access access='2' info={this.props.info.access} />
                 {this.state.redirect ? <Redirect to='/' />: ""}
-                
+
                 <h1>{this.props.info.addBudgetYear.title}</h1>
                 <p>{this.props.info.addBudgetYear.paragraph0}</p>
                 {this.renderForm()}

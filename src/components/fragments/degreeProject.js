@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { Nav, Card, ListGroup, Form, Button, Row, Col, Table } from 'react-bootstrap';
+import { Nav, Card, ListGroup, Form, Button, Row, Col, Table, Popover, OverlayTrigger } from 'react-bootstrap';
 import axios from 'axios';
 import '../../resources/css/degreeProject.css';
+import dbErrors from '../../model/dbErrors';
+import redirect from './../../model/redirect';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { toast } from 'react-toastify';
@@ -10,12 +12,39 @@ class DegreeProject extends Component {
         super(props);
         this.state = {
             supervisors: [],
+            project: this.props.project,
             supervisor_id: "",
-            bodyContent: this.renderInfo()
+            bodyContent: this.renderInfo(),
         }
     }
     componentDidMount() {
         this.getSupervisors()
+    }
+    makeNote() {
+        return (
+            this.props.project.notes + "\n" +
+            (new Date()).toJSON() + "\n" +
+            this.state.comment
+        )
+    }
+    postComment = () => {
+        axios
+            .put('/api/notes', { message: this.makeNote() })
+            .then(res => {
+                if (res.status === 200) {
+                    toast(this.props.info.profile.saved)
+                }
+            })
+            .catch(err => {
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.error(err)
+                    toast(this.props.info.profile.saveFaild)
+                }
+            })
     }
     deleteProject = () => {
         const payload = {
@@ -164,6 +193,78 @@ class DegreeProject extends Component {
             </Form >
         )
     }
+    renderPopoverInfo(text) {
+        return (
+            <Popover className="popover" id="popover-basic">
+                {text}
+            </Popover>
+        );
+    }
+    renderOverlay(text, infoText, required) {
+        return (
+            <OverlayTrigger
+                placement="auto"
+                delay={{ show: 250, hide: 400 }}
+                overlay={this.renderPopoverInfo(infoText)}
+            >
+                <Button variant="text" className="textButton">{text}*</Button>
+            </OverlayTrigger>
+        )
+    }
+    async editCompetence() {
+        this.setState({ bodyContent: this.renderCompetenceAreaEdit() })
+    }
+    saveCompetence() {
+        this.setState({ bodyContent: this.renderCompetenceArea() })
+        this.postComment()
+    }
+    async updateComment(comment){
+        console.log(comment)
+        await this.setState({ comment: comment })
+        console.log(this.state.comment)
+        console.log(this.state)
+    }
+    renderCompetenceAreaEdit() {
+        return (
+            <Row>
+                <Col md={4}>
+                    {this.renderOverlay(this.props.info.degreeProject.comment, this.props.info.degreeProject.commentInfo)}
+                </Col>
+                <Col md={8}>
+                    <Form.Control
+                        type="text"
+                        as="textarea"
+                        rows="3"
+                        placeholder={this.props.info.profile.competenceAreaPlaceholder}
+                        value={this.state.comment}
+                        onChange={event => this.setState({ comment: event.target.value })}
+                        
+                    />
+                    <Button className="buttonMarginSave" onClick={() => this.saveCompetence()}>{this.props.info.profile.save}</Button>
+                </Col>
+            </Row>
+        )
+    }
+    renderCompetenceArea() {
+        return (
+            <Row>
+                <Col md={4}>
+                    {this.renderOverlay(this.props.info.degreeProject.comment, this.props.info.degreeProject.commentInfo)}
+                </Col>
+                <Col md={6}>
+                    {this.state.project.notes}
+                </Col>
+                <Col md={2} className="alignRight">
+                    <Button onClick={() => this.editCompetence()}>{this.props.info.profile.edit}</Button>
+                </Col>
+            </Row>
+        )
+    }
+    renderNotes() {
+        return (
+            this.renderCompetenceArea()
+        )
+    }
     renderDelete() {
         return (
             <Col className="alignCenter marginTop">
@@ -188,6 +289,9 @@ class DegreeProject extends Component {
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link onClick={() => this.setState({ bodyContent: this.renderEdit() })}>{this.props.info.degreeProject.edit}</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link onClick={() => this.setState({ bodyContent: this.renderNotes() })}>{this.props.info.degreeProject.comments}</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link onClick={() => this.setState({ bodyContent: this.renderDelete() })}>{this.props.info.degreeProject.delete}</Nav.Link>

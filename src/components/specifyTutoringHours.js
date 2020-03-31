@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Col, Row } from 'react-bootstrap';
+import { Form, Button, Col, Row, Popover, OverlayTrigger } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Typeahead } from 'react-bootstrap-typeahead';
@@ -142,18 +142,34 @@ class SpecifyTutoringHours extends Component {
         examinersTemp.pop()
         this.setState({ numberOfExaminers: numberOfExaminersTemp, examiners: examinersTemp })
     }
-    setBudgetYear(budgetYear){
-        if(budgetYear){
+    setBudgetYear(budgetYear) {
+        if (budgetYear) {
             const year = budgetYear.year
-            this.setState({budgetYear: year})
+            this.setState({ budgetYear: year })
         }
+    }
+    renderPopoverInfo(text) {
+        return (
+            <Popover className="popover" id="popover-basic">
+                {text}
+            </Popover>
+        );
     }
     renderForm() {
         return (
             <Form onSubmit={(e) => this.specifyTutoringHours(e)}>
                 <Row>
                     <Col md={8}>
-                        <Form.Label>{this.props.info.specifyTutoringHours.bugetYear}</Form.Label>
+                        <Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.specifyTutoringHours.budgetYearInfo)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.specifyTutoringHours.bugetYear}*</Button>
+                            </OverlayTrigger>
+                        </Form.Label>
+                        <Form.Label></Form.Label>
                         <Typeahead
                             id="specifyBudgetYear"
                             labelKey={(option) => `${option.year}`}
@@ -166,7 +182,13 @@ class SpecifyTutoringHours extends Component {
                 {this.state.pickedExaminers.map((examiner, key) =>
                     <Row key={key}>
                         <Col>
-                            <Form.Label>{this.props.info.specifyTutoringHours.username}</Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.specifyTutoringHours.usernameInfo)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.specifyTutoringHours.username}*</Button>
+                            </OverlayTrigger>
                             <Typeahead
                                 id="specifyUser"
                                 labelKey={(option) => `${option.first_name} ${option.last_name} (${option.email})`}
@@ -178,7 +200,13 @@ class SpecifyTutoringHours extends Component {
                             />
                         </Col>
                         <Col >
-                            <Form.Label>{this.props.info.specifyTutoringHours.examinerHours}</Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.specifyTutoringHours.examinerHoursInfo)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.specifyTutoringHours.examinerHours}*</Button>
+                            </OverlayTrigger>
                             <Form.Control
                                 required
                                 type="number"
@@ -188,7 +216,13 @@ class SpecifyTutoringHours extends Component {
                             />
                         </Col>
                         <Col>
-                            <Form.Label>{this.props.info.specifyTutoringHours.supervisorHours}</Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.specifyTutoringHours.supervisorHoursInfo)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.specifyTutoringHours.supervisorHours}*</Button>
+                            </OverlayTrigger>
                             <Form.Control
                                 required
                                 type="number"

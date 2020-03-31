@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 
-import { Form, Button, Col, Row } from 'react-bootstrap';
+import { Form, Button, Col, Row, OverlayTrigger, Popover } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../resources/css/form.css';
@@ -38,12 +38,28 @@ class AddExaminer extends Component {
 
             })
     }
+    renderPopoverInfo(text) {
+        return (
+            <Popover className="popover" id="popover-basic">
+                {text}
+            </Popover>
+        );
+    }
     renderAdd() {
         return (
             <Form onSubmit={(e) => this.addUser(e)}>
                 <Row>
                     <Col md={8}>
-                        <Form.Label>{this.props.info.addExaminer.kthUsername}</Form.Label>
+                        <Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.addExaminer.kthUsernameInfo)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.addExaminer.kthUsername}*</Button>
+                            </OverlayTrigger>
+                        </Form.Label>
+                        <Form.Label></Form.Label>
                         <Form.Control
                             required
                             type="text"
