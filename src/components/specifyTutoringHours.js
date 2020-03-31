@@ -81,7 +81,7 @@ class SpecifyTutoringHours extends Component {
         axios
             .post('/api/workYear', this.getTutoringHours())
             .then(res => {
-                toast(this.props.info.addDirectorOfStudies.added)
+                toast(this.props.info.specifyTutoringHours.success)
                 this.resetFields()
             })
             .catch(err => {

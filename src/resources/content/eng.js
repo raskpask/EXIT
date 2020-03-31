@@ -157,7 +157,8 @@ function getLanguage() {
             supervisorHours: "Supervisor hours",
             examinerHoursPlaceholder: "Amount of hours to be examiner.",
             supervisorHoursPlaceholder: "Amount of hours to be supervisor.",
-            getBudgetYearFail: "Something went wrong could not fetch budget years."
+            getBudgetYearFail: "Something went wrong could not fetch budget years.",
+            success: "The user/users wsa added to the budget year."
         },
         header: {
             home: "Home",
