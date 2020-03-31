@@ -86,7 +86,7 @@ function router(router) {
         //res.send();
     });
 
-    router.update('/api/notes', async (req, res) => {
+    router.put('/api/notes', async (req, res) => {
         try {
             const project = await controller.updateNotes(req);
             // res.status(statusCode);

@@ -17,8 +17,9 @@ module.exports = class ProjectDetails{
  * @param {String} company_address - The address of the company
  * @param {String} company_phone_number - The phone number of the company
  * @param {String} project_title -. The title of the project
+ * @param {String} notes - Notes on the project
  */
-    constructor(project_id,number_of_students,project_title,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,company_name,company_address,company_phone_number,users, supervisor_id){
+    constructor(project_id,number_of_students,project_title,project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,company_name,company_address,company_phone_number,users, supervisor_id,notes){
         this.project_id = project_id;
         this.number_of_students = number_of_students;
         this.project_description = project_description;
@@ -36,5 +37,6 @@ module.exports = class ProjectDetails{
         this.project_title = project_title;
         this.users = users;
         this.supervisor_id = supervisor_id;
+        this.notes = notes;
     }
 }
