@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Col, Row, Form, Card, Button, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Col, Row, Form, Card, Button, Dropdown, DropdownButton, Popover, OverlayTrigger } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Access from './fragments/access';
@@ -91,8 +91,8 @@ class Profile extends Component {
                     this.setState({ redirect: 1 })
                     toast(this.props.info.general.sessionFail)
                 } else {
-                console.error(err)
-                toast(this.props.info.profile.saveFaild)
+                    console.error(err)
+                    toast(this.props.info.profile.saveFaild)
                 }
             })
     }
@@ -105,11 +105,24 @@ class Profile extends Component {
         this.postCompetence()
         this.forceUpdate()
     }
+    renderPopoverInfo(text) {
+        return (
+            <Popover id="popover-basic">
+                <p>{text}</p>
+            </Popover>
+        );
+    }
     renderCompetenceAreaEdit() {
         return (
             <Row>
                 <Col md={4}>
-                    {this.props.info.profile.competenceArea}
+                    <OverlayTrigger
+                        placement="auto"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={this.renderPopoverInfo(this.props.info.profile.competenceAreaInfo)}
+                    >
+                        <Button variant="text" className="textButton">{this.props.info.profile.competenceArea}</Button>
+                    </OverlayTrigger>
                 </Col>
                 <Col md={8}>
                     <Form.Control
@@ -129,7 +142,13 @@ class Profile extends Component {
         return (
             <Row>
                 <Col md={4}>
-                    {this.props.info.profile.competenceArea}
+                <OverlayTrigger
+                        placement="auto"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={this.renderPopoverInfo(this.props.info.profile.competenceAreaInfo)}
+                    >
+                        <Button variant="text" className="textButton">{this.props.info.profile.competenceArea}</Button>
+                    </OverlayTrigger>
                 </Col>
                 <Col md={6}>
                     {this.state.expertise}

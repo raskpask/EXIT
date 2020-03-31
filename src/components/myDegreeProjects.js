@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Table, Modal, Button } from 'react-bootstrap';
+import { Table, Modal, Button,Col, Row, Dropdown, DropdownButton } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../resources/css/home.css';
@@ -14,21 +14,32 @@ class MyDegreeProjects extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentBudgetYear: new Date().getFullYear(),
             redirect: 0,
             showUser: [],
-            projects: []
+            projects: [],
+            budgetYear: [
+                {
+                    year: "",
+                }
+            ],
         }
     }
     componentDidMount() {
-        this.getDegreeProjects()
+        this.getDegreeProjects(this.state.currentBudgetYear)
+        this.getBudgetYears()
     }
-    getDegreeProjects = () => {
+    getDegreeProjects = (year) => {
         axios
-            .get('/api/project')
+            .get('/api/project', {
+                params: {
+                    year: year
+                }
+            })
             .then(res => {
                 console.log(res.data)
                 if (res.status === 200) {
-                    this.setState({ projects: res.data })
+                    this.setState({ projects: res.data, currentBudgetYear: year })
                 }
             })
             .catch(err => {
@@ -41,6 +52,43 @@ class MyDegreeProjects extends Component {
                     toast(this.props.info.myDegreeProjects.fail)
                 }
             })
+    }
+    getBudgetYears = () => {
+        axios
+            .get('/api/budgetYear')
+            .then(res => {
+                if (res.status === 200) {
+                    this.setState({ budgetYear: res.data })
+                }
+            })
+            .catch(err => {
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.error(err)
+                    toast(this.props.info.budgetYear.getFail)
+                }
+            })
+    }
+    renderDropDownYear() {
+        return (
+            <Row>
+                <Col>
+                    <h3>{this.props.info.availableExaminers.budgetYear}: {this.state.currentBudgetYear}</h3>
+                </Col>
+                <Col className="alignRight">
+                    <DropdownButton id="dropdown-basic-button" title={this.props.info.availableExaminers.changeYear}>
+                        {this.state.budgetYear.map((budgetYear, key) =>
+                            <Fragment>
+                                <Dropdown.Item key={key} onClick={() => this.getDegreeProjects(budgetYear.year)}>{budgetYear.year}</Dropdown.Item>
+                            </Fragment>
+                        )}
+                    </DropdownButton>
+                </Col>
+            </Row>
+        )
     }
     renderTable() {
         return (
@@ -103,7 +151,7 @@ class MyDegreeProjects extends Component {
                 <Access access='3' info={this.props.info.access} />
                 {this.state.redirect ? <Redirect to='/' /> : ""}
                 <h1>{this.props.info.myDegreeProjects.title}</h1>
-                <p>{this.props.info.myDegreeProjects.paragraph0}</p>
+                <p>{this.props.info.myDegreeProjects.paragraph0} {this.renderDropDownYear()}</p>
                 {this.renderTable()}
             </div>
         );

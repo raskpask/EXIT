@@ -35,3 +35,9 @@
 .react-datepicker-wrapper {
     width: 100%;
 }
+.textButton{
+    padding-left: 0;
+}
+.popover{
+    padding: 1vw;
+}
