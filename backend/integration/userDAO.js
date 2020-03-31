@@ -372,7 +372,7 @@ function getProject(user_id, year) {
         try {
             client.query("BEGIN")
             const getUserQuery = {
-                text: "SELECT project_id, number_of_students, title, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number " +
+                text: "SELECT project_id, number_of_students, title, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number,notes " +
                     "FROM (Degree_project LEFT JOIN Company ON Degree_project.company = Company.company_id) " +
                     "WHERE Degree_project.project_id IN (SELECT degree_project_id FROM Student_project WHERE user_id = ?) AND year(start_date) = ?",
                 values: [user_id, year]
@@ -394,7 +394,7 @@ function getProject(user_id, year) {
                                 .query(getProjectUserQuery.text, getProjectUserQuery.values)
                                 .then(res => {
                                     const users = res
-                                    projects.push(new ProjectDetails(project.project_id, project.number_of_students, project.title, project.project_description, project.credits, project.start_date, project.end_date, project.in_progress, project.out_of_date, project.all_info_specified, project.company, project.company_contact, project.name, project.address, project.phone_number, users))
+                                    projects.push(new ProjectDetails(project.project_id, project.number_of_students, project.title, project.project_description, project.credits, project.start_date, project.end_date, project.in_progress, project.out_of_date, project.all_info_specified, project.company, project.company_contact, project.name, project.address, project.phone_number, users,null,project.notes))
                                     if (index === arr.length - 1) {
                                         resolve(projects)
                                     }

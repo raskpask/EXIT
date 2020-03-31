@@ -94,7 +94,7 @@ async function deleteProject(req) {
 async function updateNotes(req){
     try {
         await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
-        return await userDAO.updateNotes(req.body.project_id,req.body.message);
+        return await userDAO.updateNotes(extractProjectID(req),req.body.message);
     }
     catch (error){
         throw error
