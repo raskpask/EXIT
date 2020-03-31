@@ -259,7 +259,7 @@ function updateWorkYear(year, examiner) {
         const client = await pool.getConnection();
         const updateWorkYearQuery = {
             text: "UPDATE Work_year " +
-                "SET work_hours_examiner = ?,work_hours_supervisor = ?, available_hours_examiner = ?, available_hours_supervisor = ? " +
+                "SET work_hours_examiner = ? + work_hours_examiner,work_hours_supervisor = ? + work_hours_supervisor, available_hours_examiner = ? + available_hours_examiner, available_hours_supervisor = ? + available_hours_supervisor" +
                 "WHERE person_id=? AND year = ?",
             values: [examiner.work_hours_examiner, examiner.work_hours_supervisor, examiner.available_hours_examiner, examiner.available_hours_supervisor, examiner.user_id, year]
         }
@@ -547,9 +547,9 @@ function registerProject(project_details, examiner_id) {
                     })
             })
             let projectType = "";
-            if (project_details.credits == 15) {
+            if (project_details.credits == CREDITS_BACHELOR) {
                 projectType = "bachelor_hours_";
-            } else if (project_details.credits == 30) {
+            } else if (project_details.credits == CREDITS_MASTER) {
                 projectType = "master_hours_";
             } else {
                 reject(new error(dbError.errorCodes.NO_CREDITS_ERROR.code));
@@ -1077,6 +1077,27 @@ function authorizeUser(session_id, kth_username, role_id) {
     })
 }
 
+function updateNotes(project_id,message){
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection()
+        let updateNotes = {
+            text: "UPDATE Degree_project " +
+                "SET notes = ?" +
+                "WHERE project_id = ?",
+            values: [message,project_id]
+        }
+        client
+            .query(updateNotes.text)
+            .then(res => {
+                resolve()
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        client.end()
+    })
+}
+
 module.exports = {
     registerUser,
     getUser,
@@ -1104,5 +1125,6 @@ module.exports = {
     updateProjectInTime,
     login,
     logout,
-    authorizeUser
+    authorizeUser,
+    updateNotes
 }

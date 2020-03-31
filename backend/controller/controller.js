@@ -71,6 +71,7 @@ async function getProject(req) {
         throw error
     }
 }
+
 async function updateProject(req) {
     try {
         await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
@@ -90,7 +91,15 @@ async function deleteProject(req) {
         throw error
     }
 }
-
+async function updateNotes(req){
+    try {
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
+        return await userDAO.updateNotes(req.body.project_id,req.body.message);
+    }
+    catch (error){
+        throw error
+    }
+}
 
 async function getWorkYear(req) {
     try {
@@ -236,5 +245,6 @@ module.exports = {
     getAvailableExaminers,
     getAvailableSupervisors,
     login,
-    getProfile
+    getProfile,
+    updateNotes
 }

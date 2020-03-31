@@ -85,6 +85,17 @@ function router(router) {
         }
         //res.send();
     });
+
+    router.update('/api/notes', async (req, res) => {
+        try {
+            const project = await controller.updateNotes(req);
+            // res.status(statusCode);
+            res.send(project);
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+        //res.send();
+    });
     router.get('/api/workYear', async (req, res) => {
         try {
             res.send(await controller.getWorkYear(req))
