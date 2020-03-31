@@ -55,7 +55,10 @@ function getLanguage() {
             examiner: "Examiner",
             projectRole: "Project role",
             pickSupervisor: "Pick supervisor",
-            supervisorPlaceholder: "Press the button to see supervisors"
+            supervisorPlaceholder: "Press the button to see supervisors",
+            comments: "Comments",
+            comment: "Comments of the project:",
+            commentInfo: "Add you comments here to describe somethinf that happend or something else in the project.",
 
         },
         addDegreeProject: {

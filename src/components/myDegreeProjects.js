@@ -150,6 +150,7 @@ class MyDegreeProjects extends Component {
             <div className="container">
                 <Access access='3' info={this.props.info.access} />
                 {this.state.redirect ? <Redirect to='/' /> : ""}
+                
                 <h1>{this.props.info.myDegreeProjects.title}</h1>
                 <p>{this.props.info.myDegreeProjects.paragraph0} {this.renderDropDownYear()}</p>
                 {this.renderTable()}
