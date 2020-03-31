@@ -347,8 +347,8 @@ class AddDegreeProject extends Component {
     render() {
         return (
             <div className="container marginBottom">
-                {/* <Access access='3' info={this.props.info.access} />
-                {this.state.redirect ? <Redirect to='/' /> : ""} */}
+                <Access access='3' info={this.props.info.access} />
+                {this.state.redirect ? <Redirect to='/' /> : ""}
 
                 <h1>{this.props.info.addDegreeProject.title}</h1>
                 <p>{this.props.info.addDegreeProject.paragraph0}</p>
