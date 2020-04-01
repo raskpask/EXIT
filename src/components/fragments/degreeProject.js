@@ -13,6 +13,7 @@ class DegreeProject extends Component {
         this.state = {
             supervisors: [],
             project: this.props.project,
+            notes: this.props.project.notes,
             supervisor_id: "",
             bodyContent: this.renderInfo(),
         }
@@ -21,10 +22,9 @@ class DegreeProject extends Component {
         this.getSupervisors()
     }
     makeNote() {
-        console.log((new Date()).toString().split('GMT')[0])
         return (
-            this.props.project.notes + ";\n;\n" +
-            (new Date()).toString().split('GMT')[0] + ":;\n" +
+            this.state.notes + ";\n;\n" +
+            (new Date()).toString().split('GMT')[0] + ";\n" +
             this.state.comment
         )
     }
@@ -34,6 +34,34 @@ class DegreeProject extends Component {
             .then(res => {
                 if (res.status === 200) {
                     toast(this.props.info.profile.saved)
+                    axios
+                        .get('/api/project', {
+                            params: {
+                                year: this.props.year
+                            }
+                        })
+                        .then(res => {
+                            if (res.status === 200) {
+                                let projectIndex;
+                                res.data.forEach((project, index) => {
+                                    if (project.project_id === this.props.project.project_id) {
+                                        projectIndex = index;
+                                    }
+                                })
+                                this.setState({ notes: res.data[projectIndex].notes })
+                                this.setState({ bodyContent: this.renderCompetenceArea(), comment: null })
+                            }
+                        })
+                        .catch(err => {
+                            if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                                redirect.removeCookies()
+                                this.setState({ redirect: 1 })
+                                toast(this.props.info.general.sessionFail)
+                            } else {
+                                console.error(err)
+                                toast(this.props.info.myDegreeProjects.fail)
+                            }
+                        })
                 }
             })
             .catch(err => {
@@ -178,7 +206,7 @@ class DegreeProject extends Component {
                         <Form.Label>{this.props.info.degreeProject.supervisor}</Form.Label>
                         <Typeahead
                             id="changeSupervisor"
-                            labelKey={(option) => `${option.first_name} ${option.last_name} (${option.email})`}//{"" +option.first_name +option.last_name +" "+option.email +""}}
+                            labelKey={(option) => `${option.first_name} ${option.last_name} (${option.email})`}
                             placeholder={this.props.info.addDegreeProject.supervisorPlaceholder}
                             selected={this.state.supervisor}
                             onChange={event => this.setState({ supervisor_id: event[0].user_id })}
@@ -212,11 +240,10 @@ class DegreeProject extends Component {
             </OverlayTrigger>
         )
     }
-    async editCompetence() {
+    editCompetence() {
         this.setState({ bodyContent: this.renderCompetenceAreaEdit() })
     }
     saveCompetence() {
-        this.setState({ bodyContent: this.renderCompetenceArea() })
         this.postComment()
     }
     async updateComment(comment) {
@@ -226,20 +253,19 @@ class DegreeProject extends Component {
         console.log(this.state)
     }
     renderCompetenceAreaEdit() {
-        console.log(this.state.project.notes)
-        const notes = this.state.project.notes.split(';\n')
+        const notes = this.state.notes.split(';\n')
         return (
             <Fragment>
                 {notes.map((comment, index) =>
                     <Row>
                         <Col md={4}>
-                            {index == 0 ? this.renderOverlay(this.props.info.degreeProject.comment, this.props.info.degreeProject.commentInfo) : ""}
+                            {index === 0 ? this.renderOverlay(this.props.info.degreeProject.comment, this.props.info.degreeProject.commentInfo) : ""}
                         </Col>
                         <Col md={8}>
                             {comment}
                         </Col>
                     </Row>
-                )}                
+                )}
                 <Row>
                     <Col md={4}></Col>
                     <Col md={8}>
@@ -259,24 +285,24 @@ class DegreeProject extends Component {
         )
     }
     renderCompetenceArea() {
-        const notes = this.state.project.notes.split(';\n')
+        const notes = this.state.notes.split(';\n')
         return (
             <Fragment>
                 {notes.map((comment, index) =>
                     <Row>
                         <Col md={4}>
-                            {index == 0 ? this.renderOverlay(this.props.info.degreeProject.comment, this.props.info.degreeProject.commentInfo) : ""}
+                            {index === 0 ? this.renderOverlay(this.props.info.degreeProject.comment, this.props.info.degreeProject.commentInfo) : ""}
                         </Col>
                         <Col md={8}>
                             {comment}
                         </Col>
                     </Row>
                 )}
-                    <Row>
-                        <Col md={{ span: 4, offset: 8 }} className="alignRight">
-                            <Button onClick={() => this.editCompetence()}>{this.props.info.profile.addComment}</Button>
-                        </Col>
-                    </Row>
+                <Row>
+                    <Col md={{ span: 4, offset: 8 }} className="alignRight">
+                        <Button onClick={() => this.editCompetence()}>{this.props.info.profile.addComment}</Button>
+                    </Col>
+                </Row>
             </Fragment>
         )
     }
