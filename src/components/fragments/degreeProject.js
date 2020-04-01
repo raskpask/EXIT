@@ -29,7 +29,7 @@ class DegreeProject extends Component {
     }
     postComment = () => {
         axios
-            .put('/api/notes', { message: this.makeNote() })
+            .put('/api/notes', { message: this.makeNote(), projectID: this.props.project.project_id })
             .then(res => {
                 if (res.status === 200) {
                     toast(this.props.info.profile.saved)
@@ -207,7 +207,7 @@ class DegreeProject extends Component {
                 delay={{ show: 250, hide: 400 }}
                 overlay={this.renderPopoverInfo(infoText)}
             >
-                <Button variant="text" className="textButton">{text}*</Button>
+                <Button variant="text" className="textButton">{text}</Button>
             </OverlayTrigger>
         )
     }
