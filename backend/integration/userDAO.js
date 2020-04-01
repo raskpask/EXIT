@@ -1082,7 +1082,7 @@ function updateNotes(project_id,message){
         const client = await pool.getConnection()
         let updateNotes = {
             text: "UPDATE Degree_project " +
-                "SET notes = ?" +
+                "SET notes = ? " +
                 "WHERE project_id = ?",
             values: [message,project_id]
         }
