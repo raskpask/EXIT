@@ -62,11 +62,10 @@ async function getUser(req) {
  */
 async function getProject(req) {
     try {
-        // await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
-        // const user_id = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req))
-        // const budget_year = requestHandler.extractBudgetYearProject(req)
-        // return await userDAO.getProject(user_id,budget_year)
-        return await userDAO.getProject(24,2020)
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
+        const user_id = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req))
+        const budget_year = requestHandler.extractBudgetYearProject(req)
+        return await userDAO.getProject(user_id,budget_year)
     }
     catch (error) {
         throw error

@@ -21,9 +21,10 @@ class DegreeProject extends Component {
         this.getSupervisors()
     }
     makeNote() {
+        console.log((new Date()).toString().split('GMT')[0])
         return (
-            this.props.project.notes + "\n" +
-            (new Date()).toJSON() + "\n" +
+            this.props.project.notes + ";\n;\n" +
+            (new Date()).toString().split('GMT')[0] + ":;\n" +
             this.state.comment
         )
     }
@@ -207,7 +208,7 @@ class DegreeProject extends Component {
                 delay={{ show: 250, hide: 400 }}
                 overlay={this.renderPopoverInfo(infoText)}
             >
-                <Button variant="text" className="textButton">{text}</Button>
+                <Button variant="text" className="textButton removePaddingTop">{text}</Button>
             </OverlayTrigger>
         )
     }
@@ -218,51 +219,65 @@ class DegreeProject extends Component {
         this.setState({ bodyContent: this.renderCompetenceArea() })
         this.postComment()
     }
-    async updateComment(comment){
+    async updateComment(comment) {
         console.log(comment)
         await this.setState({ comment: comment })
         console.log(this.state.comment)
         console.log(this.state)
     }
     renderCompetenceAreaEdit() {
+        console.log(this.state.project.notes)
+        const notes = this.state.project.notes.split(';\n')
         return (
-            <Row>
-                <Col md={4}>
-                    {this.renderOverlay(this.props.info.degreeProject.comment, this.props.info.degreeProject.commentInfo)}
-                </Col>
-                <Col md={8}>
-                    <Form.Control
-                        type="text"
-                        as="textarea"
-                        rows="3"
-                        placeholder={this.props.info.profile.competenceAreaPlaceholder}
-                        value={this.state.comment}
-                        onChange={event => this.setState({ comment: event.target.value })}
-                        
-                    />
-                    <Button className="buttonMarginSave" onClick={() => this.saveCompetence()}>{this.props.info.profile.save}</Button>
-                </Col>
-            </Row>
+            <Fragment>
+                {notes.map((comment, index) =>
+                    <Row>
+                        <Col md={4}>
+                            {index == 0 ? this.renderOverlay(this.props.info.degreeProject.comment, this.props.info.degreeProject.commentInfo) : ""}
+                        </Col>
+                        <Col md={8}>
+                            {comment}
+                        </Col>
+                    </Row>
+                )}                
+                <Row>
+                    <Col md={4}></Col>
+                    <Col md={8}>
+                        <Form.Control
+                            type="text"
+                            as="textarea"
+                            rows="3"
+                            placeholder={this.props.info.profile.competenceAreaPlaceholder}
+                            value={this.state.comment}
+                            onChange={event => this.setState({ comment: event.target.value })}
+
+                        />
+                        <Button className="buttonMarginSave" onClick={() => this.saveCompetence()}>{this.props.info.profile.addComment}</Button>
+                    </Col>
+                </Row>
+            </Fragment>
         )
     }
     renderCompetenceArea() {
+        const notes = this.state.project.notes.split(';\n')
         return (
-            <Row>
-                <Col md={4}>
-                    {this.renderOverlay(this.props.info.degreeProject.comment, this.props.info.degreeProject.commentInfo)}
-                </Col>
-                <Col md={6}>
-                    {this.state.project.notes}
-                </Col>
-                <Col md={2} className="alignRight">
-                    <Button onClick={() => this.editCompetence()}>{this.props.info.profile.edit}</Button>
-                </Col>
-            </Row>
-        )
-    }
-    renderNotes() {
-        return (
-            this.renderCompetenceArea()
+            <Fragment>
+                {notes.map((comment, index) =>
+                    <Row>
+                        <Col md={4}>
+                            {index == 0 ? this.renderOverlay(this.props.info.degreeProject.comment, this.props.info.degreeProject.commentInfo) : ""}
+                        </Col>
+                        <Col md={8}>
+                            {comment}
+                        </Col>
+                    </Row>
+                )}
+                    <Row>
+                        <Col md={{ span: 4, offset: 8 }} className="alignRight">
+                            <Button onClick={() => this.editCompetence()}>{this.props.info.profile.addComment}</Button>
+                        </Col>
+                    </Row>
+            </Fragment>
         )
     }
     renderDelete() {
@@ -291,7 +306,7 @@ class DegreeProject extends Component {
                                 <Nav.Link onClick={() => this.setState({ bodyContent: this.renderEdit() })}>{this.props.info.degreeProject.edit}</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link onClick={() => this.setState({ bodyContent: this.renderNotes() })}>{this.props.info.degreeProject.comments}</Nav.Link>
+                                <Nav.Link onClick={() => this.setState({ bodyContent: this.renderCompetenceArea() })}>{this.props.info.degreeProject.comments}</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link onClick={() => this.setState({ bodyContent: this.renderDelete() })}>{this.props.info.degreeProject.delete}</Nav.Link>

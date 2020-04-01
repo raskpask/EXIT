@@ -41,3 +41,6 @@
 .popover{
     padding: 1vw;
 }
+.removePaddingTop{
+    padding-top: 0;
+}

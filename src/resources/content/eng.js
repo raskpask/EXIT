@@ -34,7 +34,8 @@ function getLanguage() {
             fail: "Something went wrong, could not load profile.",
             budgetYearFail: "Something went wrong. It could be that the director of studies hasn't added you to that budget year.",
             saved: "Your Area of competence was saved.",
-            saveFaild: "Something went wrong and you competence could not be saved."
+            saveFaild: "Something went wrong and you competence could not be saved.",
+            addComment: "Add comment"
 
         },
         degreeProject: {
