@@ -1089,7 +1089,7 @@ function updateNotes(project_id,message){
             values: [message,project_id]
         }
         client
-            .query(updateNotes.text)
+            .query(updateNotes.text,updateNotes.values)
             .then(res => {
                 resolve()
             })
