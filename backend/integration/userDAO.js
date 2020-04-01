@@ -1080,6 +1080,8 @@ function authorizeUser(session_id, kth_username, role_id) {
 function updateNotes(project_id,message){
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
+        console.log(message)
+        console.log(project_id)
         let updateNotes = {
             text: "UPDATE Degree_project " +
                 "SET notes = ? " +
