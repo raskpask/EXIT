@@ -45,15 +45,15 @@ app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-const greenlock = require("greenlock-express").init({
+const greenlock = require("greenlock-express")
+  .init({
     packageRoot: __dirname,
     configDir: "./greenlock.d",
     maintainerEmail: 'jakmol@kth.se',
-    cluster: false ,
-  });
-  // .serve(app);
+    cluster: false,
+  })
+  .serve(app);
 
-  greenlock.listen(80,443);
 // const httpServer = http.createServer(app);
 // const httpsServer = https.createServer(options, app);
 // httpServer.listen(80);
