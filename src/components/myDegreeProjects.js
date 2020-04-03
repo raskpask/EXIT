@@ -138,7 +138,7 @@ class MyDegreeProjects extends Component {
                         <Modal.Title>{this.props.info.myDegreeProjects.project}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <DegreeProject info={this.props.info} project={project} showInfo={this.showInfo} id={project.project_id} year={this.state.budgetYear.year}/>
+                        <DegreeProject info={this.props.info} project={project} showInfo={this.showInfo} id={project.project_id} year={this.state.currentBudgetYear}/>
                     </Modal.Body>
                 </Modal>
             </Fragment>
