@@ -50,7 +50,7 @@ require("greenlock-express").init({
     configDir: "./greenlock.d",
     maintainerEmail: 'jakmol@kth.se',
     cluster: false ,
-    app: require('/app.js')
+    app: require('/src/app.js')
   });
   // .serve(app);
 
