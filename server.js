@@ -67,8 +67,8 @@ app.get("/hello", function(req, res) {
     res.end("Hello, Encrypted World!");
 });
 
-//require("greenlock-express")
-require("../../")
+require("greenlock-express")
+// require("../../")
     .init({
         packageRoot: __dirname,
         configDir: "./greenlock.d",
