@@ -14,7 +14,8 @@ const key = fs.readFileSync(__dirname + '/cert/selfsigned.key');
 const cert = fs.readFileSync(__dirname + '/cert/selfsigned.crt');
 const options = {
   key: key,
-  cert: cert
+  cert: cert,
+  ca: [fs.readFileSync(__dirname + '/DigiCertCA.crt'),fs.readFileSync(__dirname + '/exit_ict_kth_se.crt')]
 };
 
 app.use(bodyParser.urlencoded({
