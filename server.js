@@ -20,7 +20,7 @@ const options = {
     fs.readFileSync(__dirname + '/exit_ict_kth_se.crt')
   ]
 };
-console.log(__dirname + '/exit_ict_kth_se.crt')
+console.log(fs.readFileSync(__dirname + '/DigiCertCA.crt'))
 app.use(bodyParser.urlencoded({
   extended: true
 }));
