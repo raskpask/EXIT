@@ -5,22 +5,32 @@ dotenv.config();
 const path = require('path');
 const port = process.env.PORT || 80;
 const app = express();
-const bodyParser = require('body-parser');
-const fs = require('fs');
+require("greenlock-express")
+  .init({
+    packageRoot: __dirname,
+    configDir: "./greenlock.d",
+    maintainerEmail: 'jakmol@kth.se',
+    cluster: false
+  })
+  .serve(app);
 
-const http = require('http');
-const https = require('https');
-const key = fs.readFileSync(__dirname + '/cert/selfsigned.key');
-const cert = fs.readFileSync(__dirname + '/cert/selfsigned.crt');
-const options = {
-  key: key,
-  cert: cert,
-  ca: [
-    fs.readFileSync(__dirname + '/DigiCertCA.crt'),
-    fs.readFileSync(__dirname + '/exit_ict_kth_se.crt')
-  ]
-};
-console.log(fs.readFileSync(__dirname + '/DigiCertCA.crt'))
+
+
+// const fs = require('fs');
+// const http = require('http');
+// const https = require('https');
+// const key = fs.readFileSync(__dirname + '/cert/selfsigned.key');
+// const cert = fs.readFileSync(__dirname + '/cert/selfsigned.crt');
+// const options = {
+//   key: key,
+//   cert: cert,
+//   ca: [
+//     fs.readFileSync(__dirname + '/DigiCertCA.crt'),
+//     fs.readFileSync(__dirname + '/exit_ict_kth_se.crt')
+//   ]
+// };
+
+const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -40,10 +50,10 @@ apiEndpoint.router(app);
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
-const httpServer = http.createServer(app);
-const httpsServer = https.createServer(options, app);
-httpServer.listen(80);
-httpsServer.listen(443);
+// const httpServer = http.createServer(app);
+// const httpsServer = https.createServer(options, app);
+// httpServer.listen(80);
+// httpsServer.listen(443);
 // const server = https.createServer(options, app);
 // server.listen(port)
 // app.listen(port);
