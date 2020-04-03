@@ -45,7 +45,7 @@ app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-require("greenlock-express").init({
+const greenlock = require("greenlock-express").init({
     packageRoot: __dirname,
     configDir: "./greenlock.d",
     maintainerEmail: 'jakmol@kth.se',
