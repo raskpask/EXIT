@@ -11,8 +11,8 @@ const exit_ict_kth_se = path + "/exit_ict_kth_se.crt"
 // const cert = require("/Users/molin/Desktop/EXIT/backend/net/md-signer2.crt")
 const sp_options = {
     entity_id: "https://exit.ict.kth.se/",
-    private_key: fs.readFileSync(private_key, "utf-8").toString(),
-    certificate: fs.readFileSync(cert, "utf-8").toString(),
+    private_key: fs.readFileSync(exit_ict_kth_se, "utf-8").toString(),
+    certificate: fs.readFileSync(DigiCertCA, "utf-8").toString(),
     assert_endpoint: "https://exit.ict.kth.se/assert",
 }
 const idp_options = {
