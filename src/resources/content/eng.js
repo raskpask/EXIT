@@ -11,7 +11,7 @@ function getLanguage() {
         home: {
             title: "Welcome to EXIT!",
             paragraph0: "This is a system for directors of studies, examiners and students at KTH. It keeps track of how much of an examiners working hours are to be given to tutoring of degree projects, which examiners that are available to tutor degree projects, how much tutoring hours each examiner has left on the current budget year and each examiner's degree projects.",
-            paragraph1: "When you log out of the system you only log out from EXIT. If you want to log out from KTH CAS (Central Authentication Service) you need to close the browser.",
+            paragraph1: "When you log out of the system you only log out from EXIT. If you want to log out from KTH SAML (Security Assertion Markup Language) you need to close the browser.",
             paragraph2: "If you have any problems with the system press the help button."
         },
         footer: {
@@ -59,7 +59,7 @@ function getLanguage() {
             supervisorPlaceholder: "Press the button to see supervisors",
             comments: "Comments",
             comment: "Comments of the project:",
-            commentInfo: "Add you comments here to describe somethinf that happend or something else in the project.",
+            commentInfo: "Add you comments here to describe something that happend or something else in the project.",
 
         },
         addDegreeProject: {
@@ -97,12 +97,12 @@ function getLanguage() {
             fail: "Error, The project was not added to your quota",
             getFail: "Error could not fetch the supervisors",
             pickSupervisor: "Pick supervisor",
-            bachleorProject: "Bachleor project",
+            bachleorProject: "Bachelor project",
             masterProject: "Master project",
             projectTitleInfo: "Enter the title pf the project",
             startDateInfo: "Enter the start date of the project.",
             endDateInfo: "Enter the deadline of the project.",
-            creditsInfo: "Choose if the project is a master project or a bachleor project.",
+            creditsInfo: "Choose if the project is a master project or a bachelor project.",
             supervisorInfo: "Choose the supervisor of the project, the available supervisors will show up in the list. Make sure that you picked the right year in the start date.",
             studentNameInfo: "Enter the full name of the student. This name will later be shown in the project information. It's not mandatory to add the student name to the project.",
             kthUsernameInfo: "Enter the KTH username of the student. A new user will be created if the student can not be found in the system.",
@@ -118,12 +118,12 @@ function getLanguage() {
             budgetYear: "Budget year",
             masterHoursExaminer: "Master hours examiner",
             masterHoursSupervisor: "Master hours supervisor",
-            bachleorHoursExaminer: "Bachleor hours examiner",
-            bachleorHoursSupervisor: "Bachleor hours supervisor",
+            bachleorHoursExaminer: "Bachelor hours examiner",
+            bachleorHoursSupervisor: "Bachelor hours supervisor",
             masterHoursExaminerPlaceholder: "Amount of hours for examiner in master project",
             masterHoursSupervisorPlaceholder: "Amount of hours for supervisor in master project",
-            bachleorHoursExaminerPlaceholder: "Amount of hours for examiner in bachleor project",
-            bachleorHoursSupervisorPlaceholder: "Amount of hours for supervisor in bachleor project",
+            bachleorHoursExaminerPlaceholder: "Amount of hours for examiner in bachelor project",
+            bachleorHoursSupervisorPlaceholder: "Amount of hours for supervisor in bachelor project",
             totalTutoringHours: "Total tutoring hours",
             factor2: "Factor two",
             factor3: "Factor three",
@@ -139,7 +139,7 @@ function getLanguage() {
             submit: "Submit",
             budgetYearPlaceholder: "Enter the year of the buget",
             masterHoursPlaceholder: "Enter amount of hours for a master project",
-            bachleorHoursPlaceholder: "Enter amount of hours for a bachleor project",
+            bachleorHoursPlaceholder: "Enter amount of hours for a bachelor project",
             totalTutoringHoursPlaceholder: "Enter the total amount of tutoring hours",
             factor2Placeholder: "Factor two students",
             factor3Placeholder: "Factor three students",
@@ -152,8 +152,8 @@ function getLanguage() {
             budgetYearInfo: "Enter the year of the budget year you want to add.",
             masterHoursExaminerInfo: "Enter the default time to spend on one master project as an examiner.",
             masterHoursSupervisorInfo: "Enter the default time to spend on one master project as an supervisor.",
-            bachleorHoursExaminerInfo: "Enter the default time to spend on one bachleor project as an examiner.",
-            bachleorHoursSupervisorInfo: "Enter the default time to spend on one bachleor project as an supervisor.",
+            bachleorHoursExaminerInfo: "Enter the default time to spend on one bachelor project as an examiner.",
+            bachleorHoursSupervisorInfo: "Enter the default time to spend on one bachelor project as an supervisor.",
             factor2Info: "The factor that will calculate the needed time if there are two students in a project.",
             factor3Info: "The factor that will calculate the needed time if there are three students in a project.",
             factor4Info: "The factor that will calculate the needed time if there are four students in a project.",
@@ -264,147 +264,6 @@ function getLanguage() {
             fail: "Something went wrong and the user was not add as director of studies",
             getFail:"Something went wrong could not fetch examiners"
         },
-        validationError: {
-            emptyField: {
-                message: "Please fill in this field"
-            },
-            noMatchPassword: {
-                message: "Passwords do not match"
-            },
-            toLongField: {
-                message: "FIELD is to long(maximum is MAXNUM characters)"
-            },
-            toShortField: {
-                message: "FIELD is to short(minimum is MINNUM characters)"
-            },
-            notValidField: {
-                message: "Please enter a valid FIELD"
-            },
-            invalidCharacters: {
-                message: "FIELD contains invalid characters"
-            },
-            notUnicode: {
-                message: "Please only use Unicode characters"
-            },
-            duplicateUsername: {
-                message: "This username already exists, try another username"
-            },
-            notNumber: {
-                message: "You must specify a  valid number"
-            },
-            competenceTypeNotChoosen: {
-                message: "Pleace choose a compitence from the list"
-            },
-            alreadyHasApplication: {
-                message: "You have already created a application. You may not create any more appications."
-            },
-            bothCompAndAvailMissing: {
-                message: "Please specify a compitence and a availibility"
-            },
-            compMissing: {
-                message: "Please specify a compitence"
-            },
-            availMissing: {
-                message: "Please specify a availibility date"
-            },
-            availEmpty: {
-                message: "Please give a valid availibility date"
-            },
-        },
-        listApplications: {
-            firstName: "First name",
-            lastName: "Last name",
-            applicationDate: "Application date",
-            moreInfo: "Application info",
-            info: "Info",
-            competences: "Competences",
-            applicationPeriod: "Application period",
-            from: "From: ",
-            to: "To: ",
-            availability: "Availability",
-            name: "Name",
-            accept: "Accept",
-            reject: "Reject",
-            close: "Close",
-            application: "Application",
-            editedMessage: "This applicataion has already been edited by someone else!\n" +
-                "The page will be reloaded to see the new status.",
-            success: "The application has been changed",
-            noApplications: "The filter you used has no matching applications",
-            filter: "Filter"
-
-        },
-        apply: {
-            sumbitError: "You did not use the correct input for the application so it could not be created. Please check the application and try again.",
-            buttonCompetences: "Competence:",
-            buttonDefaultValue: "Pick a competence",
-            buttonAddCompetence: "Add competence",
-            textYearsOfExperience: "Years of experience:",
-            availabilityButton: "Add availibility",
-            sumbitApplication: "Submit application",
-            tableCompetence: [
-                "Competence",
-                "Years of experience"
-            ],
-            tableAvailability: [
-                "Availability",
-                "Start date",
-                "End date",
-                "Period "
-            ],
-        },
-
-        user: [
-            {
-                name: "Username: ",
-                placeholder: "Enter username"
-            },
-            {
-                name: "Password: ",
-                placeholder: "Enter Password",
-            },
-            {
-                name: "Email: ",
-                placeholder: "Enter Email"
-            },
-            {
-                name: "Date of birth: ",
-                placeholder: "Enter date of birth"
-            },
-            {
-                name: "First Name: ",
-                placeholder: "Enter first name"
-            },
-            {
-                name: "Last Name: ",
-                placeholder: "Enter last name"
-            },
-            {
-                name: "Welcome "
-            },
-            {
-                availability: "Availability",
-                competence: "Competence",
-                yearsOfExperience: "Years of experience",
-                to: " to ",
-                dateOfSubmission: "Date of submission: ",
-                status: "Status: ",
-                lastEdited: "Last edited:  ",
-                firstName: "First name: ",
-                lastName: "Last name: ",
-                dateOfBirth: "Date of birth: ",
-                info: "Info"
-            },
-            {
-                status0: "Unhandled",
-                status1: "Accepted",
-                status2: "Rejected",
-                statuselse: "Status Loading/Error"
-            },
-            {
-                noApplicationMessage: "This is where your application will be displayed when you create one."
-            }
-        ],
         general: {
             loading: "Loading...",
             error: "oops something went wrong!",
