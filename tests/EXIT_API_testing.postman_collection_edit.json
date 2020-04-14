@@ -291,6 +291,218 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "Expertise",
+			"item": [
+				{
+					"name": "Get Expertise",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "481a3a59-b3b3-4681-ba2b-0e5876e075d8",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Contains network\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData[0].expertise_name).to.eql(\"Network\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/expertise",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"expertise"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Expertise Specific",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9ea9a898-9d13-4a85-8319-b588570cc8d4",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Contains network\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData[0].expertise_name).to.eql(\"Network\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"userID\":\"1\"} ",
+							"options": {
+								"raw": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/expertise",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"expertise"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Expertise",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9e0b5c30-4fd5-4566-8d71-c3f9a14617fc",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n\t\"expertiseName\":\"Network\"\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/expertise",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"expertise"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Expertise",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"expertiseID\":\"1\",\"expertiseName\":\"Network and testing\"} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/expertise",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"expertise"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete expertise",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"expertiseID\":\"1\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/expertise",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"expertise"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "Project",
 			"item": [
 				{
@@ -333,7 +545,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"numberOfStudents\": 2,\r\n    \"credits\": 15,\r\n    \"projectDescription\": \"This is a test project aiming to show that the API works.\",\r\n    \"students\":[{\"name\":\"Student 1\",\"email\":\"stud1111111@kth.se\"},{\"name\":\"Student 2\",\"email\":\"stud2222222@kth.se\"}],\r\n    \"title\": \"Testprojekt\",\r\n    \"startDate\":\"2020-01-15\",\r\n    \"endDate\":\"2020-06-15\",\r\n    \"companyContact\":5,\r\n    \"companyName\": \"Testsons\",\r\n    \"companyAddress\":\"Testsvängen 12\",\r\n    \"companyPhoneNumber\":\"072-12 34 567\",\r\n    \"supervisorID\": 1\r\n    }",
+							"raw": "{\r\n    \"numberOfStudents\": 2,\r\n    \"credits\": 15,\r\n    \"projectDescription\": \"This is a test project aiming to show that the API works.\",\r\n    \"students\":[{\"name\":\"Student 1\",\"email\":\"stud11111@kth.se\"},{\"name\":\"Student 2\",\"email\":\"stud22222@kth.se\"}],\r\n    \"title\": \"Testprojekt\",\r\n    \"startDate\":\"2020-01-15\",\r\n    \"endDate\":\"2020-06-15\",\r\n    \"companyContact\":5,\r\n    \"companyName\": \"Testsons\",\r\n    \"companyAddress\":\"Testsvängen 12\",\r\n    \"companyPhoneNumber\":\"072-12 34 567\",\r\n    \"supervisorID\": 1\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -364,9 +576,6 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
-									"});",
-									"pm.test(\"Body matches string\", function () {",
-									"    pm.expect(pm.response.text()).to.include('2020-01-14T23:00:00.000Z');",
 									"});"
 								],
 								"type": "text/javascript"
@@ -439,7 +648,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \t\"numberOfStudents\": 2,\r\n    \"credits\": 15,\r\n    \"projectDescription\": \"This is a test project aiming to show that the API works.\",\r\n    \"students\":[{\"name\":\"Student 1\",\"email\":\"stud1111111@kth.se\"},{\"name\":\"Student 2\",\"email\":\"stud2222222@kth.se\"}],\r\n    \"title\": \"Testprojekt\",\r\n    \"startDate\":\"2020-02-30\",\r\n    \"endDate\":\"2020-06-15\",\r\n    \"companyContact\":5,\r\n    \"companyName\": \"Testsons\",\r\n    \"companyAddress\":\"Testsvängen 12\",\r\n    \"companyPhoneNumber\":\"072-12 34 567\",\r\n    \"supervisorID\": 1\r\n\t\r\n}",
+							"raw": "{\r\n    \"numberOfStudents\": 3,\r\n    \"credits\": 15,\r\n    \"projectDescription\": \"This is a project\",\r\n    \"title\": \"Project\",\r\n    \"startDate\":\"2020-02-30\",\r\n    \"endDate\":\"2020-06-15\",\r\n    \"companyName\": \"Testsons\",\r\n    \"companyAddress\":\"Testsvängen 12\",\r\n    \"companyPhoneNumber\":\"072-12 34 567\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -491,7 +700,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"numberOfStudents\": 2,\r\n    \"credits\": 15,\r\n    \"projectDescription\": \"This is a test project aiming to show that the API works.\",\r\n    \"students\":[{\"name\":\"Student 1\",\"email\":\"stud1111111@kth.se\"},{\"name\":\"Student 2\",\"email\":\"stud2222222@kth.se\"}],\r\n    \"title\": \"Testprojekt\",\r\n    \"startDate\":\"2020-15-01\",\r\n    \"endDate\":\"2020-06-15\",\r\n    \"companyContact\":5,\r\n    \"companyName\": \"Testsons\",\r\n    \"companyAddress\":\"Testsvängen 12\",\r\n    \"companyPhoneNumber\":\"072-12 34 567\",\r\n    \"supervisorID\": 1\r\n}",
+							"raw": "{\r\n    \"numberOfStudents\": 3,\r\n    \"credits\": 15,\r\n    \"projectDescription\": \"This is a project\",\r\n    \"title\": \"Project\",\r\n    \"startDate\":\"2020-02-29\",\r\n    \"endDate\":\"2020-01-15\",\r\n    \"companyName\": \"Testsons\",\r\n    \"companyAddress\":\"Testsvängen 12\",\r\n    \"companyPhoneNumber\":\"072-12 34 567\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -611,7 +820,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"project_id\":20,\r\n    \"supervisor_id\":2\r\n}",
+							"raw": "{\r\n    \"numberOfStudents\": 3,\r\n    \"credits\": 15,\r\n    \"projectDescription\": \"This is a project\",\r\n    \"title\": \"Project\",\r\n    \"startDate\":\"2020-01-15\",\r\n    \"endDate\":\"2020-06-15\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -718,7 +927,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"user_type_id\":4,\n\t\"kth_username\":\"TestTest\"\n\t\n}",
+							"raw": "{\n\t\"user_type_id\":4,\n\t\"kth_username\":\"Testsoon\"\n\t\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1185,6 +1394,30 @@
 							"path": [
 								"api",
 								"workYear"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "availableExaminers",
+			"item": [
+				{
+					"name": "Get availale examiners",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/availableExaminers",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"availableExaminers"
 							]
 						}
 					},

@@ -633,7 +633,7 @@ function updateProject(supervisor_id, project_id) {
         const client = await pool.getConnection()
         let updateSupervisor = {
             text: "UPDATE Student_project " +
-                "SET Student_project.user_id = supervisor_id, project_role_id = ? " +
+                "SET Student_project.user_id = ?, project_role_id = ? " +
                 "WHERE  degree_project_id = ? AND project_role_id = ? ",
             values: [supervisor_id, ROLE_SUPERVISOR, project_id, ROLE_SUPERVISOR]
         }
@@ -680,7 +680,7 @@ function deleteProject(project_id) {
         client
             .query(deleteProject.text, deleteProject.values)
             .then(res => {
-                if (res.affectedRows === 1) {
+                if (res.affectedRows === 1 || res.affectedRows === 0) {
                     resolve()
                 } else {
                     reject(new Error(dbError.errorCodes.DELETE_ERROR.code))

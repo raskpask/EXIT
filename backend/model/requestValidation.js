@@ -132,9 +132,11 @@ function validateProject(request) {
         }
 
         if(project.companyName){
-            if(!checkPhoneNumber(project.companyPhone)){
-                console.log("invalid phone number" );
-                return false;
+            if(project.companyPhone){
+                if(!checkPhoneNumber(project.companyPhone)){
+                    console.log("invalid phone number" );
+                    return false;
+                }
             }
             if (project.companyName.length < 1 || project.companyAddress.length < 1) {
                 console.log("title or description missing");
