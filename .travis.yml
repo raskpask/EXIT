@@ -14,6 +14,7 @@ before_script:
   - node --version
   - npm --version
   - node_modules/.bin/newman --version
+  - sudo mysql -e 'create database exit_db;'
   - sudo mysql -u root --password="" < tests/dump.sql
   - npm start &
 script: bundle exec rake spec
