@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, Dropdown, DropdownButton } from 'react-bootstrap';
 import Cookies from 'universal-cookie';
 import '../resources/css/header.css';
 
@@ -19,8 +19,7 @@ class Header extends Component {
     }
 
     chooseUserLevel() {
-        // return this.renderExaminer()
-
+        return this.renderAdmin()
         let privilegeLevel = document.cookie.split('role_id=')[1];
 
         if (Boolean(privilegeLevel)) {
@@ -53,7 +52,7 @@ class Header extends Component {
             <React.Fragment>
                 <Nav className="mr-auto">
                     {this.renderBrand()}
-                    <Nav.Link className="fontColor"  href="/login" >{this.props.info.header.login}</Nav.Link>
+                    <Nav.Link className="fontColor" href="/login" >{this.props.info.header.login}</Nav.Link>
                     <Nav.Link className="fontColor" href="/help">{this.props.info.header.help}</Nav.Link>
                 </Nav>
             </React.Fragment>
@@ -110,9 +109,21 @@ class Header extends Component {
                     <Nav.Link className="fontColor" href="/logout">{this.props.info.header.logout}</Nav.Link>
                     <Nav.Link className="fontColor" href="/addDirectorOfStudies">{this.props.info.header.addDirectorOfStudies}</Nav.Link>
                     <Nav.Link className="fontColor" href="/directorsOfStudies">{this.props.info.header.directorsOfStudies}</Nav.Link>
+                    <DropdownButton  className="dropdown" id="dropdown-basic-button" title={this.props.info.header.directorsOfStudiesTasks}>
+                        <Dropdown.Item ><Nav.Link className="fontColor" href="/addBudgetYear">{this.props.info.header.addBudgetYear}</Nav.Link></Dropdown.Item>
+                        <Dropdown.Item ><Nav.Link className="fontColor" href="/specifiedBudgetYears">{this.props.info.header.specifiedBudgetYears}</Nav.Link></Dropdown.Item>
+                        <Dropdown.Item ><Nav.Link className="fontColor" href="/addExaminer">{this.props.info.header.addExaminer}</Nav.Link></Dropdown.Item>
+                        <Dropdown.Item > <Nav.Link className="fontColor" href="/specifyTutoringHours">{this.props.info.header.specifyTutoringHours}</Nav.Link></Dropdown.Item>
+                        <Dropdown.Item > <Nav.Link className="fontColor" href="/availableExaminers">{this.props.info.header.availableExaminsers}</Nav.Link></Dropdown.Item>
+                    </DropdownButton>
+                    <DropdownButton id="dropdown-basic-button" title={this.props.info.header.examiner}>
+                        <Dropdown.Item ><Nav.Link className="fontColor" href="/profile">{this.props.info.header.profile}</Nav.Link></Dropdown.Item>
+                        <Dropdown.Item ><Nav.Link className="fontColor" href="/addDegreeProject">{this.props.info.header.addDegreeProject}</Nav.Link></Dropdown.Item>
+                        <Dropdown.Item ><Nav.Link className="fontColor" href="/myDegreeProjects">{this.props.info.header.myDegreeProjects}</Nav.Link></Dropdown.Item>
+                    </DropdownButton>
                     <Nav.Link className="fontColor" href="/help">{this.props.info.header.help}</Nav.Link>
                 </Nav>
-            </React.Fragment>
+            </React.Fragment >
         )
     }
 

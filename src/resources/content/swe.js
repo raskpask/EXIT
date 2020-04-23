@@ -196,6 +196,8 @@ function getLanguage() {
             login: "Logga in",
             logout: "Logga ut",
             profile: "Profil",
+            examiner: "Examinators tjänster",
+            directorsOfStudiesTasks:"Studierektors tjänster",
             swe: "SV",
             eng: "ENG",
             kth: "KTH EECS Electrum EXIT",

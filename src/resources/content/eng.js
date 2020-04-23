@@ -196,6 +196,8 @@ function getLanguage() {
             login: "Login",
             logout: "Logout",
             profile: "Profile",
+            examiner: "Examiner services",
+            directorsOfStudiesTasks: "Director of stuides services",
             swe: "SWE",
             eng: "ENG",
             loginError: "Invaild password/username",

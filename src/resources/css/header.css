@@ -1,9 +1,27 @@
-/* .userText{
-    font-size: 2vw;
-    color: white; 
-    padding-left: 1vw;
-    padding-right: 1vw;
-} */
+.dropdown{
+   background-color: rgba(25, 84, 166);
+   color: aqua !important;
+   content: none; 
+}
+.btn-primary {
+    background-color: rgba(25, 84, 166) !important;
+    color: aqua !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+.btn-primary:hover {
+    background-color: rgba(25, 84, 166) !important;
+    color: rgb(192, 206, 226) !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.dropdown-toggle::after{
+    display: none;
+}
+.dropdown-menu {
+    background-color: rgba(25, 84, 166);
+}
 .navbar{
     background-color: rgba(25, 84, 166);
 }
@@ -12,6 +30,10 @@
 }
 .fontColor:hover{
     color: rgb(192, 206, 226) !important;
+    background-color: rgba(25, 84, 166);
+}
+.dropdown-item:hover {
+    background-color: rgba(25, 84, 166);
 }
 .logo{
     padding: 0;
