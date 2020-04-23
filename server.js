@@ -10,11 +10,13 @@ const fs = require('fs');
 
 const http = require('http');
 const https = require('https');
-const key = fs.readFileSync(__dirname + '/cert/selfsigned.key');
-const cert = fs.readFileSync(__dirname + '/cert/selfsigned.crt');
+const key = fs.readFileSync(__dirname + '/cert/exit.key');
+const cert = fs.readFileSync(__dirname + '/cert/exit_ict_kth_se.crt');
+const ca = fs.readFileSync(__dirname + '/cert/DigiCertCA.crt');
 const options = {
   key: key,
-  cert: cert
+  cert: cert,
+  ca: ca
 };
 
 app.use(bodyParser.urlencoded({

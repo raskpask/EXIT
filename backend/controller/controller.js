@@ -2,7 +2,7 @@ const userDAO = require('../integration/userDAO');
 const requestHandler = require('../model/requestHandler');
 const authToken = require('../model/authToken');
 const dbError = require('../error/dbErrors')
-const ADMIN_PRIVELEGE = 1
+const ADMIN_PRIVILEGE = 1
 const DICRECTOR_PRIVILEGE = 2
 const EXAMINER_PRIVILEGE = 3
 const STUDENT_PRIVILEGE = 4
@@ -14,9 +14,12 @@ const STUDENT_PRIVILEGE = 4
  * @returns Promise with 200
  */
 async function registerUser(req) {
-    const userRoleId = await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
     const changeToUserType = requestHandler.extractUserTypeId(req)
-    if (userRoleId < changeToUserType) {
+    const userRoleId = await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
+    if(isNaN(changeToUserType)){
+        throw new Error(dbError.errorCodes.BAD_REQUEST_ERROR.code)
+    }else if(userRoleId < changeToUserType) {
+        console.log("changeToUserType" + changeToUserType)
         const username = requestHandler.extractUsername(req)
         return await userDAO.registerUser(username, changeToUserType)
     } else {
@@ -31,9 +34,10 @@ async function registerProject(req) {
     try {
         await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
         const projectDetails = requestHandler.extractRegisterProjectDetails(req);
-        return await userDAO.registerProject(projectDetails);
+        console.log(projectDetails)
+        const examiner_id = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req))
+        return await userDAO.registerProject(projectDetails,examiner_id);
     } catch (error) {
-        console.log(error + " IN THE CONTROLLER");
         throw error
     }
 
@@ -63,12 +67,15 @@ async function getUser(req) {
 async function getProject(req) {
     try {
         await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
-        return await userDAO.getProject(1, 2020);//requestHandler.extractProjectID(req));
+        const user_id = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req))
+        const budget_year = requestHandler.extractBudgetYearProject(req)
+        return await userDAO.getProject(user_id,budget_year)
     }
     catch (error) {
         throw error
     }
 }
+
 async function updateProject(req) {
     try {
         await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
@@ -81,14 +88,21 @@ async function updateProject(req) {
 async function deleteProject(req) {
     try {
         await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
-        console.log(req)
         return await userDAO.deleteProject(req.body.project_id);
     }
     catch (error) {
         throw error
     }
 }
-
+async function updateNotes(req){
+    try {
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
+        return await userDAO.updateNotes(requestHandler.extractProjectID(req),req.body.message);
+    }
+    catch (error){
+        throw error
+    }
+}
 
 async function getWorkYear(req) {
     try {
@@ -187,6 +201,7 @@ async function deleteBudgetYear(req) {
 }
 
 async function deleteUser(req) {
+    await authorizeUser(requestHandler.extractUserDataFromCookie(req), ADMIN_PRIVILEGE)
     return await userDAO.deleteUser(requestHandler.extractUserID(req));
 }
 async function updateUser(req) {
@@ -206,9 +221,12 @@ async function login(session_id, first_name, last_name, kth_username, role) {
 async function authorizeUser(user_info, privilege_level) {
     return await userDAO.authorizeUser(user_info.session_id, user_info.kth_username, privilege_level);
 }
-
+async function logout(kth_username) {
+    return await userDAO.logout(kth_username);
+}
 
 module.exports = {
+    logout,
     registerUser,
     registerProject,
     getUser,
@@ -231,5 +249,6 @@ module.exports = {
     getAvailableExaminers,
     getAvailableSupervisors,
     login,
-    getProfile
+    getProfile,
+    updateNotes
 }

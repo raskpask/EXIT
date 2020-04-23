@@ -11,7 +11,7 @@ function getLanguage() {
         home: {
             title: "Welcome to EXIT!",
             paragraph0: "This is a system for directors of studies, examiners and students at KTH. It keeps track of how much of an examiners working hours are to be given to tutoring of degree projects, which examiners that are available to tutor degree projects, how much tutoring hours each examiner has left on the current budget year and each examiner's degree projects.",
-            paragraph1: "When you log out of the system you only log out from EXIT. If you want to log out from KTH CAS (Central Authentication Service) you need to close the browser.",
+            paragraph1: "When you log out of the system you only log out from EXIT. If you want to log out from KTH SAML (Security Assertion Markup Language) you need to close the browser.",
             paragraph2: "If you have any problems with the system press the help button."
         },
         footer: {
@@ -22,6 +22,7 @@ function getLanguage() {
             paragraph0: "This page shows how many tutoring hours you are supposed to use for tutoring of degree projects the current year and how many tutoring hours you have left. " +
                 "Please specify a work area so that students can see what your main work area is.",
             competenceArea: "Area of competence",
+            competenceAreaInfo: "Enter a general comment or you expertise area that will be shown to the students.",
             competenceAreaPlaceholder: "Enter you area of competence. You may describe it with words or just write the area.",
             totalExaminerHours: "Amount of tutoring hours as examiner",
             reamainingExaminerHours: "Remaining tutoring hours as examiner",
@@ -33,7 +34,8 @@ function getLanguage() {
             fail: "Something went wrong, could not load profile.",
             budgetYearFail: "Something went wrong. It could be that the director of studies hasn't added you to that budget year.",
             saved: "Your Area of competence was saved.",
-            saveFaild: "Something went wrong and you competence could not be saved."
+            saveFaild: "Something went wrong and you competence could not be saved.",
+            addComment: "Add comment"
 
         },
         degreeProject: {
@@ -54,7 +56,10 @@ function getLanguage() {
             examiner: "Examiner",
             projectRole: "Project role",
             pickSupervisor: "Pick supervisor",
-            supervisorPlaceholder: "Press the button to see supervisors"
+            supervisorPlaceholder: "Press the button to see supervisors",
+            comments: "Comments",
+            comment: "Comments of the project:",
+            commentInfo: "Add you comments here to describe something that happend or something else in the project.",
 
         },
         addDegreeProject: {
@@ -64,8 +69,8 @@ function getLanguage() {
             numOfStudentsPlaceholder: "Specify number of students for the project.",
             projectDescription: "Project description",
             projectDescriptionPlaceholder: "Please fill in general information about the project.",
-            credits: "Credits",
-            creditsPlaceholder: "Enter the amount of credits for the project.",
+            credits: "Project type",
+            creditsPlaceholder: "Enter the type of the project.",
             startDate: "Start date",
             startDatePlaceholder: "Press to enter start date.",
             endDate: "End date",
@@ -91,7 +96,20 @@ function getLanguage() {
             added: "The project was added to your quota",
             fail: "Error, The project was not added to your quota",
             getFail: "Error could not fetch the supervisors",
-            pickSupervisor: "Pick supervisor"
+            pickSupervisor: "Pick supervisor",
+            bachleorProject: "Bachelor project",
+            masterProject: "Master project",
+            projectTitleInfo: "Enter the title pf the project",
+            startDateInfo: "Enter the start date of the project.",
+            endDateInfo: "Enter the deadline of the project.",
+            creditsInfo: "Choose if the project is a master project or a bachelor project.",
+            supervisorInfo: "Choose the supervisor of the project, the available supervisors will show up in the list. Make sure that you picked the right year in the start date.",
+            studentNameInfo: "Enter the full name of the student. This name will later be shown in the project information. It's not mandatory to add the student name to the project.",
+            kthUsernameInfo: "Enter the KTH username of the student. A new user will be created if the student can not be found in the system.",
+            projectDescriptionInfo: "Describe the project in your own words. You have a limit of 1000 characters.",
+            companyNameInfo: "Enter the full name of the company that is providing the project. It's not mandatory to add a company to the project.",
+            companyAddressInfo: "Enter the address of the company that is providing the project. It's not mandatory to add a company to the project.",
+            companyPhoneInfo: "Enter the phone number of the company that is providing the project. It's not mandatory to add a company to the project.",
         },
         specifiedBudgetYears: {
             title: "Specified budget years",
@@ -100,12 +118,12 @@ function getLanguage() {
             budgetYear: "Budget year",
             masterHoursExaminer: "Master hours examiner",
             masterHoursSupervisor: "Master hours supervisor",
-            bachleorHoursExaminer: "Bachleor hours examiner (two students)",
-            bachleorHoursSupervisor: "Bachleor hours supervisor (two students)",
+            bachleorHoursExaminer: "Bachelor hours examiner",
+            bachleorHoursSupervisor: "Bachelor hours supervisor",
             masterHoursExaminerPlaceholder: "Amount of hours for examiner in master project",
             masterHoursSupervisorPlaceholder: "Amount of hours for supervisor in master project",
-            bachleorHoursExaminerPlaceholder: "Amount of hours for examiner in bachleor project",
-            bachleorHoursSupervisorPlaceholder: "Amount of hours for supervisor in bachleor project",
+            bachleorHoursExaminerPlaceholder: "Amount of hours for examiner in bachelor project",
+            bachleorHoursSupervisorPlaceholder: "Amount of hours for supervisor in bachelor project",
             totalTutoringHours: "Total tutoring hours",
             factor2: "Factor two",
             factor3: "Factor three",
@@ -117,11 +135,11 @@ function getLanguage() {
         addBudgetYear: {
             title: "Add budget year",
             paragraph0: "Here you can add a budget year, specify how many tutoring hours an examiner should use for tutoring degree projects " +
-                "and specify factors that the hours are going to be multiplied with if the number of students exceeds one.",
+                "and specify factors that the hours are going to be multiplied with if the number of students exceeds one. Hover the title to get specific info.",
             submit: "Submit",
             budgetYearPlaceholder: "Enter the year of the buget",
             masterHoursPlaceholder: "Enter amount of hours for a master project",
-            bachleorHoursPlaceholder: "Enter amount of hours for a bachleor project",
+            bachleorHoursPlaceholder: "Enter amount of hours for a bachelor project",
             totalTutoringHoursPlaceholder: "Enter the total amount of tutoring hours",
             factor2Placeholder: "Factor two students",
             factor3Placeholder: "Factor three students",
@@ -130,7 +148,16 @@ function getLanguage() {
             factor1Placeholder: "Factor one students",
             added: "The budget year was added to the database.",
             fail: "Something went wrong, the budget year was not added to the database.",
-            addExaminer: "Add examiner"
+            addExaminer: "Add examiner",
+            budgetYearInfo: "Enter the year of the budget year you want to add.",
+            masterHoursExaminerInfo: "Enter the default time to spend on one master project as an examiner.",
+            masterHoursSupervisorInfo: "Enter the default time to spend on one master project as an supervisor.",
+            bachleorHoursExaminerInfo: "Enter the default time to spend on one bachelor project as an examiner.",
+            bachleorHoursSupervisorInfo: "Enter the default time to spend on one bachelor project as an supervisor.",
+            factor2Info: "The factor that will calculate the needed time if there are two students in a project.",
+            factor3Info: "The factor that will calculate the needed time if there are three students in a project.",
+            factor4Info: "The factor that will calculate the needed time if there are four students in a project.",
+            factor5Info: "The factor that will calculate the needed time if there are five students in a project."
         },
         addExaminer: {
             title: "Add examiner or supervisor",
@@ -138,28 +165,39 @@ function getLanguage() {
             kthUsername: "KTH username",
             kthUsernamePlaceholder: "Enter the KTH username of the examiner or supervisor you want to add",
             added: "The user was added as examiner.",
-            fail: "Something went wrong the user was not added as a examiner."
+            fail: "Something went wrong the user was not added as a examiner.",
+            kthUsernameInfo: "Enter the kth username of the person you want to add as an examiner."
+
         },
         specifyTutoringHours: {
             title: "Specify tutoring hours",
             paragraph0: "This table shows all available examiners in the system. " +
                 "You can add an examiner to a specific budget year by choosing the budget year, " +
                 "examiner mail and define the number of hours the examiner is supposed to use " +
-                "to tutor degree projects during the selected budget year.",
+                "to tutor degree projects during the selected budget year. "+
+                "If the user has the name 'null null' it hasn't logged in to the site.",
             bugetYear: "Budget Year",
             budgetYearPlaceholder: "Enter the buget year you want to add the examiner/examiners to.",
-            username: "Username",
-            usernamePlaceholder: "KTH username.",
-            examinerHours: "Examiner hours",
-            supervisorHours: "Supervisor hours",
+            username: "User",
+            usernamePlaceholder: "KTH user",
+            examinerHours: "Examiner hours according to budget year",
+            supervisorHours: "Supervisor hours according to budget year",
             examinerHoursPlaceholder: "Amount of hours to be examiner.",
-            supervisorHoursPlaceholder: "Amount of hours to be supervisor."
+            supervisorHoursPlaceholder: "Amount of hours to be supervisor.",
+            getBudgetYearFail: "Something went wrong could not fetch budget years.",
+            success: "The user/users wsa added to the budget year.",
+            budgetYearInfo: "Select the year from the list you want to add examiners and supervisors to.",
+            usernameInfo: "Enter the kth username of the examiner or supervisor you want to add hours to.",
+            examinerHoursInfo: "Enter the amout of hours the user should spend as examiner this budget year.",
+            supervisorHoursInfo: "Enter the amout of hours the user should spend as supervisor this budget year."
         },
         header: {
             home: "Home",
             login: "Login",
             logout: "Logout",
             profile: "Profile",
+            examiner: "Examiner services",
+            directorsOfStudiesTasks: "Director of stuides services",
             swe: "SWE",
             eng: "ENG",
             loginError: "Invaild password/username",
@@ -222,159 +260,23 @@ function getLanguage() {
             paragraph0: "Please insert the username of the name of the person you want to add as a director of studies. The username is the same as the email but without \"@kth.se\".",
             usernamePlaceholder: "Enter the username of the user you want to make as director of studies.",
             username: "Username",
+            usernameInfo: "Enter the KTH username of the user you want to make director of studies.",
             submit: "Submit",
             added: "The user was added as director of studies",
             fail: "Something went wrong and the user was not add as director of studies",
             getFail:"Something went wrong could not fetch examiners"
         },
-        validationError: {
-            emptyField: {
-                message: "Please fill in this field"
-            },
-            noMatchPassword: {
-                message: "Passwords do not match"
-            },
-            toLongField: {
-                message: "FIELD is to long(maximum is MAXNUM characters)"
-            },
-            toShortField: {
-                message: "FIELD is to short(minimum is MINNUM characters)"
-            },
-            notValidField: {
-                message: "Please enter a valid FIELD"
-            },
-            invalidCharacters: {
-                message: "FIELD contains invalid characters"
-            },
-            notUnicode: {
-                message: "Please only use Unicode characters"
-            },
-            duplicateUsername: {
-                message: "This username already exists, try another username"
-            },
-            notNumber: {
-                message: "You must specify a  valid number"
-            },
-            competenceTypeNotChoosen: {
-                message: "Pleace choose a compitence from the list"
-            },
-            alreadyHasApplication: {
-                message: "You have already created a application. You may not create any more appications."
-            },
-            bothCompAndAvailMissing: {
-                message: "Please specify a compitence and a availibility"
-            },
-            compMissing: {
-                message: "Please specify a compitence"
-            },
-            availMissing: {
-                message: "Please specify a availibility date"
-            },
-            availEmpty: {
-                message: "Please give a valid availibility date"
-            },
-        },
-        listApplications: {
-            firstName: "First name",
-            lastName: "Last name",
-            applicationDate: "Application date",
-            moreInfo: "Application info",
-            info: "Info",
-            competences: "Competences",
-            applicationPeriod: "Application period",
-            from: "From: ",
-            to: "To: ",
-            availability: "Availability",
-            name: "Name",
-            accept: "Accept",
-            reject: "Reject",
-            close: "Close",
-            application: "Application",
-            editedMessage: "This applicataion has already been edited by someone else!\n" +
-                "The page will be reloaded to see the new status.",
-            success: "The application has been changed",
-            noApplications: "The filter you used has no matching applications",
-            filter: "Filter"
-
-        },
-        apply: {
-            sumbitError: "You did not use the correct input for the application so it could not be created. Please check the application and try again.",
-            buttonCompetences: "Competence:",
-            buttonDefaultValue: "Pick a competence",
-            buttonAddCompetence: "Add competence",
-            textYearsOfExperience: "Years of experience:",
-            availabilityButton: "Add availibility",
-            sumbitApplication: "Submit application",
-            tableCompetence: [
-                "Competence",
-                "Years of experience"
-            ],
-            tableAvailability: [
-                "Availability",
-                "Start date",
-                "End date",
-                "Period "
-            ],
-        },
-
-        user: [
-            {
-                name: "Username: ",
-                placeholder: "Enter username"
-            },
-            {
-                name: "Password: ",
-                placeholder: "Enter Password",
-            },
-            {
-                name: "Email: ",
-                placeholder: "Enter Email"
-            },
-            {
-                name: "Date of birth: ",
-                placeholder: "Enter date of birth"
-            },
-            {
-                name: "First Name: ",
-                placeholder: "Enter first name"
-            },
-            {
-                name: "Last Name: ",
-                placeholder: "Enter last name"
-            },
-            {
-                name: "Welcome "
-            },
-            {
-                availability: "Availability",
-                competence: "Competence",
-                yearsOfExperience: "Years of experience",
-                to: " to ",
-                dateOfSubmission: "Date of submission: ",
-                status: "Status: ",
-                lastEdited: "Last edited:  ",
-                firstName: "First name: ",
-                lastName: "Last name: ",
-                dateOfBirth: "Date of birth: ",
-                info: "Info"
-            },
-            {
-                status0: "Unhandled",
-                status1: "Accepted",
-                status2: "Rejected",
-                statuselse: "Status Loading/Error"
-            },
-            {
-                noApplicationMessage: "This is where your application will be displayed when you create one."
-            }
-        ],
         general: {
             loading: "Loading...",
             error: "oops something went wrong!",
             yes: "Yes",
             no: "No",
             email: "Email",
-            name: "Name"
+            name: "Name",
+            sessionFail: "You have been idle for to long please login again."
+        },
+        budgetYear: {
+            getFail: "Something went wrong could not load budget years"
         }
     }
     return lang;

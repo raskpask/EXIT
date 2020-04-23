@@ -27,7 +27,7 @@ CREDITS_MASTER = 30;
 
 
 /**
- * Regisers a user to the DB.
+ * Registers a user to the DB.
  *
  * @param {user} user - Instance of user
  * @returns Promise with 200
@@ -41,11 +41,30 @@ function registerUser(username, user_type_id) {
         }
         client.query("BEGIN")
         client
-            .query(query.text, query.values)
+            .query(query.text,query.values)
             .then(res => {
-                client.query("COMMIT")
-                client.end()
-                resolve()
+                if (user_type_id === 3) {
+                    const setExpertiseQuery = {
+                        text: "INSERT INTO Expertise (user_id,expertise_id) VALUES (?,?)",
+                        values: [res.insertId, 5]
+                    }
+                    client
+                        .query(setExpertiseQuery.text, setExpertiseQuery.values)
+                        .then(res => {
+                            client.query("COMMIT")
+                            client.end()
+                            resolve()
+                        })
+                        .catch(err => {
+                            console.error(err)
+                            reject(new Error(dbError.errorCodes.USER_ERROR.code))
+                            client.query("ROLLBACK")
+                        })
+                } else {
+                    client.query("COMMIT")
+                    client.end()
+                    resolve()
+                }
             })
             .catch(err => {
                 client.end()
@@ -61,7 +80,7 @@ function registerUser(username, user_type_id) {
                         .then(res => {
                             client.query("COMMIT")
                             client.end()
-                            resolve(200)
+                            resolve()
                         })
                         .catch(err => {
                             console.error(err)
@@ -74,7 +93,7 @@ function registerUser(username, user_type_id) {
                     client.query("ROLLBACK")
                 }
             });
-        resolve(200)
+        resolve()
     });
 }
 /**
@@ -210,7 +229,6 @@ function postWorkYear(year, examiners) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection();
         let postWorkYearQuery;
-        console.log(examiners)
         examiners.forEach((examiner, i, arr) => {
             postWorkYearQuery = {
                 text: "INSERT INTO Work_year " +
@@ -241,7 +259,7 @@ function updateWorkYear(year, examiner) {
         const client = await pool.getConnection();
         const updateWorkYearQuery = {
             text: "UPDATE Work_year " +
-                "SET work_hours_examiner = ?,work_hours_supervisor = ?, available_hours_examiner = ?, available_hours_supervisor = ? " +
+                "SET work_hours_examiner = ? + work_hours_examiner,work_hours_supervisor = ? + work_hours_supervisor, available_hours_examiner = ? + available_hours_examiner, available_hours_supervisor = ? + available_hours_supervisor" +
                 "WHERE person_id=? AND year = ?",
             values: [examiner.work_hours_examiner, examiner.work_hours_supervisor, examiner.available_hours_examiner, examiner.available_hours_supervisor, examiner.user_id, year]
         }
@@ -354,7 +372,7 @@ function getProject(user_id, year) {
         try {
             client.query("BEGIN")
             const getUserQuery = {
-                text: "SELECT project_id, number_of_students, title, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number " +
+                text: "SELECT project_id, number_of_students, title, project_description,credits,start_date,end_date,in_progress,out_of_date,all_info_specified,company,company_contact,name,address,phone_number,notes " +
                     "FROM (Degree_project LEFT JOIN Company ON Degree_project.company = Company.company_id) " +
                     "WHERE Degree_project.project_id IN (SELECT degree_project_id FROM Student_project WHERE user_id = ?) AND year(start_date) = ?",
                 values: [user_id, year]
@@ -362,36 +380,40 @@ function getProject(user_id, year) {
             client
                 .query(getUserQuery.text, getUserQuery.values)
                 .then(res => {
-                    let projects = []
-                    let getProjectUserQuery;
-                    res.forEach((project, index, arr) => {
-                        getProjectUserQuery = {
-                            text: "SELECT user_type_id,email,first_name,last_name,kth_username,phone_number, User.user_id,Student_project.project_role_id " +
-                                "FROM User INNER JOIN Student_project ON User.user_id = Student_project.user_id " +
-                                "WHERE Student_project.degree_project_id = ?",
-                            values: [project.project_id]
+                    if (res.length) {
+                        let projects = []
+                        let getProjectUserQuery;
+                        res.forEach((project, index, arr) => {
+                            getProjectUserQuery = {
+                                text: "SELECT user_type_id,email,first_name,last_name,kth_username,phone_number, User.user_id,Student_project.project_role_id " +
+                                    "FROM User INNER JOIN Student_project ON User.user_id = Student_project.user_id " +
+                                    "WHERE Student_project.degree_project_id = ?",
+                                values: [project.project_id]
+                            }
+                            client
+                                .query(getProjectUserQuery.text, getProjectUserQuery.values)
+                                .then(res => {
+                                    const users = res
+                                    projects.push(new ProjectDetails(project.project_id, project.number_of_students, project.title, project.project_description, project.credits, project.start_date, project.end_date, project.in_progress, project.out_of_date, project.all_info_specified, project.company, project.company_contact, project.name, project.address, project.phone_number, users,null,project.notes))
+                                    if (index === arr.length - 1) {
+                                        resolve(projects)
+                                    }
+                                })
+                                .catch(err => {
+                                    console.error(err)
+                                    client.query("ROLLBACK")
+                                })
+                        })
+                        if (res !== undefined) {
+                            // const rawProject = res[0]//.person.split('(')[1].split(',');
+                            // console.log(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,users))
+                            // new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number)
+                            // console.log(res)
+                            // console.log(projects)
+                            // resolve(projects)
                         }
-                        client
-                            .query(getProjectUserQuery.text, getProjectUserQuery.values)
-                            .then(res => {
-                                const users = res
-                                projects.push(new ProjectDetails(project.project_id, project.number_of_students, project.title, project.project_description, project.credits, project.start_date, project.end_date, project.in_progress, project.out_of_date, project.all_info_specified, project.company, project.company_contact, project.name, project.address, project.phone_number, users))
-                                if (index === arr.length - 1) {
-                                    resolve(projects)
-                                }
-                            })
-                            .catch(err => {
-                                console.error(err)
-                                client.query("ROLLBACK")
-                            })
-                    })
-                    if (res !== undefined) {
-                        // const rawProject = res[0]//.person.split('(')[1].split(',');
-                        // console.log(new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number,users))
-                        // new ProjectDetails(res.project_id, res.number_of_students, res.title, res.project_description, res.credits, res.start_date, res.end_date, res.in_progress, res.out_of_date, res.all_info_specified, res.company, res.company_contact, res.name, res.address, res.phone_number)
-                        // console.log(res)
-                        // console.log(projects)
-                        // resolve(projects)
+                    } else {
+                        resolve([])
                     }
                 })
                 .catch(err => {
@@ -412,13 +434,12 @@ function getProject(user_id, year) {
  * Adds a new project to the database. 
  * @param {projectDetails} project_details 
  */
-function registerProject(project_details) {
-    console.log(project_details);
+function registerProject(project_details, examiner_id) {
     return new Promise(async function (resolve, reject) {
         let client;
         try {
             client = await pool.getConnection()
-            const examiner_id = 1
+            // const examiner_id = 1
             let company_id = null;
             let project_id;
             await client.query("BEGIN");
@@ -452,7 +473,6 @@ function registerProject(project_details) {
                 .query(addProjectDetailsQuery.text, addProjectDetailsQuery.values)
                 .then(res => {
                     project_id = res[0].insertId
-                    console.log("The project ID is: " + project_id)
                     const addExaminerQuery = {
                         text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
                             "VALUES (?,?,?)",
@@ -481,24 +501,26 @@ function registerProject(project_details) {
             let addStudentQuery = "";
             let addStudentToProjectQuery = "";
             await project_details.users.forEach(student => {
+                const email = student.email + '@kth.se'
                 addStudentQuery = {
-                    text: "INSERT INTO User (user_type_id,first_name,email)" +
-                        "VALUES (?,?,?);" +
+                    text: "INSERT INTO User (user_type_id,first_name,email,kth_username) " +
+                        "VALUES (?,?,?,?); " +
                         "SELECT LAST_INSERT_ID()",
-                    values: [TYPE_STUDENT, student.name, student.email]
+                    values: [TYPE_STUDENT, student.name, email, student.email]
                 }
                 client
                     .query(addStudentQuery.text, addStudentQuery.values)
                     .then(res => {
                         const user_id = res[0].insertId
                         addStudentToProjectQuery = {
-                            text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id)" +
+                            text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id) " +
                                 "VALUES (?,?,?)",
                             values: [ROLE_STUDENT, project_id, user_id]
                         }
                         client
                             .query(addStudentToProjectQuery.text, addStudentToProjectQuery.values)
                             .catch(err => {
+
                                 console.error(err)
                                 //client.query("ROLLBACK"); 
                                 // reject(err);
@@ -507,18 +529,27 @@ function registerProject(project_details) {
                             })
                     })
                     .catch(err => {
+                        if (err.code === 'ER_DUP_ENTRY') {
+                            addStudentToProjectQuery = {
+                                text: "INSERT INTO Student_project (project_role_id,degree_project_id,user_id) " +
+                                    "VALUES (?,(SELECT user_id FROM User WHERE kth_username = ?),?)",
+                                values: [ROLE_STUDENT, project_id, student.email]
+                            }
+                            client
+                                .query(addStudentToProjectQuery.text, addStudentToProjectQuery.values)
+                                .catch(err => {
+                                    console.error(err)
+                                    throw new Error(dbError.errorCodes.CREATE_PROJECT_ERROR.code);
+                                })
+                        }
                         console.error(err)
-                        //client.query("ROLLBACK"); 
-                        // reject(err); 
-                        //throw(err);
-                        //reject(new Error(dbError.errorCodes.CREATE_PROJECT_ERROR.code))
                         throw new Error(dbError.errorCodes.CREATE_PROJECT_ERROR.code);
                     })
             })
             let projectType = "";
-            if (project_details.credits == 15) {
+            if (project_details.credits == CREDITS_BACHELOR) {
                 projectType = "bachelor_hours_";
-            } else if (project_details.credits == 30) {
+            } else if (project_details.credits == CREDITS_MASTER) {
                 projectType = "master_hours_";
             } else {
                 reject(new error(dbError.errorCodes.NO_CREDITS_ERROR.code));
@@ -602,7 +633,7 @@ function updateProject(supervisor_id, project_id) {
         const client = await pool.getConnection()
         let updateSupervisor = {
             text: "UPDATE Student_project " +
-                "SET Student_project.user_id = supervisor_id, project_role_id = ? " +
+                "SET Student_project.user_id = ?, project_role_id = ? " +
                 "WHERE  degree_project_id = ? AND project_role_id = ? ",
             values: [supervisor_id, ROLE_SUPERVISOR, project_id, ROLE_SUPERVISOR]
         }
@@ -619,7 +650,6 @@ function updateProject(supervisor_id, project_id) {
                     client
                         .query(addSupervisor.text, addSupervisor.values)
                         .then(res => {
-                            console.log(res)
                             if (res.affectedRows === 0) {
                                 reject(new Error(dbError.errorCodes.NO_USER_ERROR.code))
                             }
@@ -650,7 +680,7 @@ function deleteProject(project_id) {
         client
             .query(deleteProject.text, deleteProject.values)
             .then(res => {
-                if (res.affectedRows === 1) {
+                if (res.affectedRows === 1 || res.affectedRows === 0) {
                     resolve()
                 } else {
                     reject(new Error(dbError.errorCodes.DELETE_ERROR.code))
@@ -705,7 +735,6 @@ function postExpertise(expertise_name) {
             .query(postExpertise.text, postExpertise.values)
             .then(res => {
                 if (res.affectedRows == 1) {
-                    console.log("Added!")
                     resolve()
                 }
             })
@@ -966,20 +995,55 @@ function login(session_id, first_name, last_name, kth_username, role) {
                         values: [kth_username]
                     }
                     client
-                    .query(getRoleId.text, getRoleId.values)
-                    .then(res=>{
-                        resolve(res[0].user_type_id)
-                        reject(new Error(dbError.errorCodes.USER_ERROR.code))
-                    })
-                    .catch(err=>{
-                        console.error(err)
-                        reject(new Error(dbError.errorCodes.LOGIN_ERROR.code))
-                    })
+                        .query(getRoleId.text, getRoleId.values)
+                        .then(res => {
+                            resolve(res[0].user_type_id)
+                            reject(new Error(dbError.errorCodes.USER_ERROR.code))
+                        })
+                        .catch(err => {
+                            console.error(err)
+                            reject(new Error(dbError.errorCodes.LOGIN_ERROR.code))
+                        })
+                } else if (res.affectedRows === 0) {
+                    const registerStudent = {
+                        text: "INSERT INTO User (user_type_id,email,first_name,last_name,kth_username,session_id) VALUES (?,?,?,?,?,?) ",
+                        values: [ROLE_STUDENT, kth_username + '@kth.se', first_name, last_name, kth_username, session_id]
+                    }
+                    client
+                        .query(registerStudent.text, registerStudent.values)
+                        .then(res => {
+                            resolve()
+                        })
+                        .catch(err => {
+                            console.error(err)
+                            reject(new Error(dbError.errorCodes.LOGIN_ERROR.code))
+                        })
                 }
             })
             .catch(err => {
                 console.error(err)
                 reject(new Error(dbError.errorCodes.LOGIN_ERROR.code))
+            })
+        client.end()
+    })
+}
+function logout(kth_username) {
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection()
+        let updateUser = {
+            text: "UPDATE User " +
+                "SET session_id = 'NO_SESSION' " +
+                "WHERE kth_username = ?",
+            values: [kth_username]
+        }
+        client
+            .query(updateUser.text, updateUser.values)
+            .then(res => {
+                resolve()
+            })
+            .catch(err => {
+                console.error(err)
+                reject(new Error(dbError.errorCodes.LOGOUT_ERROR.code))
             })
         client.end()
     })
@@ -997,13 +1061,35 @@ function authorizeUser(session_id, kth_username, role_id) {
             .then(res => {
                 if (res.length < 1) {
                     reject(new Error(dbError.errorCodes.INVALID_SESSION.code))
-                }
-                const user_type_id = parseInt(res[0].user_type_id)
-                if (user_type_id <= role_id) {
-                    resolve(user_type_id)
                 } else {
-                    reject(new Error(dbError.errorCodes.NO_ACCESS_ERROR.code))
+                    const user_type_id = parseInt(res[0].user_type_id)
+                    if (user_type_id <= role_id) {
+                        resolve(user_type_id)
+                    } else {
+                        reject(new Error(dbError.errorCodes.NO_ACCESS_ERROR.code))
+                    }
                 }
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        client.end()
+    })
+}
+
+function updateNotes(project_id,message){
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection()
+        let updateNotes = {
+            text: "UPDATE Degree_project " +
+                "SET notes = ? " +
+                "WHERE project_id = ?",
+            values: [message,project_id]
+        }
+        client
+            .query(updateNotes.text,updateNotes.values)
+            .then(res => {
+                resolve()
             })
             .catch(err => {
                 console.error(err)
@@ -1038,5 +1124,7 @@ module.exports = {
     getAvailableSupervisors,
     updateProjectInTime,
     login,
-    authorizeUser
+    logout,
+    authorizeUser,
+    updateNotes
 }

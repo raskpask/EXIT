@@ -109,11 +109,7 @@ function checkPhoneNumber(string){
 
 function validateProject(request) {
     try {
-        // if (Object.keys(request.body).length === 0) {
-        //     return false;
-        // }
         project = request.body;
-        console.log(project);
         if (isNaN(project.credits) || isNaN(project.numberOfStudents)) {
             console.log('NaN');
             return false;
@@ -135,10 +131,12 @@ function validateProject(request) {
             return false;
         }
 
-        if(project.hasOwnProperty("companyName")){
-            if(!checkPhoneNumber(project.companyPhoneNumber)){
-                console.log("invalid phone number" );
-                return false;
+        if(project.companyName){
+            if(project.companyPhone){
+                if(!checkPhoneNumber(project.companyPhone)){
+                    console.log("invalid phone number" );
+                    return false;
+                }
             }
             if (project.companyName.length < 1 || project.companyAddress.length < 1) {
                 console.log("title or description missing");

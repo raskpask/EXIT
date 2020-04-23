@@ -1,6 +1,7 @@
 const saml2 = require('saml2-js');
 const controller = require('../controller/controller');
 const fs = require('fs');
+const dbErrors = require('../error/dbErrors');
 
 const path = __dirname.split("\\").join("/");
 const private_key = path + "/key-file.pem"
@@ -16,7 +17,7 @@ const sp_options = {
 }
 const idp_options = {
     sso_login_url: "https://saml-5.sys.kth.se/idp/profile/SAML2/Redirect/SSO",
-    sso_logout_url: "https://saml-5.sys.kth.se/idp/profile/SAML2/POST/SSO",
+    sso_logout_url: "https://saml-5.sys.kth.se/Shibboleth.sso/Logout?return=https://exit.ict.kth.se/",
     certificates: [
         "MIIDMDCCAhigAwIBAgIVAOmaIGGXK/JbzXedtKY0l3Vp34hRMA0GCSqGSIb3DQEB" +
         "CwUAMBwxGjAYBgNVBAMMEXNhbWwtNS5zeXMua3RoLnNlMB4XDTE3MTAwMjE0MDIw" +
@@ -93,12 +94,11 @@ function router(router) {
             // const name_id = saml_response.user.name_id;
             // const session_index = saml_response.user.session_index;
             res.cookie('name_id', saml_response.user.name_id);
-            res.cookie('session_index', saml_response.user.session_index);
-            let session_id = 1
-            if(req.headers.cookie){
-                session_id = req.headers.cookie.split('SSO_SESSION_START=')[1].split(';')[0]
-            }
-
+            res.cookie('session_id', saml_response.user.session_index);
+            const session_id = saml_response.user.session_index
+            // if(req.headers.cookie){
+            //     session_id = req.headers.cookie.split('SSO_SESSION_START=')[1].split(';')[0]
+            // }
             const attributes = JSON.stringify(saml_response.user.attributes)
             const nameAndUsername = attributes.split('"urn:oid:2.5.4.3":["')[1].split('"')[0].split(' ')
             const first_name = nameAndUsername[0]
@@ -113,19 +113,29 @@ function router(router) {
     });
 
     // Starting point for logout
-    router.get("/logout", function (req, res) {
+    router.get("/logout", async function (req, res) {
         try {
-            const options = {
-                name_id: req.headers.cookie.split('name_id=')[1].split(';')[0],
-                session_index: req.headers.cookie.split('session_index=')[1].split(';')[0]
-            };
+            // const options = {
+            //     name_id: req.headers.cookie.split('name_id=')[1].split(';')[0],
+            //     session_index: req.headers.cookie.split('session_index=')[1].split(';')[0]
+            // };
 
-            sp.create_logout_request_url(idp, options, function (err, logout_url) {
-                if (err != null)
-                    return res.send(500);
-                res.redirect(logout_url);
-            });
+            // sp.create_logout_request_url(idp, options, function (err, logout_url) {
+            //     if (err != null)
+            //         return res.send(500);
+            //     res.redirect(logout_url);
+            // });
+            const username = req.headers.cookie.split('username=')[1].split(';')[0]
+            await controller.logout(username)
+
+            res.clearCookie('session_id');
+            res.clearCookie('role_id');
+            res.clearCookie('username');
+            res.clearCookie('name_id');
+            res.redirect('/')
+
         } catch (err) {
+            dbErrors.respondError(err.message, res)
             console.error(err)
         }
     });

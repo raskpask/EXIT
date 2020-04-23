@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
-import { Form, Button, Col, Row } from 'react-bootstrap';
+import { Form, Button, Col, Row,Popover, OverlayTrigger } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../resources/css/form.css';
+
 import Access from './fragments/access';
+import redirect from './../model/redirect';
+import dbErrors from '../model/dbErrors';
+import { Redirect } from 'react-router-dom';
 
 class AddDirectorOfStudies extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            redirect: 0,
             username: ""
         }
     }
@@ -18,19 +23,38 @@ class AddDirectorOfStudies extends Component {
             .post('/api/user', { kth_username: this.state.username, user_type_id: 2 })
             .then(res => {
                 toast(this.props.info.addDirectorOfStudies.added)
-                this.setState({username: ""})
+                this.setState({ username: "" })
             })
             .catch(err => {
-                console.log(err)
-                toast(this.props.info.addDirectorOfStudies.fail)
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.log(err)
+                    toast(this.props.info.addDirectorOfStudies.fail)
+                }
             })
+    }
+    renderPopoverInfo(text) {
+        return (
+            <Popover className="popover" id="popover-basic">
+                {text}
+            </Popover>
+        );
     }
     renderAdd() {
         return (
             <Form onSubmit={(e) => this.addDirector(e)} >
                 <Row>
                     <Col md={8}>
-                        <Form.Label>{this.props.info.addDirectorOfStudies.username}</Form.Label>
+                        <OverlayTrigger
+                            placement="auto"
+                            delay={{ show: 250, hide: 400 }}
+                            overlay={this.renderPopoverInfo(this.props.info.addDirectorOfStudies.usernameInfo)}
+                        >
+                            <Button variant="text" className="textButton">{this.props.info.addDirectorOfStudies.username}*</Button>
+                        </OverlayTrigger>
                         <Form.Control
                             required
                             type="text"
@@ -51,6 +75,8 @@ class AddDirectorOfStudies extends Component {
         return (
             <div className="container">
                 <Access access='1' info={this.props.info.access} />
+                {this.state.redirect ? <Redirect to='/' /> : ""}
+
                 <h1>{this.props.info.addDirectorOfStudies.title}</h1>
                 <p>{this.props.info.addDirectorOfStudies.paragraph0}</p>
                 {this.renderAdd()}

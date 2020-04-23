@@ -1,19 +1,28 @@
 import React, { Component } from 'react';
-import { Form, Button, Col, Row } from 'react-bootstrap';
+import { Form, Button, Col, Row, Popover, OverlayTrigger } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import '../resources/css/form.css';
 import Access from './fragments/access';
+import redirect from './../model/redirect';
+import dbErrors from '../model/dbErrors';
+import { Redirect } from 'react-router-dom';
 
 class SpecifyTutoringHours extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            redirect: 0,
+            budgetYears: [
+                {
+                    year: "",
+                }
+            ],
             pickedExaminers: [
                 {
-                    user_id:"",
+                    user_id: "",
                     examinerHours: "",
                     supervisorHours: "",
                 }
@@ -25,6 +34,7 @@ class SpecifyTutoringHours extends Component {
     }
     componentDidMount() {
         this.getExaminers()
+        this.getBudgetYears()
     }
     getExaminers = () => {
         axios
@@ -37,8 +47,33 @@ class SpecifyTutoringHours extends Component {
                 this.setState({ examiners: res.data })
             })
             .catch(err => {
-                console.log(err)
-                toast(this.props.info.addDirectorOfStudies.getFail)
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.log(err)
+                    toast(this.props.info.addDirectorOfStudies.getFail)
+                }
+            })
+    }
+    getBudgetYears = () => {
+        axios
+            .get('/api/budgetYear')
+            .then(res => {
+                if (res.status === 200) {
+                    this.setState({ budgetYears: res.data })
+                }
+            })
+            .catch(err => {
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.error(err)
+                    toast(this.props.info.specifyTutoringHours.getBudgetYearFail)
+                }
             })
     }
     specifyTutoringHours = (e) => {
@@ -46,26 +81,33 @@ class SpecifyTutoringHours extends Component {
         axios
             .post('/api/workYear', this.getTutoringHours())
             .then(res => {
-                toast(this.props.info.addDirectorOfStudies.added)
+                toast(this.props.info.specifyTutoringHours.success)
                 this.resetFields()
             })
             .catch(err => {
-                console.log(err)
-                toast(this.props.info.addDirectorOfStudies.fail)
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.log(err)
+                    toast(this.props.info.addDirectorOfStudies.fail)
+                }
             })
     }
     getTutoringHours() {
+        console.log(this.state)
         return {
             examiners: this.state.pickedExaminers,
-            budgetYear: this.state.bugetYear
+            budgetYear: this.state.budgetYear
         }
     }
     resetFields() {
         this.setState({
             pickedExaminers: [
                 {
- 
-                    user_id:"",
+
+                    user_id: "",
                     examinerHours: "",
                     supervisorHours: ""
                 }
@@ -100,37 +142,71 @@ class SpecifyTutoringHours extends Component {
         examinersTemp.pop()
         this.setState({ numberOfExaminers: numberOfExaminersTemp, examiners: examinersTemp })
     }
+    setBudgetYear(budgetYear) {
+        if (budgetYear) {
+            const year = budgetYear.year
+            this.setState({ budgetYear: year })
+        }
+    }
+    renderPopoverInfo(text) {
+        return (
+            <Popover className="popover" id="popover-basic">
+                {text}
+            </Popover>
+        );
+    }
     renderForm() {
         return (
             <Form onSubmit={(e) => this.specifyTutoringHours(e)}>
                 <Row>
                     <Col md={8}>
-                        <Form.Label>{this.props.info.specifyTutoringHours.bugetYear}</Form.Label>
-                        <Form.Control
-                            required
-                            type="number"
-                            value={this.state.bugetYear}
+                        <Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.specifyTutoringHours.budgetYearInfo)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.specifyTutoringHours.bugetYear}*</Button>
+                            </OverlayTrigger>
+                        </Form.Label>
+                        <Form.Label></Form.Label>
+                        <Typeahead
+                            id="specifyBudgetYear"
+                            labelKey={(option) => `${option.year}`}
                             placeholder={this.props.info.specifyTutoringHours.budgetYearPlaceholder}
-                            onChange={event => this.setState({ bugetYear: event.target.value })}
+                            onChange={event => this.setBudgetYear(event[0])}
+                            options={this.state.budgetYears}
                         />
                     </Col>
                 </Row>
                 {this.state.pickedExaminers.map((examiner, key) =>
                     <Row key={key}>
                         <Col>
-                            <Form.Label>{this.props.info.specifyTutoringHours.username}</Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.specifyTutoringHours.usernameInfo)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.specifyTutoringHours.username}*</Button>
+                            </OverlayTrigger>
                             <Typeahead
                                 id="specifyUser"
                                 labelKey={(option) => `${option.first_name} ${option.last_name} (${option.email})`}
                                 placeholder={this.props.info.specifyTutoringHours.usernamePlaceholder}
                                 selected={examiner.username}
                                 // onChange={event => this.setState({ supervisor_id: event[0].user_id })}
-                                onChange={event => this.handleChangeExaminer(event[0],'username',key )}
+                                onChange={event => this.handleChangeExaminer(event[0], 'username', key)}
                                 options={this.state.examiners}
                             />
                         </Col>
                         <Col >
-                            <Form.Label>{this.props.info.specifyTutoringHours.examinerHours}</Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.specifyTutoringHours.examinerHoursInfo)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.specifyTutoringHours.examinerHours}*</Button>
+                            </OverlayTrigger>
                             <Form.Control
                                 required
                                 type="number"
@@ -140,7 +216,13 @@ class SpecifyTutoringHours extends Component {
                             />
                         </Col>
                         <Col>
-                            <Form.Label>{this.props.info.specifyTutoringHours.supervisorHours}</Form.Label>
+                            <OverlayTrigger
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={this.renderPopoverInfo(this.props.info.specifyTutoringHours.supervisorHoursInfo)}
+                            >
+                                <Button variant="text" className="textButton">{this.props.info.specifyTutoringHours.supervisorHours}*</Button>
+                            </OverlayTrigger>
                             <Form.Control
                                 required
                                 type="number"
@@ -161,6 +243,7 @@ class SpecifyTutoringHours extends Component {
         return (
             <div className="container">
                 <Access access='2' info={this.props.info.access} />
+                {this.state.redirect ? <Redirect to='/' /> : ""}
                 <h1>{this.props.info.specifyTutoringHours.title}</h1>
                 <p>{this.props.info.specifyTutoringHours.paragraph0}</p>
                 {this.renderForm()}

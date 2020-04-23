@@ -13,7 +13,7 @@ const BudgetYear = require('./budgetYear.js');
  * @returns JSON of credentials.
  */
 function extractUserDataFromCookie(req) {
-    const session_id = req.headers.cookie.split('SSO_SESSION_START=')[1].split(';')[0]
+    const session_id = req.headers.cookie.split('session_id=')[1].split(';')[0]
     const kth_username = req.headers.cookie.split('username=')[1].split(';')[0]
     const user_info = {
         session_id: session_id,
@@ -32,6 +32,7 @@ function extractUsername(req) {
     return req.body.kth_username;
 }
 function extractUserTypeId(req){
+    console.log(req.body.user_type_id)
     return req.body.user_type_id
 }
 /**
@@ -156,8 +157,16 @@ function extractRegisterProjectDetails(req) {
         }
         if (project.companyName) {
             company_name = project.companyName;
-            company_address = project.companyAddress;
-            company_phone_number = project.companyPhoneNumber;
+            if(project.companyAddress){
+                company_address = project.companyAddress;
+            }else{
+                company_address = null
+            }
+            if(project.companyPhone){
+                company_phone_number = project.companyPhone;
+            }else{
+                company_phone_number = null
+            }
         }
         //}
 
@@ -198,27 +207,38 @@ function extractExpertiseID(req) {
     return req.body.expertiseID;
 }
 function extractExpertiseName(req) {
-    return req.body.expertiseName;
+    return req.body.expertise;
 }
 function extractBudgetYear(req) {
     const budgetYear = req.body;
-
+    console.log(budgetYear)
     const year = budgetYear.budgetYear
     const master_hours_supervisor = budgetYear.masterHoursSupervisor
     const master_hours_examiner = budgetYear.masterHoursExaminer
-    const bachelor_hours_supervisor = budgetYear.bachleorHoursSupervisor
-    const bachelor_hours_examiner = budgetYear.bachleorHoursExaminer
+    const bachelor_hours_supervisor = budgetYear.bachelorHoursSupervisor
+    const bachelor_hours_examiner = budgetYear.bachelorHoursExaminer
     const total_tutoring_hours = budgetYear.totalTutoringHours
-    const factor_1 = budgetYear.factor1
-    const factor_2 = budgetYear.factor2
-    const factor_3 = budgetYear.factor3
-    const factor_4 = budgetYear.factor4
-    const factor_5 = budgetYear.factor5
+    const factor_1 = checkValue(budgetYear.factor1)
+    const factor_2 = checkValue(budgetYear.factor2)
+    const factor_3 = checkValue(budgetYear.factor3)
+    const factor_4 = checkValue(budgetYear.factor4)
+    const factor_5 = checkValue(budgetYear.factor5)
     return new BudgetYear(year, bachelor_hours_examiner, bachelor_hours_supervisor, master_hours_examiner, master_hours_supervisor, total_tutoring_hours, factor_1, factor_2, factor_3, factor_4, factor_5);
+}
+function checkValue(factor){
+    if (factor === ''){
+        return 1
+    } else {
+        return factor
+    }
 }
 function extractYear(req){
     return req.query.year
 }
+function extractBudgetYearProject(req){
+    return req.query.year
+}
+
 function extractUsernameFromCookie(req){
     cookieHeader = req.headers.cookie;
     if (cookieHeader === undefined) {
@@ -228,6 +248,7 @@ function extractUsernameFromCookie(req){
 }
 module.exports = {
     extractProjectID,
+    extractBudgetYear,
     extractYear,
     extractUsername,
     extractUserID,
@@ -237,7 +258,7 @@ module.exports = {
     extractUsernameFromCookie,
     extractLang,
     extractRegisterProjectDetails,
-    extractBudgetYear,
+    extractBudgetYearProject,
     extractUserID,
     extractExpertiseName,
     extractExpertiseID,

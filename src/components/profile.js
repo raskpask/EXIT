@@ -1,8 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import { Col, Row, Form, Card, Button, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Col, Row, Form, Card, Button, Dropdown, DropdownButton, Popover, OverlayTrigger } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Access from './fragments/access';
+import redirect from './../model/redirect';
+import dbErrors from '../model/dbErrors';
+import { Redirect } from 'react-router-dom';
 
 import '../resources/css/profile.css';
 
@@ -10,6 +13,7 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            redirect: 0,
             currentYear: new Date().getFullYear(),
             budgetYear: [],
             year: "",
@@ -23,11 +27,6 @@ class Profile extends Component {
                 }
             },
             expertise: ""
-            // work_hours_examiner: "",
-            // work_hours_supervisor: "",
-            // available_hours_examiner: "",
-            // available_hours_supervisor: "",
-            // expertise_name:""
         }
     }
     componentDidMount() {
@@ -48,8 +47,14 @@ class Profile extends Component {
                 }
             })
             .catch(err => {
-                console.error(err)
-                toast(this.props.info.profile.budgetYearFail)
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.error(err)
+                    toast(this.props.info.profile.budgetYearFail)
+                }
             })
 
     }
@@ -62,21 +67,33 @@ class Profile extends Component {
                 }
             })
             .catch(err => {
-                console.error(err)
-                toast(this.props.info.availableExaminers.fail)
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.error(err)
+                    toast(this.props.info.availableExaminers.fail)
+                }
             })
     }
     postCompetence = () => {
         axios
-            .put('/api/expertise', {expertise: this.state.expertise})
+            .put('/api/expertise', { expertise: this.state.expertise })
             .then(res => {
                 if (res.status === 200) {
                     toast(this.props.info.profile.saved)
                 }
             })
-            .catch(err=>{
-                console.error(err)
-                toast(this.props.info.profile.saveFaild)
+            .catch(err => {
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.error(err)
+                    toast(this.props.info.profile.saveFaild)
+                }
             })
     }
     editCompetence() {
@@ -88,11 +105,24 @@ class Profile extends Component {
         this.postCompetence()
         this.forceUpdate()
     }
+    renderPopoverInfo(text) {
+        return (
+            <Popover id="popover-basic">
+                <p>{text}</p>
+            </Popover>
+        );
+    }
     renderCompetenceAreaEdit() {
         return (
             <Row>
                 <Col md={4}>
-                    {this.props.info.profile.competenceArea}
+                    <OverlayTrigger
+                        placement="auto"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={this.renderPopoverInfo(this.props.info.profile.competenceAreaInfo)}
+                    >
+                        <Button variant="text" className="textButton">{this.props.info.profile.competenceArea}</Button>
+                    </OverlayTrigger>
                 </Col>
                 <Col md={8}>
                     <Form.Control
@@ -112,7 +142,13 @@ class Profile extends Component {
         return (
             <Row>
                 <Col md={4}>
-                    {this.props.info.profile.competenceArea}
+                <OverlayTrigger
+                        placement="auto"
+                        delay={{ show: 250, hide: 400 }}
+                        overlay={this.renderPopoverInfo(this.props.info.profile.competenceAreaInfo)}
+                    >
+                        <Button variant="text" className="textButton">{this.props.info.profile.competenceArea}</Button>
+                    </OverlayTrigger>
                 </Col>
                 <Col md={6}>
                     {this.state.expertise}
@@ -180,6 +216,7 @@ class Profile extends Component {
         return (
             <div className="container">
                 <Access access='3' info={this.props.info.access} />
+                {this.state.redirect ? <Redirect to='/' /> : ""}
                 <h1>{this.props.info.profile.title}</h1>
                 <p>{this.props.info.profile.paragraph0}</p>
                 {this.renderProfile()}

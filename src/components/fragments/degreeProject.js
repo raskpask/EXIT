@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { Nav, Card, ListGroup, Form, Button, Row, Col, Table } from 'react-bootstrap';
+import { Nav, Card, ListGroup, Form, Button, Row, Col, Table, Popover, OverlayTrigger } from 'react-bootstrap';
 import axios from 'axios';
 import '../../resources/css/degreeProject.css';
+import dbErrors from '../../model/dbErrors';
+import redirect from './../../model/redirect';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { toast } from 'react-toastify';
@@ -10,12 +12,68 @@ class DegreeProject extends Component {
         super(props);
         this.state = {
             supervisors: [],
+            project: this.props.project,
+            notes: this.props.project.notes,
             supervisor_id: "",
-            bodyContent: this.renderInfo()
+            bodyContent: this.renderInfo(),
         }
     }
     componentDidMount() {
         this.getSupervisors()
+    }
+    makeNote() {
+        return (
+            this.state.notes + ";\n;\n" +
+            (new Date()).toString().split('GMT')[0] + ";\n" +
+            this.state.comment
+        )
+    }
+    postComment = () => {
+        axios
+            .put('/api/notes', { message: this.makeNote(), projectID: this.props.project.project_id })
+            .then(res => {
+                if (res.status === 200) {
+                    toast(this.props.info.profile.saved)
+                    axios
+                        .get('/api/project', {
+                            params: {
+                                year: this.props.year
+                            }
+                        })
+                        .then(res => {
+                            if (res.status === 200) {
+                                let projectIndex;
+                                res.data.forEach((project, index) => {
+                                    if (project.project_id === this.props.project.project_id) {
+                                        projectIndex = index;
+                                    }
+                                })
+                                this.setState({ notes: res.data[projectIndex].notes })
+                                this.setState({ bodyContent: this.renderCompetenceArea(), comment: null })
+                            }
+                        })
+                        .catch(err => {
+                            if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                                redirect.removeCookies()
+                                this.setState({ redirect: 1 })
+                                toast(this.props.info.general.sessionFail)
+                            } else {
+                                console.error(err)
+                                toast(this.props.info.myDegreeProjects.fail)
+                            }
+                        })
+                }
+            })
+            .catch(err => {
+                if (err.response.data === dbErrors.errorCodes.INVALID_SESSION.code || err.response.data === dbErrors.errorCodes.NO_ACCESS_ERROR.code) {
+                    redirect.removeCookies()
+                    this.setState({ redirect: 1 })
+                    toast(this.props.info.general.sessionFail)
+                } else {
+                    console.error(err)
+                    toast(this.props.info.profile.saveFaild)
+                }
+            })
     }
     deleteProject = () => {
         const payload = {
@@ -148,7 +206,7 @@ class DegreeProject extends Component {
                         <Form.Label>{this.props.info.degreeProject.supervisor}</Form.Label>
                         <Typeahead
                             id="changeSupervisor"
-                            labelKey={(option) => `${option.first_name} ${option.last_name} (${option.email})`}//{"" +option.first_name +option.last_name +" "+option.email +""}}
+                            labelKey={(option) => `${option.first_name} ${option.last_name} (${option.email})`}
                             placeholder={this.props.info.addDegreeProject.supervisorPlaceholder}
                             selected={this.state.supervisor}
                             onChange={event => this.setState({ supervisor_id: event[0].user_id })}
@@ -162,6 +220,90 @@ class DegreeProject extends Component {
                     </Col>
                 </Row>
             </Form >
+        )
+    }
+    renderPopoverInfo(text) {
+        return (
+            <Popover className="popover" id="popover-basic">
+                {text}
+            </Popover>
+        );
+    }
+    renderOverlay(text, infoText, required) {
+        return (
+            <OverlayTrigger
+                placement="auto"
+                delay={{ show: 250, hide: 400 }}
+                overlay={this.renderPopoverInfo(infoText)}
+            >
+                <Button variant="text" className="textButton removePaddingTop">{text}</Button>
+            </OverlayTrigger>
+        )
+    }
+    editCompetence() {
+        this.setState({ bodyContent: this.renderCompetenceAreaEdit() })
+    }
+    saveCompetence() {
+        this.postComment()
+    }
+    async updateComment(comment) {
+        console.log(comment)
+        await this.setState({ comment: comment })
+        console.log(this.state.comment)
+        console.log(this.state)
+    }
+    renderCompetenceAreaEdit() {
+        const notes = this.state.notes.split(';\n')
+        return (
+            <Fragment>
+                {notes.map((comment, index) =>
+                    <Row>
+                        <Col md={4}>
+                            {index === 0 ? this.renderOverlay(this.props.info.degreeProject.comment, this.props.info.degreeProject.commentInfo) : ""}
+                        </Col>
+                        <Col md={8}>
+                            {comment}
+                        </Col>
+                    </Row>
+                )}
+                <Row>
+                    <Col md={4}></Col>
+                    <Col md={8}>
+                        <Form.Control
+                            type="text"
+                            as="textarea"
+                            rows="3"
+                            placeholder={this.props.info.profile.competenceAreaPlaceholder}
+                            value={this.state.comment}
+                            onChange={event => this.setState({ comment: event.target.value })}
+
+                        />
+                        <Button className="buttonMarginSave" onClick={() => this.saveCompetence()}>{this.props.info.profile.addComment}</Button>
+                    </Col>
+                </Row>
+            </Fragment>
+        )
+    }
+    renderCompetenceArea() {
+        const notes = this.state.notes.split(';\n')
+        return (
+            <Fragment>
+                {notes.map((comment, index) =>
+                    <Row>
+                        <Col md={4}>
+                            {index === 0 ? this.renderOverlay(this.props.info.degreeProject.comment, this.props.info.degreeProject.commentInfo) : ""}
+                        </Col>
+                        <Col md={8}>
+                            {comment}
+                        </Col>
+                    </Row>
+                )}
+                <Row>
+                    <Col md={{ span: 4, offset: 8 }} className="alignRight">
+                        <Button onClick={() => this.editCompetence()}>{this.props.info.profile.addComment}</Button>
+                    </Col>
+                </Row>
+            </Fragment>
         )
     }
     renderDelete() {
@@ -188,6 +330,9 @@ class DegreeProject extends Component {
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link onClick={() => this.setState({ bodyContent: this.renderEdit() })}>{this.props.info.degreeProject.edit}</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link onClick={() => this.setState({ bodyContent: this.renderCompetenceArea() })}>{this.props.info.degreeProject.comments}</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link onClick={() => this.setState({ bodyContent: this.renderDelete() })}>{this.props.info.degreeProject.delete}</Nav.Link>
