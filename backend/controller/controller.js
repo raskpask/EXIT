@@ -2,7 +2,7 @@ const userDAO = require('../integration/userDAO');
 const requestHandler = require('../model/requestHandler');
 const authToken = require('../model/authToken');
 const dbError = require('../error/dbErrors')
-const ADMIN_PRIVELEGE = 1
+const ADMIN_PRIVILEGE = 1
 const DICRECTOR_PRIVILEGE = 2
 const EXAMINER_PRIVILEGE = 3
 const STUDENT_PRIVILEGE = 4
@@ -16,7 +16,10 @@ const STUDENT_PRIVILEGE = 4
 async function registerUser(req) {
     const changeToUserType = requestHandler.extractUserTypeId(req)
     const userRoleId = await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
-    if (userRoleId < changeToUserType) {
+    if(isNaN(changeToUserType)){
+        throw new Error(dbError.errorCodes.BAD_REQUEST_ERROR.code)
+    }else if(userRoleId < changeToUserType) {
+        console.log("changeToUserType" + changeToUserType)
         const username = requestHandler.extractUsername(req)
         return await userDAO.registerUser(username, changeToUserType)
     } else {
@@ -31,6 +34,7 @@ async function registerProject(req) {
     try {
         await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
         const projectDetails = requestHandler.extractRegisterProjectDetails(req);
+        console.log(projectDetails)
         const examiner_id = await userDAO.getUserID(requestHandler.extractUsernameFromCookie(req))
         return await userDAO.registerProject(projectDetails,examiner_id);
     } catch (error) {
@@ -84,7 +88,6 @@ async function updateProject(req) {
 async function deleteProject(req) {
     try {
         await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
-        console.log(req)
         return await userDAO.deleteProject(req.body.project_id);
     }
     catch (error) {
@@ -198,6 +201,7 @@ async function deleteBudgetYear(req) {
 }
 
 async function deleteUser(req) {
+    await authorizeUser(requestHandler.extractUserDataFromCookie(req), ADMIN_PRIVILEGE)
     return await userDAO.deleteUser(requestHandler.extractUserID(req));
 }
 async function updateUser(req) {

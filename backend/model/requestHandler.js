@@ -32,6 +32,7 @@ function extractUsername(req) {
     return req.body.kth_username;
 }
 function extractUserTypeId(req){
+    console.log(req.body.user_type_id)
     return req.body.user_type_id
 }
 /**
@@ -156,8 +157,16 @@ function extractRegisterProjectDetails(req) {
         }
         if (project.companyName) {
             company_name = project.companyName;
-            company_address = project.companyAddress;
-            company_phone_number = project.companyPhone;
+            if(project.companyAddress){
+                company_address = project.companyAddress;
+            }else{
+                company_address = null
+            }
+            if(project.companyPhone){
+                company_phone_number = project.companyPhone;
+            }else{
+                company_phone_number = null
+            }
         }
         //}
 
@@ -206,8 +215,8 @@ function extractBudgetYear(req) {
     const year = budgetYear.budgetYear
     const master_hours_supervisor = budgetYear.masterHoursSupervisor
     const master_hours_examiner = budgetYear.masterHoursExaminer
-    const bachelor_hours_supervisor = budgetYear.bachleorHoursSupervisor
-    const bachelor_hours_examiner = budgetYear.bachleorHoursExaminer
+    const bachelor_hours_supervisor = budgetYear.bachelorHoursSupervisor
+    const bachelor_hours_examiner = budgetYear.bachelorHoursExaminer
     const total_tutoring_hours = budgetYear.totalTutoringHours
     const factor_1 = checkValue(budgetYear.factor1)
     const factor_2 = checkValue(budgetYear.factor2)

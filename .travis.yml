@@ -14,13 +14,14 @@ before_script:
   - node --version
   - npm --version
   - node_modules/.bin/newman --version
-  - sudo mysql -u root --password="" < tests/dump.sql
+  - sudo mysql -e 'create database exit_db;'
+  - sudo mysql -u root --password="" --database=exit_db< tests/dump.sql
   - npm start &
-script: bundle exec rake spec
+#script: bundle exec rake spec
 env:
   global:
   
 
 script:
-
+  - bundle exec rake spec
   - node_modules/.bin/newman run tests/EXIT_API_testing.postman_collection.json -e tests/EXIT_API_testing.postman_environment.json --color auto --disable-unicode
