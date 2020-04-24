@@ -858,18 +858,17 @@ function getBudgetYear(year) {
 function postBudgetYear(budget_year) {
     return new Promise(async function (resolve, reject) {
         const client = await pool.getConnection()
+        console.log(budget_year)
         let postBudgetYear = {
             text: "INSERT INTO Budget_year (year,master_hours_examiner,master_hours_supervisor,bachelor_hours_examiner,bachelor_hours_supervisor,factor_1,factor_2,factor_3,factor_4,factor_5) " +
-                "VALUES (?,?,?,?,?,?,?,?,?)",
+                "VALUES (?,?,?,?,?,?,?,?,?,?)",
             values: [budget_year.year, budget_year.master_hours_examiner, budget_year.master_hours_supervisor, budget_year.bachelor_hours_examiner, budget_year.bachelor_hours_supervisor,
             budget_year.factor_1, budget_year.factor_2, budget_year.factor_3, budget_year.factor_4, budget_year.factor_5]
         }
         client
             .query(postBudgetYear.text, postBudgetYear.values)
             .then(res => {
-                //if (res.affectedRows == 1) {
                 resolve()
-                //}
             })
             .catch(err => {
                 client.end()
