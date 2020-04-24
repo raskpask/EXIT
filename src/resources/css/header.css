@@ -15,7 +15,9 @@
     border: none !important;
     box-shadow: none !important;
 }
-
+.button#dropdown-basic-button.dropdown-toggle.btn.btn-primary{
+    padding: 0px;
+}
 .dropdown-toggle::after{
     display: none;
 }
@@ -34,6 +36,9 @@
 }
 .dropdown-item:hover {
     background-color: rgba(25, 84, 166);
+}
+.margin{
+    margin: 2px;
 }
 .logo{
     padding: 0;
