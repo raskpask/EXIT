@@ -19,7 +19,7 @@ class Header extends Component {
     }
 
     chooseUserLevel() {
-        return this.renderAdmin()
+        // return this.renderAdmin()
         let privilegeLevel = document.cookie.split('role_id=')[1];
 
         if (Boolean(privilegeLevel)) {
