@@ -19,7 +19,7 @@ class Header extends Component {
     }
 
     chooseUserLevel() {
-        // return this.renderAdmin()
+        return this.renderAdmin()
         let privilegeLevel = document.cookie.split('role_id=')[1];
 
         if (Boolean(privilegeLevel)) {
@@ -109,7 +109,7 @@ class Header extends Component {
                     <Nav.Link className="fontColor" href="/logout">{this.props.info.header.logout}</Nav.Link>
                     <Nav.Link className="fontColor" href="/addDirectorOfStudies">{this.props.info.header.addDirectorOfStudies}</Nav.Link>
                     <Nav.Link className="fontColor" href="/directorsOfStudies">{this.props.info.header.directorsOfStudies}</Nav.Link>
-                    <DropdownButton  className="margin" id="directorOfStudies" title={this.props.info.header.directorsOfStudiesTasks}>
+                    <DropdownButton  className="margin headerDropdown" id="directorOfStudies" title={this.props.info.header.directorsOfStudiesTasks}>
                         <Dropdown.Item className="fontColor" href="/addBudgetYear">{this.props.info.header.addBudgetYear}</Dropdown.Item>
                         <Dropdown.Item className="fontColor" href="/specifiedBudgetYears">{this.props.info.header.specifiedBudgetYears}</Dropdown.Item>
                         <Dropdown.Item className="fontColor" href="/addExaminer">{this.props.info.header.addExaminer}</Dropdown.Item>

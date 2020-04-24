@@ -242,8 +242,8 @@ class SpecifyTutoringHours extends Component {
     render() {
         return (
             <div className="container">
-                <Access access='2' info={this.props.info.access} />
-                {this.state.redirect ? <Redirect to='/' /> : ""}
+                {/* <Access access='2' info={this.props.info.access} />
+                {this.state.redirect ? <Redirect to='/' /> : ""} */}
                 <h1>{this.props.info.specifyTutoringHours.title}</h1>
                 <p>{this.props.info.specifyTutoringHours.paragraph0}</p>
                 {this.renderForm()}

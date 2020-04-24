@@ -21,7 +21,7 @@
 .dropdown-toggle::after{
     display: none;
 }
-.dropdown-menu {
+div.dropdown-menu.show {
     background-color: rgba(25, 84, 166);
 }
 .navbar{
