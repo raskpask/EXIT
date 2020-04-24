@@ -109,18 +109,28 @@ class Header extends Component {
                     <Nav.Link className="fontColor" href="/logout">{this.props.info.header.logout}</Nav.Link>
                     <Nav.Link className="fontColor" href="/addDirectorOfStudies">{this.props.info.header.addDirectorOfStudies}</Nav.Link>
                     <Nav.Link className="fontColor" href="/directorsOfStudies">{this.props.info.header.directorsOfStudies}</Nav.Link>
-                    <DropdownButton  className="margin headerDropdown" id="directorOfStudies" title={this.props.info.header.directorsOfStudiesTasks}>
-                        <Dropdown.Item className="fontColor" href="/addBudgetYear">{this.props.info.header.addBudgetYear}</Dropdown.Item>
-                        <Dropdown.Item className="fontColor" href="/specifiedBudgetYears">{this.props.info.header.specifiedBudgetYears}</Dropdown.Item>
-                        <Dropdown.Item className="fontColor" href="/addExaminer">{this.props.info.header.addExaminer}</Dropdown.Item>
-                        <Dropdown.Item className="fontColor" href="/specifyTutoringHours">{this.props.info.header.specifyTutoringHours}</Dropdown.Item>
-                        <Dropdown.Item className="fontColor" href="/availableExaminers">{this.props.info.header.availableExaminsers}</Dropdown.Item>
-                    </DropdownButton>
-                    <DropdownButton className="margin" id="examiner" title={this.props.info.header.examiner}>
-                        <Dropdown.Item className="fontColor" href="/profile">{this.props.info.header.profile}</Dropdown.Item>
-                        <Dropdown.Item className="fontColor" href="/addDegreeProject">{this.props.info.header.addDegreeProject}</Dropdown.Item>
-                        <Dropdown.Item className="fontColor" href="/myDegreeProjects">{this.props.info.header.myDegreeProjects}</Dropdown.Item>
-                    </DropdownButton>
+                    <Dropdown>
+                        <Dropdown.Toggle className="margin headerDropdown" id="directorOfStudies">
+                            {this.props.info.header.directorsOfStudiesTasks}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu className="headerDropdown">
+                            <Dropdown.Item className="fontColor" href="/addBudgetYear">{this.props.info.header.addBudgetYear}</Dropdown.Item>
+                            <Dropdown.Item className="fontColor" href="/specifiedBudgetYears">{this.props.info.header.specifiedBudgetYears}</Dropdown.Item>
+                            <Dropdown.Item className="fontColor" href="/addExaminer">{this.props.info.header.addExaminer}</Dropdown.Item>
+                            <Dropdown.Item className="fontColor" href="/specifyTutoringHours">{this.props.info.header.specifyTutoringHours}</Dropdown.Item>
+                            <Dropdown.Item className="fontColor" href="/availableExaminers">{this.props.info.header.availableExaminsers}</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <Dropdown>
+                        <Dropdown.Toggle className="margin" id="examiner">
+                            {this.props.info.header.examiner}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu className="headerDropdown">
+                            <Dropdown.Item className="fontColor" href="/profile">{this.props.info.header.profile}</Dropdown.Item>
+                            <Dropdown.Item className="fontColor" href="/addDegreeProject">{this.props.info.header.addDegreeProject}</Dropdown.Item>
+                            <Dropdown.Item className="fontColor" href="/myDegreeProjects">{this.props.info.header.myDegreeProjects}</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
                     <Nav.Link className="fontColor" href="/help">{this.props.info.header.help}</Nav.Link>
                 </Nav>
             </React.Fragment >

@@ -21,9 +21,12 @@
 .dropdown-toggle::after{
     display: none;
 }
-div.dropdown-menu.show {
+.headerDropdown {
     background-color: rgba(25, 84, 166);
 }
+/* div.dropdown-menu.show {
+    background-color: rgba(25, 84, 166);
+} */
 .navbar{
     background-color: rgba(25, 84, 166);
 }
