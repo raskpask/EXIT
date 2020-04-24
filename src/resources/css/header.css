@@ -34,9 +34,7 @@ div.dropdown-menu.show {
     color: rgb(192, 206, 226) !important;
     background-color: rgba(25, 84, 166);
 }
-.dropdown-item:hover {
-    background-color: rgba(25, 84, 166);
-}
+
 .margin{
     margin: 2px;
 }
