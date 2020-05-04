@@ -85,7 +85,7 @@ async function updateProjectStatus(req) {
     try {
         await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
         project_id = requestHandler.extractProjectID(req)
-        supervisor_id = requestHandler.extractProjectStatus(req)
+        project_status = requestHandler.extractProjectStatus(req)
         return await userDAO.updateProjectStatus(project_id,project_status)
     }
     catch (error) {
