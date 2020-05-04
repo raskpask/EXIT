@@ -154,7 +154,7 @@ class DegreeProject extends Component {
                 <ListGroup.Item>{this.props.info.addDegreeProject.credits}: {this.props.project.credits}</ListGroup.Item>
                 <ListGroup.Item>{this.props.info.addDegreeProject.startDate}: {this.props.project.start_date.split('T')[0]}</ListGroup.Item>
                 <ListGroup.Item>{this.props.info.addDegreeProject.endDate}: {this.props.project.end_date.split('T')[0]}</ListGroup.Item>
-                <ListGroup.Item>{this.props.info.degreeProject.inProgess}:{this.props.project.in_progress}</ListGroup.Item>
+                <ListGroup.Item>{this.props.info.degreeProject.inProgess}:{this.props.project.in_progress ? this.props.info.general.yes : this.props.info.general.no}</ListGroup.Item>
             </ListGroup>
         )
     }
