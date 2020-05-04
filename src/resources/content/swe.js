@@ -60,7 +60,8 @@ function getLanguage() {
             comments: "Kommentarer",
             comment: "Kommentarer om projeketet:",
             commentInfo: "Lägg till dina kommentarer här för att besrkiva något som hänt eller något annat som ska sparas.",
-
+            finnished: "Klicka i boxen för att markera att projektet är färdigt.",
+            status: "Projekt status"
         },
         addDegreeProject: {
             title: "Lägg till projekt till mitt budgetår",

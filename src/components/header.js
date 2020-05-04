@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 import Cookies from 'universal-cookie';
 import '../resources/css/header.css';
 

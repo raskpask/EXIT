@@ -15,6 +15,7 @@ class DegreeProject extends Component {
             project: this.props.project,
             notes: this.props.project.notes,
             supervisor_id: "",
+            in_progress: this.props.project.in_progress,
             bodyContent: this.renderInfo(),
         }
     }
@@ -93,14 +94,30 @@ class DegreeProject extends Component {
         this.forceUpdate()
     }
     saveUpdates = (e) => {
-        console.log(this.state)
         e.preventDefault();
+        if (this.state.supervisor_id) {
+            const data = {
+                supervisor_id: this.state.supervisor_id,
+                project_id: this.props.project.project_id
+            }
+            axios
+                .put('/api/project', data)
+                .then(res => {
+                    if (res.status === 200) {
+                        toast(this.props.info.degreeProject.updateSuccess)
+                    }
+                })
+                .catch(err => {
+                    console.error(err)
+                    toast(this.props.info.degreeProject.updateFail)
+                })
+        }
         const data = {
-            supervisor_id: this.state.supervisor_id,
-            project_id: this.props.project.project_id
+            projectID: this.props.project.project_id,
+            projectStatus: this.state.in_progress ? 1 : 0
         }
         axios
-            .put('/api/project', data)
+            .put('api/projectStatus', data)
             .then(res => {
                 if (res.status === 200) {
                     toast(this.props.info.degreeProject.updateSuccess)
@@ -215,6 +232,17 @@ class DegreeProject extends Component {
                     </Col>
                 </Row>
                 <Row>
+                    <Col className="marginTop">
+                        {this.props.info.degreeProject.status}
+                        <Form.Check
+                            type="checkbox"
+                            id="StatusButton"
+                            label={this.props.info.degreeProject.finnished}
+                            onChange={(event) => this.setState({ in_progress: event.target.checked })}
+                        />
+                    </Col>
+                </Row>
+                <Row>
                     <Col className="alignCenter marginTop">
                         <Button type="submit">{this.props.info.degreeProject.submit}</Button>
                     </Col>
@@ -247,10 +275,7 @@ class DegreeProject extends Component {
         this.postComment()
     }
     async updateComment(comment) {
-        console.log(comment)
         await this.setState({ comment: comment })
-        console.log(this.state.comment)
-        console.log(this.state)
     }
     renderCompetenceAreaEdit() {
         const notes = this.state.notes.split(';\n')

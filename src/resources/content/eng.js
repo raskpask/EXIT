@@ -60,6 +60,8 @@ function getLanguage() {
             comments: "Comments",
             comment: "Comments of the project:",
             commentInfo: "Add you comments here to describe something that happend or something else in the project.",
+            finnished: "Check the box to mark the project as finnished.",
+            status: "Project status"
 
         },
         addDegreeProject: {
