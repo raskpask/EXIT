@@ -6,6 +6,8 @@ const validation = require('./requestValidation');
 const dbError = require('../error/dbErrors');
 const BudgetYear = require('./budgetYear.js');
 
+DEFAULT_PROJECT_STATUS = 1;
+
 /**
  * Extracts the credentials of the client request
  *
@@ -151,6 +153,7 @@ function extractRegisterProjectDetails(req) {
         credits = project.credits;
         start_date = project.startDate;
         end_date = project.endDate;
+        in_progress = DEFAULT_PROJECT_STATUS;
 
         if(project.supervisorID){
             supervisor_id = project.supervisorID
@@ -198,6 +201,15 @@ function extractUserType(req){
 function extractProjectID(req) {
     ID = req.body.projectID;
     validation.isValidNumber(ID);
+    return ID;
+}
+/**
+ * Gets the project status from a request
+ * @param {String} req 
+ */
+function extractProjectStatus(req) {
+    status = req.body.projectStatus;
+    validation.isValidBoolean(status);
     return ID;
 }
 function extractWorkYear(req) {
@@ -262,5 +274,6 @@ module.exports = {
     extractExpertiseID,
     extractWorkYear,
     extractUserType,
-    extractUserTypeId
+    extractUserTypeId,
+    extractProjectStatus
 }

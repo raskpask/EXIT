@@ -191,6 +191,7 @@ function router(router) {
             dbErrors.respondError(error.message, res)
         }
     });
+
     router.delete('/api/budgetYear', async (req, res) => {
         try {
             await controller.deleteBudgetYear(req)
@@ -202,6 +203,14 @@ function router(router) {
     router.get('/api/profile', async (req, res) => {
         try {
             res.send(await controller.getProfile(req))
+        } catch (error) {
+            dbErrors.respondError(error.message, res)
+        }
+    });
+    router.put('/api/projectStatus', async (req, res) => {
+        try {
+            await controller.updateProjectStatus(req)
+            res.send()
         } catch (error) {
             dbErrors.respondError(error.message, res)
         }

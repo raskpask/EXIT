@@ -67,7 +67,6 @@ function checkUsername(username) {
     return true;
 }
 
-
 function checkEmail(email) {
     email = email.split('@');
     if (email.length < 2 || email.length > 2 || email[1].split('.').length < 2) {
@@ -178,6 +177,15 @@ function isValidNumber(ID) {
     }
     return true;
 }
+
+function isValidBoolean(bool){
+    if (!(bool == 1||bool==0)) {
+        throw new Error(dbError.errorCodes.BAD_REQUEST_ERROR.code);
+    }
+    return true;
+    
+    
+}
 function isNotUndefined(req){
 
 }
@@ -189,5 +197,6 @@ module.exports = {
     validateProject,
     isValidNumber,
     isValidType,
-    isNotUndefined
+    isNotUndefined,
+    isValidBoolean
 }

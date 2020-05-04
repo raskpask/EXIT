@@ -1096,6 +1096,27 @@ function updateNotes(project_id,message){
     })
 }
 
+function updateProjectStatus(project_id,project_status){
+    return new Promise(async function (resolve, reject) {
+        const client = await pool.getConnection()
+        let updateNotes = {
+            text: "UPDATE Degree_project " +
+                "SET in_progress = ? " +
+                "WHERE project_id = ?",
+            values: [project_status,project_id]
+        }
+        client
+            .query(updateNotes.text,updateNotes.values)
+            .then(res => {
+                resolve()
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        client.end()
+    })
+}
+
 module.exports = {
     registerUser,
     getUser,
@@ -1124,5 +1145,6 @@ module.exports = {
     login,
     logout,
     authorizeUser,
-    updateNotes
+    updateNotes,
+    updateProjectStatus
 }

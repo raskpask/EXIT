@@ -75,6 +75,23 @@ async function getProject(req) {
         throw error
     }
 }
+/**
+ * Updates the status of a project.
+ *
+ * @param {String} req - The request of the client.
+ * @returns Promise with user
+ */
+async function updateProjectStatus(req) {
+    try {
+        await authorizeUser(requestHandler.extractUserDataFromCookie(req), EXAMINER_PRIVILEGE)
+        project_id = requestHandler.extractProjectID(req)
+        supervisor_id = requestHandler.extractProjectStatus(req)
+        return await userDAO.updateProjectStatus(project_id,project_status)
+    }
+    catch (error) {
+        throw error
+    }
+}
 
 async function updateProject(req) {
     try {
@@ -250,5 +267,6 @@ module.exports = {
     getAvailableSupervisors,
     login,
     getProfile,
-    updateNotes
+    updateNotes,
+    updateProjectStatus
 }
