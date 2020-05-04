@@ -210,7 +210,7 @@ function extractProjectID(req) {
 function extractProjectStatus(req) {
     status = req.body.projectStatus;
     validation.isValidBoolean(status);
-    return ID;
+    return status;
 }
 function extractWorkYear(req) {
     return req.body.examiners
