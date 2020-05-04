@@ -236,6 +236,7 @@ class DegreeProject extends Component {
                         <Form.Check
                             type="checkbox"
                             id="StatusButton"
+                            defaultChecked={this.state.in_progress}
                             label={this.props.info.degreeProject.finnished}
                             onChange={(event) => this.setState({ in_progress: event.target.checked })}
                         />
